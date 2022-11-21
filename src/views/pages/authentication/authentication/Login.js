@@ -7,6 +7,7 @@ import { Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import { gridSpacing } from 'store/constant';
+import AuthLogin from '../auth-forms/AuthLogin';
 
 const Login = () => {
     const theme = useTheme();
