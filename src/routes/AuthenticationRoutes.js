@@ -14,7 +14,6 @@ const CreatePassword = Loadable(lazy(() => import('views/pages/authentication/au
 
 const AuthenticationRoutes = {
     path: '/',
-    element: <AuthLogin />,
     children: [
         {
             path: '/auth/login',
