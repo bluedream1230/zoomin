@@ -4,7 +4,8 @@
     "private": true,
     "homepage": "https://berrydashboard.io/dashboard",
     "engines": {
-        "node": "18.x"
+        "node": "16.16.0",
+        "npm": "8.19.2"
     },
     "dependencies": {
         "@coreui/coreui": "^4.2.2",
