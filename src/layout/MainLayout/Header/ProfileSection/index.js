@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Menu, MenuItem, Avatar } from '@mui/material';
+import { Menu, MenuItem, Avatar, Divider, Drawer } from '@mui/material';
 
 export default function ProfileMenu() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -13,15 +13,32 @@ export default function ProfileMenu() {
 
     return (
         <div>
-            <Avatar alt="Remy Sharp" onClick={handleClick}>
+            <Avatar
+                alt="Richard"
+                onClick={handleClick}
+                sx={{
+                    width: '46px',
+                    height: '46px'
+                }}
+            >
                 R
             </Avatar>
 
-            <Menu
+            <Drawer
                 id="basic-menu"
-                anchorEl={anchorEl}
+                anchor="right"
                 open={open}
                 onClose={handleClose}
+                PaperProps={{
+                    sx: {
+                        position: 'absolute',
+                        top: '100px',
+                        right: '0px',
+                        height: 'auto',
+                        border: '1px',
+                        padding: '8px 0'
+                    }
+                }}
                 MenuListProps={{
                     'aria-labelledby': 'basic-button'
                 }}
@@ -29,7 +46,9 @@ export default function ProfileMenu() {
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={handleClose}>Logout</MenuItem>
-            </Menu>
+                <Divider />
+                <MenuItem onClick={handleClose}>Logout</MenuItem>
+            </Drawer>
         </div>
     );
 }

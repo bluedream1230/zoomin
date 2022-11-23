@@ -193,7 +193,8 @@ export default function componentStyleOverrides(theme) {
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    backgroundColor: '#360068AA'
+                    backgroundColor: '#360068',
+                    opacity: 0.9
                 }
             }
         },

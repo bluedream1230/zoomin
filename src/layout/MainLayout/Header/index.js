@@ -11,6 +11,7 @@ import { SET_COLLAPSE } from 'store/actions';
 import LogoSection from '../LogoSection';
 import ProfileSection from './ProfileSection';
 import NotificationSection from './NotificationSection';
+import { Direction } from 'tabler-icons-react';
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
@@ -45,8 +46,18 @@ const Header = ({ handleLeftDrawerToggle }) => {
             <Box sx={{ flexGrow: 1 }} />
 
             {/* notification & profile */}
-            <NotificationSection />
-            <ProfileSection />
+            <Box
+                sx={{
+                    width: '100px',
+                    height: '46px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }}
+            >
+                <NotificationSection />
+                <ProfileSection />
+            </Box>
         </>
     );
 };

@@ -13,6 +13,9 @@ import Sidebar from './Sidebar';
 import { appDrawerWidth } from 'store/constant';
 import { SET_MENU } from 'store/actions';
 
+//backgroundImg imports
+import BackgroundImg from '../../assets/images/content-colomn-img.png';
+
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
     ...theme.typography.mainContent,
@@ -88,21 +91,18 @@ const MainLayout = () => {
             <CssBaseline />
             {/* header */}
             <AppBar
-                enableColorOnDark
                 position="fixed"
-                color="inherit"
-                elevation={0}
                 sx={{
-                    bgcolor: theme.palette.background.default,
-                    transition: leftDrawerOpened ? theme.transitions.create('width') : 'none',
-                    backgroundImage:
-                        'radial-gradient(circle at left, rgba(255, 77, 157, .1), transparent), radial-gradient(circle at center, rgba(255, 77, 157, .1), transparent)'
+                    height: '100px',
+                    backgroundColor: '#36006844',
+                    borderBottom: '2px solid #821EF044',
+                    paddingLeft: '42px',
+                    paddingRight: '51px'
                 }}
             >
-                <Toolbar>
+                <Toolbar sx={{ paddingTop: '20px' }}>
                     <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
                 </Toolbar>
-                <Divider sx={{ opacity: '.3' }} />
             </AppBar>
 
             {/* drawer */}
@@ -114,10 +114,10 @@ const MainLayout = () => {
                 open={leftDrawerOpened}
                 sx={{
                     position: 'relative',
-                    backgroundImage: 'radial-gradient(closest-side, rgba(22, 1, 45, .2), rgba(255, 77, 157, .1), rgba(22, 1, 45, .2))'
+                    backgroundImage: `url(${BackgroundImg})`
                 }}
             >
-                <Outlet />
+                {/* <Outlet /> */}
             </Main>
         </Box>
     );

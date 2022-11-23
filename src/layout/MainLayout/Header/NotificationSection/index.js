@@ -16,19 +16,22 @@ import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 
 const NotificationList = [
     {
+        avatar: 'S',
+        label: 'Lorem Ipsum Dolar alsto dummy',
+        text: 'Volutpat vitae commodo vitae.',
+        color: '#04B4DD'
+    },
+    {
         avatar: 'B',
         label: 'Lorem Ipsum Dolar alsto dummy',
-        text: 'Volutpat vitae commodo vitae.'
+        text: 'Volutpat vitae commodo vitae.',
+        color: '#821EF0'
     },
     {
         avatar: 'C',
         label: 'Lorem Ipsum Dolar alsto dummy',
-        text: 'Volutpat vitae commodo vitae.'
-    },
-    {
-        avatar: 'S',
-        label: 'Lorem Ipsum Dolar alsto dummy',
-        text: 'Volutpat vitae commodo vitae.'
+        text: 'Volutpat vitae commodo vitae.',
+        color: '#FF328E'
     }
 ];
 
@@ -43,18 +46,46 @@ const NotificationSection = () => {
 
     const NotificationTable = NotificationList.map((item, index) => {
         return (
-            <Grid item xs={12} key={index} style={{ padding: '20px' }}>
-                <Grid container direction="column">
-                    <Grid item>
+            <Grid item xs={12} key={index} sx={{ marginBottom: '50px' }}>
+                <Grid container direction="column" sx={{ height: '53px' }}>
+                    <Grid item sx={{ height: '53px' }}>
                         <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item xs={3}>
-                                <Avatar>{item.avatar}</Avatar>
+                                <Avatar
+                                    sx={{
+                                        fontSize: '27px',
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: '700',
+                                        lineHeight: '39px',
+                                        width: '53px',
+                                        height: '53px',
+                                        color: '#FFFFFF',
+                                        bgcolor: `${item.color}`
+                                    }}
+                                >
+                                    {item.avatar}
+                                </Avatar>
                             </Grid>
                             <Grid item xs={9}>
-                                <Typography variant="h5" color="#FFFFFF" fontWeight={'600'} fontSize="14px">
+                                <Typography
+                                    color="#FFFFFF"
+                                    fontStyle={'normal'}
+                                    fontFamily={'Inter'}
+                                    fontWeight={'700'}
+                                    lineHeight={'35px'}
+                                    fontSize="14px"
+                                >
                                     {item.label}
                                 </Typography>
-                                <Typography variant="h6" color="#FFFFFF" fontWeight={'400'} fontSize="12px">
+                                <Typography
+                                    color="#FFFFFF"
+                                    fontWeight={'400'}
+                                    fontSize="12px"
+                                    fontStyle={'normal'}
+                                    fontFamily={'Inter'}
+                                    lineHeight={'15px'}
+                                >
                                     {item.text}
                                 </Typography>
                             </Grid>
@@ -66,18 +97,19 @@ const NotificationSection = () => {
     });
     return (
         <>
-            <Box
-                sx={{
-                    ml: 2,
-                    mr: 3,
-                    [theme.breakpoints.down('md')]: {
-                        mr: 2
-                    }
-                }}
-            >
+            <Box>
                 <Stack direction={'row'} alignItems={'center'} gap={2}>
-                    <Badge badgeContent={2} color="primary">
-                        <NotificationsNoneOutlinedIcon sx={{ cursor: 'pointer' }} onClick={handleToggle} />
+                    <Badge
+                        badgeContent={1}
+                        color="error"
+                        sx={{
+                            '& .MuiBadge-badge': {
+                                right: 5,
+                                top: 5
+                            }
+                        }}
+                    >
+                        <NotificationsNoneOutlinedIcon sx={{ cursor: 'pointer', fontSize: 30 }} onClick={handleToggle} />
                     </Badge>
                     <Drawer
                         anchor="right"
@@ -88,23 +120,36 @@ const NotificationSection = () => {
                                 position: 'absolute',
                                 top: '100px',
                                 right: '0px',
-                                width: 280,
-                                height: 'calc(100vh - 100px)'
+                                width: 375,
+                                height: 'calc(100vh - 100px)',
+                                boxShadow: '40px 7px 133px rgba(0, 0, 0, 0.7)',
+                                transform: 'rotate(0.06deg)',
+                                padding: ' 30px 35px'
                             }
                         }}
                     >
                         <PerfectScrollbar component="div">
-                            <Grid container spacing={2} sx={{ padding: '20px' }}>
-                                <Grid item xs={11}>
-                                    <Typography variant="h3" color="#FFFFFF">
+                            <Grid container>
+                                <Grid item sx={{ marginRight: '130px' }}>
+                                    <Typography
+                                        variant="h3"
+                                        color="#FFFFFF"
+                                        sx={{
+                                            fontFamily: 'Inter',
+                                            fontStyle: 'normal',
+                                            fontWeight: '700',
+                                            fontSize: '25px',
+                                            lineHeight: '35px'
+                                        }}
+                                    >
                                         Notification
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={1} sx={{ paddingLeft: '0px' }} onClick={handleToggle}>
-                                    <HighlightOffOutlinedIcon />
+                                <Grid item xs={1} onClick={handleToggle} sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <HighlightOffOutlinedIcon sx={{ color: '#FF0676', fontSize: '36px' }} />
                                 </Grid>
                             </Grid>
-                            <Divider sx={{ my: 1.5, margin: '20px' }} />
+                            <Divider sx={{ marginTop: '28px', marginBottom: '38px' }} />
                             {NotificationTable}
                         </PerfectScrollbar>
                     </Drawer>
