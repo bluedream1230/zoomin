@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MenuList, LogoutComponent } from './MenuList';
 import { SET_COLLAPSE } from 'store/actions';
 import { appDrawerWidth } from 'store/constant';
-import DehazeOutlinedIcon from '@mui/icons-material/DehazeOutlined';
+import { ReactComponent as HambergIcon } from '../../../assets/images/hamberg.svg';
 
 const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
     const theme = useTheme();
@@ -22,23 +22,19 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
     };
 
     const drawer = (
-        <>
-            <BrowserView>
-                <PerfectScrollbar
-                    component="div"
-                    style={{
-                        height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 88px)',
-                        paddingLeft: '16px',
-                        paddingRight: '16px'
-                    }}
-                >
-                    <SvgIcon component={DehazeOutlinedIcon} onClick={handleClick} sx={{ marginLeft: '24px', color: '#04B4DD' }} />
-                    <MenuList />
-                    <Divider sx={{ mt: 0.25, mb: 1.25, opacity: 0.3, paddingTop: '90px' }} />
-                    <LogoutComponent />
-                </PerfectScrollbar>
-            </BrowserView>
-        </>
+        <BrowserView>
+            <PerfectScrollbar
+                component="div"
+                style={{
+                    height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 88px)'
+                }}
+            >
+                <SvgIcon component={HambergIcon} onClick={handleClick} sx={{ marginLeft: '42px', marginTop: '37px', color: '#04B4DD' }} />
+                <MenuList />
+                <Divider sx={{ mt: 0.25, mb: 1.25, opacity: 0.3, paddingTop: '90px' }} />
+                <LogoutComponent />
+            </PerfectScrollbar>
+        </BrowserView>
     );
 
     const container = window !== undefined ? () => window.document.body : undefined;
@@ -48,7 +44,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
             component="nav"
             sx={{
                 flexShrink: { md: 0 },
-                width: matchUpMd ? (!isCollapse ? '320px' : '100px') : 'auto'
+                width: matchUpMd ? (!isCollapse ? '320px' : '140px') : 'auto'
             }}
             aria-label="mailbox folders"
         >
@@ -60,9 +56,10 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
                 onClose={drawerToggle}
                 sx={{
                     '& .MuiDrawer-paper': {
-                        width: !isCollapse ? appDrawerWidth : '100px',
-                        backgroundColor: '#16012D',
-                        backgroundImage: 'radial-gradient(ellipse at top, rgba(255, 77, 157, .1), transparent)',
+                        width: !isCollapse ? '320px' : '140px',
+                        backgroundColor: '#36006844',
+                        boxShadow: '40px 7px 132px rgba(0,0,0,0.7)',
+                        borderRadius: '0px',
                         color: theme.palette.text.primary,
                         borderRight: 'none',
                         [theme.breakpoints.up('md')]: {

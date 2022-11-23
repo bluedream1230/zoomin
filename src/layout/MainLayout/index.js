@@ -12,6 +12,7 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import { appDrawerWidth } from 'store/constant';
 import { SET_MENU } from 'store/actions';
+import './scrollbar.css';
 
 //backgroundImg imports
 import BackgroundImg from '../../assets/images/content-colomn-img.png';
@@ -72,8 +73,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 
 const MainLayout = () => {
     const theme = useTheme();
-    const matchDownMd = useMediaQuery(theme.breakpoints.down('lg'));
-
+    const matchDownLg = useMediaQuery(theme.breakpoints.down('lg'));
+    const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
     // Handle left drawer
     const leftDrawerOpened = useSelector((state) => state.customization.opened);
     const dispatch = useDispatch();
@@ -82,17 +83,16 @@ const MainLayout = () => {
     };
 
     useEffect(() => {
-        dispatch({ type: SET_MENU, opened: !matchDownMd });
+        dispatch({ type: SET_MENU, opened: !matchDownLg });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [matchDownMd]);
+    }, [matchDownLg]);
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <div style={{ height: '100px' }}>
             <CssBaseline />
-            {/* header */}
             <AppBar
-                position="fixed"
                 sx={{
+                    position: 'relative',
                     height: '100px',
                     backgroundColor: '#36006844',
                     borderBottom: '2px solid #821EF044',
@@ -100,26 +100,28 @@ const MainLayout = () => {
                     paddingRight: '51px'
                 }}
             >
-                <Toolbar sx={{ paddingTop: '20px' }}>
+                <Toolbar sx={{ padding: '20px 0px 17px 0px !important' }}>
                     <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
                 </Toolbar>
             </AppBar>
-
-            {/* drawer */}
-            <Sidebar drawerOpen={leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
-
-            {/* main content */}
-            <Main
-                theme={theme}
-                open={leftDrawerOpened}
-                sx={{
-                    position: 'relative',
-                    backgroundImage: `url(${BackgroundImg})`
-                }}
-            >
-                {/* <Outlet /> */}
-            </Main>
-        </Box>
+            <Box sx={{ display: 'flex' }}>
+                <Sidebar drawerOpen={leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
+                <Main
+                    theme={theme}
+                    open={leftDrawerOpened}
+                    sx={{
+                        overflowY: 'scroll',
+                        scrollbarColor: 'trasparent',
+                        backgroundImage: `url(${BackgroundImg})`,
+                        height: 'calc(100vh - 100px)',
+                        borderRadius: '0px'
+                    }}
+                    className="scrollbar-hide"
+                >
+                    {/* <Outlet /> */}
+                </Main>
+            </Box>
+        </div>
     );
 };
 

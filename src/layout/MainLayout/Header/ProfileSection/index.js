@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { Menu, MenuItem, Avatar, Divider, Drawer } from '@mui/material';
+import { Menu, MenuItem, Avatar, Divider, Popover, ListItemIcon, ListItemText, ListItem } from '@mui/material';
+import { FaUserAlt } from 'react-icons/fa';
+import { MdSettingsSuggest } from 'react-icons/md';
+import { FaList } from 'react-icons/fa';
+import { FiLogOut } from 'react-icons/fi';
 
 export default function ProfileMenu() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -24,31 +28,59 @@ export default function ProfileMenu() {
                 R
             </Avatar>
 
-            <Drawer
+            <Popover
                 id="basic-menu"
-                anchor="right"
+                anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
-                PaperProps={{
-                    sx: {
-                        position: 'absolute',
-                        top: '100px',
+                sx={{
+                    '& .MuiPaper-root': {
+                        top: '100px !important',
                         right: '0px',
-                        height: 'auto',
-                        border: '1px',
-                        padding: '8px 0'
+                        left: 'auto !important',
+                        backgroundColor: '#FFFFFF',
+                        backgroundClip: 'padding-box',
+                        minWidth: '10rem',
+                        textAlign: 'left',
+                        borderRadius: '0.25rem',
+                        border: '1px solid rgba(0,0,0,.15)',
+                        padding: '0.5rem 0',
+                        width: '160px'
+                    },
+                    '& .MuiListItemText-primary': {
+                        color: '#212529'
                     }
                 }}
                 MenuListProps={{
                     'aria-labelledby': 'basic-button'
                 }}
             >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
-                <Divider />
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
-            </Drawer>
+                <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <FaUserAlt />
+                    </ListItemIcon>
+                    <ListItemText color="">Profile</ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <MdSettingsSuggest />
+                    </ListItemIcon>
+                    <ListItemText>Setting</ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <FaList />
+                    </ListItemIcon>
+                    <ListItemText>Activity Log</ListItemText>
+                </MenuItem>
+                <Divider sx={{ border: '1px solid rgba(0,0,0,.15) !important' }} />
+                <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <FiLogOut />
+                    </ListItemIcon>
+                    <ListItemText>Logout</ListItemText>
+                </MenuItem>
+            </Popover>
         </div>
     );
 }

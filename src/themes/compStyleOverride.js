@@ -50,7 +50,7 @@ export default function componentStyleOverrides(theme) {
         MuiListItemButton: {
             styleOverrides: {
                 root: {
-                    color: theme.darkTextPrimary,
+                    color: '#B9B9B9',
                     paddingTop: '10px',
                     paddingBottom: '10px',
                     '&.Mui-selected': {
@@ -64,8 +64,7 @@ export default function componentStyleOverrides(theme) {
                         }
                     },
                     '&:hover': {
-                        backgroundColor: theme.menuSelectedBack,
-                        color: theme.menuSelected,
+                        color: '#04B4DD',
                         '& .MuiListItemIcon-root': {
                             color: theme.menuSelected
                         }
