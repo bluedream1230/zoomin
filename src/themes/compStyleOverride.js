@@ -53,6 +53,9 @@ export default function componentStyleOverrides(theme) {
                     color: '#B9B9B9',
                     paddingTop: '10px',
                     paddingBottom: '10px',
+                    '& .MuiListItemIcon-root': {
+                        color: '#B9B9B9'
+                    },
                     '&.Mui-selected': {
                         color: theme.menuSelected,
                         backgroundColor: theme.menuSelectedBack,

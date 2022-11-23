@@ -25,7 +25,7 @@ const NavItem = ({ item, level }) => {
 
     const Icon = item.icon;
     const itemIcon = item?.icon ? (
-        <Icon stroke={1.5} size="1.3rem" />
+        <Icon width="20" height="20" size="1.3rem" stroke="#B9B9B9" fill="#B9B9B9" />
     ) : customization.isCollapse && level > 1 ? (
         <></>
     ) : (
