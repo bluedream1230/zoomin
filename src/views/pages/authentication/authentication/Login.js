@@ -5,8 +5,6 @@ import { useTheme } from '@mui/material/styles';
 import { Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 
 import AuthWrapper1 from '../AuthWrapper1';
-import AuthCardWrapper from '../AuthCardWrapper';
-import { gridSpacing } from 'store/constant';
 import AuthLogin from '../auth-forms/AuthLogin';
 
 const Login = () => {
@@ -15,61 +13,76 @@ const Login = () => {
 
     return (
         <AuthWrapper1>
-            <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
-                <Grid item xs={12} md={12} sm={12} lg={12}>
-                    <Grid container justifyContent="left" alignItems="left" sx={{ minHeight: 'calc(100vh - 150px)' }}>
+            <Grid container direction="row" justifyContent="left" alignItems="center" sx={{ minHeight: '100vh' }}>
+                <Grid item xs={12} md={12} sm={12} lg={7}>
+                    <Grid
+                        container
+                        sx={{
+                            width: '100%',
+                            marginLeft: 'auto',
+                            maxWidth: '1320px',
+                            height: '100vh',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
                         <Grid
                             item
                             xs={12}
                             md={12}
                             sm={12}
-                            lg={5}
+                            lg={12}
                             sx={{
-                                m: { xs: 1, sm: 5 },
-                                mb: 0
+                                marginLeft: '166px',
+                                marginRight: '283px'
                             }}
                         >
-                            <AuthCardWrapper
-                                sx={{
-                                    backgroundColor: 'transparent'
-                                }}
-                            >
-                                <Grid container alignItems="left" justifyContent="left">
-                                    <Grid item xs={12}>
-                                        <Grid
-                                            container
-                                            direction={matchDownSM ? 'column-reverse' : 'row'}
-                                            alignItems="left"
-                                            justifyContent="left"
-                                        >
-                                            <Grid item>
-                                                <Stack alignItems="left" justifyContent="left" spacing={1}>
-                                                    <Typography color="#FFFFFF" gutterBottom fontSize={matchDownSM ? '50px' : '70px'}>
-                                                        Welcome.
-                                                    </Typography>
-                                                </Stack>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <AuthLogin />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid item container direction="row" alignItems="left" xs={12}>
-                                            <Typography sx={{ lineHeight: '1.75' }}>Don&apos;t have an account?</Typography>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;
-                                            <Typography
-                                                component={Link}
-                                                to="/pages/register/register3"
-                                                variant="subtitle1"
-                                                sx={{ textDecoration: 'none' }}
-                                            >
-                                                Sign up
-                                            </Typography>
+                            <Grid container alignItems="left" justifyContent="left">
+                                <Grid item xs={12}>
+                                    <Grid
+                                        container
+                                        direction={matchDownSM ? 'column-reverse' : 'row'}
+                                        alignItems="left"
+                                        justifyContent="left"
+                                    >
+                                        <Grid item>
+                                            <Stack alignItems="left" justifyContent="left" spacing={1}>
+                                                <Typography
+                                                    color="#FFFFFF"
+                                                    gutterBottom
+                                                    fontSize={matchDownSM ? '50px' : '70px'}
+                                                    fontWeight="700"
+                                                    fontStyle="normal"
+                                                    fontFamily="Inter"
+                                                    lineHeight="85px"
+                                                    marginBottom="12px"
+                                                >
+                                                    Welcome.
+                                                </Typography>
+                                            </Stack>
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                            </AuthCardWrapper>
+                                <Grid item xs={12}>
+                                    <AuthLogin />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Grid item container direction="row" alignItems="left" xs={12}>
+                                        <Typography sx={{ lineHeight: '39px', fontSize: '21.5px', fontWeight: '400' }}>
+                                            Don&apos;t have an account?
+                                        </Typography>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <Typography
+                                            component={Link}
+                                            to="/pages/register/register3"
+                                            variant="subtitle1"
+                                            sx={{ textDecoration: 'none', lineHeight: '39px', fontSize: '21.5px', fontWeight: '400' }}
+                                        >
+                                            Sign up
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>

@@ -79,7 +79,14 @@ export default function themeTypography(theme) {
             '& > div > input': {
                 padding: '20px 14px 20px !important',
                 backgroundColor: 'transparent !important',
-                color: '#FFFFFF'
+                color: '#FFFFFF',
+                border: '1,5px solid #FFFFFF',
+                borderRadius: '19px',
+                fontFamily: 'Inter',
+                fontStyle: 'normal',
+                fontWeight: '400',
+                fontSize: '20px',
+                lineHeight: '39px'
             },
             '& > div': {
                 padding: '0px !important',

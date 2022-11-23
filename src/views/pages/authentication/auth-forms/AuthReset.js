@@ -20,7 +20,16 @@ const ResetPassword = ({ ...others }) => {
             <Grid container direction="column" justifyContent="center" spacing={2}>
                 <Grid item xs={12} container alignItems="left" justifyContent="left">
                     <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1" color="#FFFFFF">
+                        <Typography
+                            color="#FFFFFF"
+                            fontFamily="Inter"
+                            fontStyle="normal"
+                            fontWeight="400"
+                            fontSize="21px"
+                            lineHeight="40px"
+                            marginBottom="75px"
+                            width="555px"
+                        >
                             No Worries! Just enter your email and we'll send you a reset password link.
                         </Typography>
                     </Box>
@@ -53,7 +62,11 @@ const ResetPassword = ({ ...others }) => {
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
-                        <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
+                        <FormControl
+                            fullWidth
+                            error={Boolean(touched.email && errors.email)}
+                            sx={{ ...theme.typography.customInput, marginBottom: '58px' }}
+                        >
                             <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-email-login"
@@ -89,7 +102,16 @@ const ResetPassword = ({ ...others }) => {
                                     size="large"
                                     type="submit"
                                     variant="contained"
-                                    sx={{ backgroundColor: '#FF0676' }}
+                                    sx={{
+                                        backgroundColor: '#FF0676',
+                                        borderRadius: '18px',
+                                        height: '90px',
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: '700',
+                                        fontSize: '27px',
+                                        lineHeight: '34px'
+                                    }}
                                 >
                                     Send Recovery Email
                                 </Button>

@@ -43,7 +43,15 @@ const CreatePassword = ({ ...others }) => {
             <Grid container direction="column" justifyContent="center" spacing={2}>
                 <Grid item xs={12} container alignItems="left" justifyContent="left">
                     <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1" color="#FFFFFF">
+                        <Typography
+                            color="#FFFFFF"
+                            fontFamily="Inter"
+                            fontStyle="normal"
+                            fontWeight="400"
+                            fontSize="21px"
+                            lineHeight="40px"
+                            marginBottom="52px"
+                        >
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nisl, eget integer nunc duis facilisi mauris urna,
                             sagittis.
                         </Typography>
@@ -56,8 +64,8 @@ const CreatePassword = ({ ...others }) => {
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
-                    email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                    password: Yup.string().max(255).required('Password is required')
+                    password: Yup.string().max(255).required('Password is required'),
+                    confirm: Yup.string().max(255).required('Confirm is required')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
@@ -80,7 +88,7 @@ const CreatePassword = ({ ...others }) => {
                         <FormControl
                             fullWidth
                             error={Boolean(touched.password && errors.password)}
-                            sx={{ ...theme.typography.customInput }}
+                            sx={{ ...theme.typography.customInput, marginBottom: '45px' }}
                         >
                             <InputLabel htmlFor="outlined-adornment-password-login">New Password</InputLabel>
                             <OutlinedInput
@@ -114,23 +122,23 @@ const CreatePassword = ({ ...others }) => {
                         </FormControl>
                         <FormControl
                             fullWidth
-                            error={Boolean(touched.password && errors.password)}
-                            sx={{ ...theme.typography.customInput }}
+                            error={Boolean(touched.confirm && errors.confirm)}
+                            sx={{ ...theme.typography.customInput, marginBottom: '51px' }}
                         >
                             <InputLabel htmlFor="outlined-adornment-password-login">Confirm Password</InputLabel>
                             <OutlinedInput
-                                id="outlined-adornment-password-login"
+                                id="outlined-adornment-confirm-password-login"
                                 type={showPassword ? 'text' : 'password'}
-                                value={values.password}
+                                value={values.confirm}
                                 name="confirm"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
                                 label="Password"
                                 inputProps={{}}
                             />
-                            {touched.password && errors.password && (
+                            {touched.confirm && errors.confirm && (
                                 <FormHelperText error id="standard-weight-helper-text-password-login">
-                                    {errors.password}
+                                    {errors.confirm}
                                 </FormHelperText>
                             )}
                         </FormControl>
@@ -151,7 +159,16 @@ const CreatePassword = ({ ...others }) => {
                                     size="large"
                                     type="submit"
                                     variant="contained"
-                                    sx={{ backgroundColor: '#FF0676' }}
+                                    sx={{
+                                        backgroundColor: '#FF0676',
+                                        borderRadius: '18px',
+                                        height: '90px',
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: '700',
+                                        fontSize: '27px',
+                                        lineHeight: '34px'
+                                    }}
                                 >
                                     Submit Now
                                 </Button>

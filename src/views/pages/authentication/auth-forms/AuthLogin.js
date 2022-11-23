@@ -48,7 +48,15 @@ const FirebaseLogin = ({ ...others }) => {
             <Grid container direction="column" justifyContent="center" spacing={2}>
                 <Grid item xs={12} container alignItems="left" justifyContent="left">
                     <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1" color="#FFFFFF">
+                        <Typography
+                            color="#FFFFFF"
+                            fontFamily="Inter"
+                            fontStyle="normal"
+                            fontWeight="400"
+                            fontSize="21px"
+                            lineHeight="40px"
+                            marginBottom="65px"
+                        >
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. At quam diam viverra pellentesque tincidunt duis in.
                             Ornare.
                         </Typography>
@@ -82,7 +90,11 @@ const FirebaseLogin = ({ ...others }) => {
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
-                        <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
+                        <FormControl
+                            fullWidth
+                            error={Boolean(touched.email && errors.email)}
+                            sx={{ ...theme.typography.customInput, marginBottom: '45px' }}
+                        >
                             <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-email-login"
@@ -104,7 +116,7 @@ const FirebaseLogin = ({ ...others }) => {
                         <FormControl
                             fullWidth
                             error={Boolean(touched.password && errors.password)}
-                            sx={{ ...theme.typography.customInput }}
+                            sx={{ ...theme.typography.customInput, marginBottom: '45px' }}
                         >
                             <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
                             <OutlinedInput
@@ -146,12 +158,29 @@ const FirebaseLogin = ({ ...others }) => {
                                         color="primary"
                                     />
                                 }
+                                sx={{
+                                    color: '#FFFFFF',
+                                    '& > span': {
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: '400',
+                                        fontSize: '21px',
+                                        lineHeight: '39px'
+                                    }
+                                }}
                                 label="Remember me"
                             />
                             <Typography
-                                variant="subtitle1"
                                 color="#FFFFFF"
-                                sx={{ textDecoration: 'none', cursor: 'pointer' }}
+                                sx={{
+                                    textDecoration: 'none',
+                                    cursor: 'pointer',
+                                    fontFamily: 'Inter',
+                                    fontStyle: 'normal',
+                                    fontWeight: '600',
+                                    fontSize: '21px',
+                                    lineHeight: '180%'
+                                }}
                                 component={ForgotPasswordPage}
                                 to="/auth/forgotpassword"
                             >
@@ -175,9 +204,20 @@ const FirebaseLogin = ({ ...others }) => {
                                     size="large"
                                     type="submit"
                                     variant="contained"
-                                    sx={{ backgroundColor: '#FF0676' }}
+                                    sx={{
+                                        backgroundColor: '#FF0676',
+                                        marginTop: '50px',
+                                        marginBottom: '50px',
+                                        borderRadius: '18px',
+                                        height: '90px',
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: '700',
+                                        fontSize: '27px',
+                                        lineHeight: '34px'
+                                    }}
                                 >
-                                    Sign in
+                                    Login
                                 </Button>
                             </AnimateButton>
                         </Box>
