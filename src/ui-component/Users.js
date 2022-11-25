@@ -12,8 +12,8 @@ import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
 // icon imports
-import { Square } from 'tabler-icons-react';
-import { default as CheckBoxIcon } from 'tabler-icons-react/dist/icons/checkbox';
+import { ReactComponent as Square } from '../assets/images/square.svg';
+import { ReactComponent as CheckBoxIcon } from '../assets/images/check.svg';
 
 const UserListData = [
     {
@@ -196,8 +196,8 @@ const Users = ({ isLoading }) => {
                                 </Typography>
                                 <Box sx={{ height: '20px', width: '20px', cursor: 'pointer' }}>
                                     <Checkbox
-                                        icon={<Square style={{ color: '#43CC83' }} />}
-                                        checkedIcon={<CheckBoxIcon style={{ color: '#43CC83' }} />}
+                                        icon={<Square stroke="#43CC83" />}
+                                        checkedIcon={<CheckBoxIcon stroke="#43CC83" />}
                                         onChange={(e) => !e.target.checked}
                                     />
                                 </Box>

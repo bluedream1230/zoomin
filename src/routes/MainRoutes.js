@@ -24,6 +24,7 @@ const ManagePrize = Loadable(lazy(() => import('views/prizes/Manage')));
 
 //Games routing
 const ManageGame = Loadable(lazy(() => import('views/games')));
+const ImportGame = Loadable(lazy(() => import('views/games/import')));
 
 //Users routing
 const UsersList = Loadable(lazy(() => import('views/users')));
@@ -103,6 +104,10 @@ const MainRoutes = {
                 {
                     path: 'index',
                     element: <ManageGame />
+                },
+                {
+                    path: 'import',
+                    element: <ImportGame />
                 }
             ]
         },

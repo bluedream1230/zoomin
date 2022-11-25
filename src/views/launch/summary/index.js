@@ -272,7 +272,7 @@ const CampaignSummary = () => {
                         to="/campaigns/performance"
                         variant="contained"
                         sx={{
-                            borderRadius: '9.8',
+                            borderRadius: '9.8px',
                             backgroundColor: '#FF0676',
                             width: '260px',
                             height: '45px',
@@ -288,7 +288,7 @@ const CampaignSummary = () => {
                         to="/launch/index"
                         variant="outlined"
                         sx={{
-                            borderRadius: '9.8',
+                            borderRadius: '9.8px',
                             border: '1px solid #04B4DD',
                             width: '130px',
                             height: '45px',

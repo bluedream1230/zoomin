@@ -24,7 +24,16 @@ const UserList = ({ isLoading }) => {
                                 <Grid item xs={12} sx={{ paddingRight: '0px !important' }}>
                                     <Grid container alignContent="center" justifyContent="space-between">
                                         <Grid item sx={{ paddingLeft: '35px' }}>
-                                            <Typography variant="h1" color="white">
+                                            <Typography
+                                                sx={{
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '700',
+                                                    fontSize: '30px',
+                                                    lineHeight: '36px',
+                                                    color: '#FFFFFF'
+                                                }}
+                                            >
                                                 List of Users
                                             </Typography>
                                         </Grid>
@@ -34,7 +43,7 @@ const UserList = ({ isLoading }) => {
                                                 // to="/prizes/manage"
                                                 variant="contained"
                                                 sx={{
-                                                    borderRadius: '9.8',
+                                                    borderRadius: '8.8px',
                                                     backgroundColor: '#FF0676',
                                                     width: '100px',
                                                     height: '40px',
@@ -51,7 +60,7 @@ const UserList = ({ isLoading }) => {
                                                 // to="/launch/index"
                                                 variant="outlined"
                                                 sx={{
-                                                    borderRadius: '9.8',
+                                                    borderRadius: '8.8px',
                                                     border: '1px solid #04B4DD',
                                                     width: '100px',
                                                     height: '40px',

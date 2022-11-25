@@ -52,7 +52,7 @@ const useStyles = makeStyles({
      * same values used in Material-Ui Card Demos
      */
     card: {
-        maxWidth: 345
+        minWidth: 350
     },
 
     /**
@@ -85,26 +85,41 @@ export default function GameDefaultCard(props) {
     };
 
     return (
-        <Box>
-            <Grid container direction="column">
-                <Grid item>
-                    <FiCard className={classes.card} sx={{ height: '248px', cursor: 'pointer' }}>
-                        <FiCardMedia media="picture" alt="Contemplative Reptile" image={props.card_image} title="Contemplative Reptile" />
-                        <FiCardActions className={classes.fiCardContent}>
-                            <Button
-                                size="small"
-                                color="inherit"
-                                variant="none"
-                                sx={{ fontSize: '20px', padding: '0px' }}
-                                onClick={handlePlay}
-                            >
-                                Play Now
-                            </Button>
-                            <SvgIcon component={East} />
-                        </FiCardActions>
-                    </FiCard>
-                </Grid>
-            </Grid>
-        </Box>
+        <FiCard
+            className={classes.card}
+            sx={{
+                height: '280px',
+                cursor: 'pointer',
+                borderRadius: '20px',
+                '& .MuiCardMedia-root': {
+                    border: '1px solid transparent'
+                },
+                '& .MuiCardMedia-root:hover': {
+                    border: '1px solid #FF0676'
+                }
+            }}
+        >
+            <FiCardMedia
+                media="picture"
+                alt="Contemplative Reptile"
+                image={props.card_image}
+                title="Contemplative Reptile"
+                sx={{
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover',
+                    borderRadius: '20px',
+                    position: 'relative',
+                    objectFit: 'cover',
+                    transition: '0.3s',
+                    display: 'inline-block'
+                }}
+            />
+            <FiCardActions className={classes.fiCardContent}>
+                <Button size="small" color="inherit" variant="none" sx={{ fontSize: '20px', padding: '0px' }} onClick={handlePlay}>
+                    Play Now
+                </Button>
+                <SvgIcon component={East} />
+            </FiCardActions>
+        </FiCard>
     );
 }

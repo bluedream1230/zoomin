@@ -55,7 +55,7 @@ const useStyles = makeStyles({
      * same values used in Material-Ui Card Demos
      */
     card: {
-        maxWidth: 450
+        minWidth: 350
     },
 
     /**
@@ -100,6 +100,10 @@ export default function ImgMediaCard(props) {
             sx={{
                 height: '280px',
                 cursor: 'pointer',
+                borderRadius: '20px',
+                '& .MuiCardMedia-root': {
+                    border: '1px solid transparent'
+                },
                 '& .MuiCardMedia-root:hover': {
                     border: '1px solid #FF0676'
                 }

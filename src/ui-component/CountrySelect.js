@@ -9,9 +9,9 @@ export default function CountrySelect() {
     const theme = useTheme();
     return (
         <Autocomplete
+            disablePortal
             id="country-select-demo"
             options={countries}
-            autoHighlight
             getOptionLabel={(option) => option.label}
             renderOption={(props, option) => (
                 <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
@@ -25,17 +25,8 @@ export default function CountrySelect() {
                     {option.label} ({option.code}) +{option.phone}
                 </Box>
             )}
-            renderInput={(params) => (
-                <TextField
-                    {...params}
-                    label="Choose a country"
-                    inputProps={{
-                        ...params.inputProps,
-                        autoComplete: 'new-password' // disable autocomplete and autofill
-                    }}
-                    sx={{ ...theme.typography.customInput }}
-                />
-            )}
+            renderInput={(params) => <TextField {...params} label="Choose a country" />}
+            sx={{ ...theme.typography.customInput }}
         />
     );
 }

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography, Popover } from '@mui/material';
+import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography, Popover, Popper, Fade } from '@mui/material';
 
 // project imports
 import NavItem from '../NavItem';
@@ -71,7 +71,6 @@ const NavCollapse = ({ menu, level }) => {
             <ListItemButton
                 sx={{
                     borderRadius: `${customization.borderRadius}px`,
-                    mb: 5,
                     flexDirection: `${customization.isCollapse ? 'column' : 'row'}`,
                     alignItems: `${customization.isCollapse ? 'center' : 'flex-start'}`,
                     backgroundColor: level > 1 ? 'transparent !important' : 'inherit',
@@ -121,8 +120,7 @@ const NavCollapse = ({ menu, level }) => {
                                 top: 0,
                                 height: '100%',
                                 width: '1px',
-                                opacity: 1,
-                                background: theme.palette.primary.light
+                                opacity: 1
                             }
                         }}
                     >
@@ -131,38 +129,25 @@ const NavCollapse = ({ menu, level }) => {
                 </Collapse>
             )}
             {customization.isCollapse && (
-                <Popover
-                    id={id}
-                    open={openPopover}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right'
-                    }}
-                    sx={{
-                        left: '15px'
-                    }}
-                >
-                    <List
-                        component="div"
-                        sx={{
-                            position: 'relative',
-                            width: '145px',
-                            '&:after': {
-                                position: 'absolute',
-                                left: '32px',
-                                top: 0,
-                                height: '100%',
-                                width: '1px',
-                                opacity: 1,
-                                background: theme.palette.primary.light
-                            }
-                        }}
-                    >
-                        {menus}
-                    </List>
-                </Popover>
+                <Popper id={id} open={open} anchorEl={anchorEl} placement="right-start" transition sx={{ zIndex: 100 }}>
+                    {({ TransitionProps }) => (
+                        <Fade {...TransitionProps} timeout={350}>
+                            <List
+                                component="div"
+                                sx={{
+                                    width: '200px',
+                                    position: 'absolute',
+                                    backgroundColor: '#360068',
+                                    opacity: '0.86',
+                                    boxShadow: '40px 7px 132px rgba(0,0,0,0.7)',
+                                    transform: 'rotate(0.06deg)'
+                                }}
+                            >
+                                {menus}
+                            </List>
+                        </Fade>
+                    )}
+                </Popper>
             )}
         </>
     );
