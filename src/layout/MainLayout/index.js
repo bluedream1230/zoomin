@@ -11,7 +11,7 @@ import { AppBar, Box, CssBaseline, Divider, Toolbar, useMediaQuery } from '@mui/
 import Header from './Header';
 import Sidebar from './Sidebar';
 import { appDrawerWidth } from 'store/constant';
-import { SET_MENU } from 'store/actions';
+import { SET_MENU, SET_SELETED } from 'store/actions';
 
 //backgroundImg imports
 import BackgroundImg from '../../assets/images/content-colomn-img.png';
@@ -71,8 +71,12 @@ const MainLayout = () => {
 
     useEffect(() => {
         dispatch({ type: SET_MENU, opened: !matchDownMd });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [matchDownMd]);
+
+    useEffect(() => {
+        let arr = new Array(7).fill(false);
+        dispatch({ type: SET_SELETED, selected: arr });
+    }, []);
 
     return (
         <Box sx={{ display: 'flex' }}>

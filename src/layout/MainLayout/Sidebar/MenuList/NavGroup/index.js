@@ -12,17 +12,16 @@ import NavCollapse from '../NavCollapse';
 
 const NavGroup = ({ item }) => {
     const theme = useTheme();
-
     // menu list collapse & items
-    const items = item.children?.map((menu) => {
+    const items = item.children?.map((menu, index) => {
         switch (menu.type) {
             case 'collapse':
-                return <NavCollapse key={menu.id} menu={menu} level={1} />;
+                return <NavCollapse key={index} menu={menu} level={1} index={index} />;
             case 'item':
-                return <NavItem key={menu.id} item={menu} level={1} />;
+                return <NavItem key={index} item={menu} level={1} index={index} />;
             default:
                 return (
-                    <Typography key={menu.id} variant="h6" color="error" align="center">
+                    <Typography key={key} variant="h6" color="error" align="center">
                         Menu Items Error
                     </Typography>
                 );

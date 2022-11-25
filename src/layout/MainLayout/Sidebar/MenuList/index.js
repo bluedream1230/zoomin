@@ -7,7 +7,7 @@ import NavGroup from './NavGroup';
 import { menuItems, logoutItem } from 'menu-items';
 
 const MenuList = () => {
-    const navItems = menuItems.items.map((item) => {
+    const navItems = menuItems.items.map((item, index) => {
         switch (item.type) {
             case 'group':
                 return <NavGroup key={item.id} item={item} />;

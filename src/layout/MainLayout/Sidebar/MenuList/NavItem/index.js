@@ -39,7 +39,6 @@ const NavItem = ({ item, level }) => {
     }
 
     const itemHandler = (id) => {
-        console.log('level: ', level);
         dispatch({ type: MENU_OPEN, id });
         if (matchesSM) dispatch({ type: SET_MENU, opened: false });
     };

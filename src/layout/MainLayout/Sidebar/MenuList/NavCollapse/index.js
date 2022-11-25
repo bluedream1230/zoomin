@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -14,20 +14,31 @@ import NavItem from '../NavItem';
 // assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons';
+import { SET_SELETED } from 'store/actions';
+import { menuItems } from 'menu-items';
 
 // ==============================|| SIDEBAR MENU LIST COLLAPSE ITEMS ||============================== //
 
-const NavCollapse = ({ menu, level }) => {
+const NavCollapse = ({ index, menu, level }) => {
     const theme = useTheme();
+    const dispatch = useDispatch();
     const customization = useSelector((state) => state.customization);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [selected, setSelected] = useState(customization);
 
-    const [open, setOpen] = useState(false);
-    const [selected, setSelected] = useState(null);
+    useEffect(() => {
+        console.log(customization);
+        // setSelected(customization.selected[index]);
+    }, []);
 
     const handleClick = (event) => {
-        setOpen(!open);
-        setSelected(!selected ? menu.id : null);
+        let arr = new Array(menuItems.items[0].children.length).fill(false);
+        if (customization.selected[index] == false) {
+            arr = new Array(menuItems.items[0].children.length).fill(false);
+            arr[index] = true;
+        }
+        dispatch({ type: SET_SELETED, selected: arr });
+        setSelected(customization.selected[index]);
         setAnchorEl(event.currentTarget);
     };
 
@@ -100,14 +111,18 @@ const NavCollapse = ({ menu, level }) => {
                 />
                 {customization.isCollapse ? (
                     <></>
-                ) : open ? (
+                ) : (customization && customization?.selected && customization.selected[index]) || false ? (
                     <IconChevronUp stroke={1.5} size="1rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
                 ) : (
                     <IconChevronDown stroke={1.5} size="1rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
                 )}
             </ListItemButton>
             {!customization.isCollapse && (
-                <Collapse in={open} timeout="auto" unmountOnExit>
+                <Collapse
+                    in={(customization && customization?.selected && customization.selected[index]) || false}
+                    timeout="auto"
+                    unmountOnExit
+                >
                     <List
                         component="div"
                         disablePadding
@@ -129,7 +144,14 @@ const NavCollapse = ({ menu, level }) => {
                 </Collapse>
             )}
             {customization.isCollapse && (
-                <Popper id={id} open={open} anchorEl={anchorEl} placement="right-start" transition sx={{ zIndex: 100 }}>
+                <Popper
+                    id={id}
+                    open={customization.selected[index]}
+                    anchorEl={anchorEl}
+                    placement="right-start"
+                    transition
+                    sx={{ zIndex: 100 }}
+                >
                     {({ TransitionProps }) => (
                         <Fade {...TransitionProps} timeout={350}>
                             <List

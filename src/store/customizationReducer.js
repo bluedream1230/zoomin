@@ -9,7 +9,8 @@ export const initialState = {
     fontFamily: config.fontFamily,
     borderRadius: config.borderRadius,
     opened: true,
-    isCollapse: false
+    isCollapse: false,
+    seleted: new Array(7).fill(false)
 };
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
@@ -42,6 +43,11 @@ const customizationReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isCollapse: action.isCollapse
+            };
+        case actionTypes.SET_SELETED:
+            return {
+                ...state,
+                selected: action.selected
             };
         default:
             return state;
