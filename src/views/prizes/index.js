@@ -133,8 +133,17 @@ const PrizeList = ({ isLoading }) => {
                             <Grid container spacing={gridSpacing}>
                                 <Grid item xs={12}>
                                     <Grid container alignContent="center" justifyContent="space-between">
-                                        <Grid item sx={{ paddingLeft: '20px' }}>
-                                            <Typography variant="h1" color="white">
+                                        <Grid item sx={{ paddingLeft: '35px' }}>
+                                            <Typography
+                                                sx={{
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '700',
+                                                    fontSize: '30px',
+                                                    lineHeight: '36px',
+                                                    color: '#FFFFFF'
+                                                }}
+                                            >
                                                 List of Prizes
                                             </Typography>
                                         </Grid>
@@ -143,13 +152,12 @@ const PrizeList = ({ isLoading }) => {
                                             to="/prizes/manage"
                                             variant="contained"
                                             sx={{
-                                                borderRadius: '9.8',
+                                                borderRadius: '8.8',
                                                 backgroundColor: '#FF0676',
                                                 width: '120px',
                                                 height: '40px',
                                                 fontSize: '18px',
-                                                fontWeight: '700',
-                                                marginRight: '35px'
+                                                fontWeight: '700'
                                             }}
                                         >
                                             + Add New

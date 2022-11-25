@@ -5,7 +5,21 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography, Box, Checkbox } from '@mui/material';
+import {
+    Avatar,
+    Button,
+    CardActions,
+    CardContent,
+    Divider,
+    Grid,
+    Menu,
+    MenuItem,
+    Typography,
+    Box,
+    Checkbox,
+    useMediaQuery,
+    Link
+} from '@mui/material';
 //Tomik progress bar imports
 import { CircularProgressBar } from '@tomik23/react-circular-progress-bar';
 // project imports
@@ -24,7 +38,7 @@ const UsersData = {
     height: 95,
     options: {
         chart: {
-            id: 'support-chart',
+            id: 'users-chart',
             sparkline: {
                 enabled: true
             }
@@ -63,7 +77,7 @@ const WinnersData = {
     height: 95,
     options: {
         chart: {
-            id: 'support-chart',
+            id: 'winners-chart',
             sparkline: {
                 enabled: true
             }
@@ -102,7 +116,7 @@ const CompletionData = {
     height: 95,
     options: {
         chart: {
-            id: 'support-chart',
+            id: 'completion-chart',
             sparkline: {
                 enabled: true
             }
@@ -138,7 +152,8 @@ const CompletionData = {
 
 const CampaignInformation = ({ isLoading }) => {
     const theme = useTheme();
-
+    const matchesLG = useMediaQuery(theme.breakpoints.down('lg'));
+    const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
     const [selected, setSelected] = React.useState(true);
 
     return (
@@ -152,50 +167,133 @@ const CampaignInformation = ({ isLoading }) => {
                             <Grid container spacing={gridSpacing}>
                                 <Grid item lg={9} xs={12} md={6} sm={12}>
                                     <Grid container alignContent="center" justifyContent="space-between">
-                                        <Grid item sx={{ paddingLeft: '20px' }} xs={12}>
-                                            <Typography variant="h1" color="white">
+                                        <Grid item xs={12}>
+                                            <Typography
+                                                sx={{
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '700',
+                                                    fontSize: '30px',
+                                                    lineHeight: '36px',
+                                                    color: '#FFFFFF'
+                                                }}
+                                            >
                                                 Campaign Information
                                             </Typography>
                                         </Grid>
                                         <Grid container direction="column">
-                                            <Grid item sx={{ paddingLeft: '20px' }}>
+                                            <Grid item>
                                                 <Divider sx={{ my: 5 }} />
                                                 <Grid container alignItems="center" justifyContent="space-between">
-                                                    <Grid item xs={12} lg={4} sm={12} md={12}>
-                                                        <Typography variant="subtitle1" color="inherit">
+                                                    <Grid item xs={6} lg={4} sm={6} md={6}>
+                                                        <Typography
+                                                            sx={{
+                                                                fontFamily: 'Inter',
+                                                                fontStyle: 'normal',
+                                                                fontWeight: `${matchesLG ? '300' : '500'}`,
+                                                                fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                                                lineHeight: `${matchesLG ? '13px' : '18px'}`,
+                                                                color: '#B9B9B9',
+                                                                marginBottom: '16px'
+                                                            }}
+                                                        >
                                                             Game
                                                         </Typography>
                                                         <Typography
-                                                            variant="subtitle1"
                                                             color="#FF4C9D"
-                                                            fontWeight={'700'}
-                                                            fontSize="35px"
+                                                            sx={{
+                                                                fontFamily: 'Inter',
+                                                                fontStyle: 'normal',
+                                                                fontWeight: `${matchesLG ? '400' : '700'}`,
+                                                                fontSize: `${matchesLG ? '20px' : '34px'}`,
+                                                                lineHeight: `${matchesLG ? '22px' : '42px'}`
+                                                            }}
                                                             alignItems="left"
                                                         >
                                                             Shock & Awe
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item xs={12} lg={3} sm={12} md={12}>
-                                                        <Typography variant="subtitle1" color="inherit">
+                                                    <Grid item xs={6} lg={3} sm={6} md={6}>
+                                                        <Typography
+                                                            sx={{
+                                                                fontFamily: 'Inter',
+                                                                fontStyle: 'normal',
+                                                                fontWeight: `${matchesLG ? '300' : '500'}`,
+                                                                fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                                                lineHeight: `${matchesLG ? '13px' : '18px'}`,
+                                                                color: '#B9B9B9',
+                                                                marginBottom: '16px'
+                                                            }}
+                                                        >
                                                             Launch Date
                                                         </Typography>
-                                                        <Typography variant="subtitle1" color="#FFC857" fontWeight={'700'} fontSize="35px">
+                                                        <Typography
+                                                            variant="subtitle1"
+                                                            color="#FFC857"
+                                                            sx={{
+                                                                fontFamily: 'Inter',
+                                                                fontStyle: 'normal',
+                                                                fontWeight: `${matchesLG ? '400' : '700'}`,
+                                                                fontSize: `${matchesLG ? '20px' : '34px'}`,
+                                                                lineHeight: `${matchesLG ? '22px' : '42px'}`
+                                                            }}
+                                                        >
                                                             8.6.2022
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item xs={12} lg={3} sm={12} md={12}>
-                                                        <Typography variant="subtitle1" color="inherit">
+                                                    <Grid item xs={6} lg={3} sm={6} md={6}>
+                                                        <Typography
+                                                            sx={{
+                                                                fontFamily: 'Inter',
+                                                                fontStyle: 'normal',
+                                                                fontWeight: `${matchesLG ? '300' : '500'}`,
+                                                                fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                                                lineHeight: `${matchesLG ? '13px' : '18px'}`,
+                                                                color: '#B9B9B9',
+                                                                marginBottom: '16px'
+                                                            }}
+                                                        >
                                                             Target Sudiance
                                                         </Typography>
-                                                        <Typography variant="subtitle1" color="#FFFFFF" fontWeight={'700'} fontSize="35px">
+                                                        <Typography
+                                                            variant="subtitle1"
+                                                            color="#FFFFFF"
+                                                            sx={{
+                                                                fontFamily: 'Inter',
+                                                                fontStyle: 'normal',
+                                                                fontWeight: `${matchesLG ? '400' : '700'}`,
+                                                                fontSize: `${matchesLG ? '20px' : '34px'}`,
+                                                                lineHeight: `${matchesLG ? '22px' : '42px'}`
+                                                            }}
+                                                        >
                                                             Dummy
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item xs={12} lg={2} sm={12} md={12}>
-                                                        <Typography variant="subtitle1" color="inherit">
+                                                    <Grid item xs={6} lg={2} sm={6} md={6}>
+                                                        <Typography
+                                                            sx={{
+                                                                fontFamily: 'Inter',
+                                                                fontStyle: 'normal',
+                                                                fontWeight: `${matchesLG ? '300' : '500'}`,
+                                                                fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                                                lineHeight: `${matchesLG ? '13px' : '18px'}`,
+                                                                color: '#B9B9B9',
+                                                                marginBottom: '16px'
+                                                            }}
+                                                        >
                                                             Prize
                                                         </Typography>
-                                                        <Typography variant="subtitle1" color="#04B4DD" fontWeight={'700'} fontSize="35px">
+                                                        <Typography
+                                                            variant="subtitle1"
+                                                            color="#04B4DD"
+                                                            sx={{
+                                                                fontFamily: 'Inter',
+                                                                fontStyle: 'normal',
+                                                                fontWeight: `${matchesLG ? '400' : '700'}`,
+                                                                fontSize: `${matchesLG ? '20px' : '34px'}`,
+                                                                lineHeight: `${matchesLG ? '22px' : '42px'}`
+                                                            }}
+                                                        >
                                                             $300
                                                         </Typography>
                                                     </Grid>
@@ -206,62 +304,66 @@ const CampaignInformation = ({ isLoading }) => {
                                 </Grid>
                                 <Grid item lg={3} xs={12} md={6} sm={12}>
                                     <Grid container alignContent="center" justifyContent="space-between">
-                                        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', width: '80%' }}>
-                                            <QRCode value="dummylink.com" bgColor="transparent" fgColor="#FFFFFF" />
+                                        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', width: '150px' }}>
+                                            <QRCode value="dummylink.com" bgColor="transparent" fgColor="#FFFFFF" size={150} />
                                         </Grid>
                                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
-                                            <Button
-                                                variant="contained"
+                                            <Link
+                                                href="#"
+                                                underline="none"
                                                 sx={{
-                                                    borderRadius: '100px',
-                                                    border: '0px',
-                                                    height: '34px',
-                                                    fontSize: '18px',
-                                                    fontWeight: '600',
-                                                    color: '#FF4C9D',
                                                     backgroundColor: '#310241',
-                                                    width: '80%'
+                                                    borderRadius: '100px',
+                                                    color: '#FF4C9D',
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '600',
+                                                    fontSize: '13px',
+                                                    lineHeight: '16px',
+                                                    padding: '9px 12px',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    width: '150px'
                                                 }}
-                                                startIcon={<FileDownloadOutlinedIcon />}
                                             >
+                                                <FileDownloadOutlinedIcon />
                                                 dummylink.com
-                                            </Button>
+                                            </Link>
                                         </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
                         </CardContent>
                     </MainCard>
-                    <Grid container spacing={gridSpacing} sx={{ marginBottom: '40px' }}>
-                        <Grid item xs={12} lg={4} md={12} sm={12}>
+                    <Grid container spacing={gridSpacing}>
+                        <Grid item xs={12} lg={4} md={12} sm={12} sx={{ marginBottom: '40px' }}>
                             <InfoCard lineColor="#FF4D9D" label="Users" value="105" chartData={UsersData}></InfoCard>
                         </Grid>
-                        <Grid item xs={12} lg={4} md={12} sm={12}>
+                        <Grid item xs={12} lg={4} md={12} sm={12} sx={{ marginBottom: '40px' }}>
                             <InfoCard lineColor="#43CC83" label="Winners" value="05" chartData={WinnersData}></InfoCard>
                         </Grid>
-                        <Grid item xs={12} lg={4} md={12} sm={12}>
+                        <Grid item xs={12} lg={4} md={12} sm={12} sx={{ marginBottom: '40px' }}>
                             <InfoCard lineColor="#FFC857" label="Completion" value="60%" chartData={CompletionData}></InfoCard>
                         </Grid>
                     </Grid>
-                    <MainCard content={false} sx={{ paddingTop: '40px' }}>
-                        <Grid container spacing={gridSpacing}>
+                    <MainCard content={false} sx={{ padding: `${matchesSM ? '10px' : '30px 40px'}` }}>
+                        <Grid container spacing={gridSpacing} sx={{ marginBottom: '25px' }}>
                             <Grid item xs={12}>
-                                <Grid container alignContent="center" justifyContent="space-between">
-                                    <Grid item sx={{ paddingLeft: '40px' }} xs={10}>
-                                        <Typography variant="h1" color="white">
-                                            List of Users
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: '700',
+                                        fontSize: '30px',
+                                        lineHeight: '36px',
+                                        color: '#FFFFFF'
+                                    }}
+                                >
+                                    List of Users
+                                </Typography>
                             </Grid>
                         </Grid>
-                        <MainCard content={false}>
-                            <CardContent>
-                                <Grid container spacing={gridSpacing}>
-                                    <Users />
-                                </Grid>
-                            </CardContent>
-                        </MainCard>
+                        <Users />
                     </MainCard>
                 </>
             )}

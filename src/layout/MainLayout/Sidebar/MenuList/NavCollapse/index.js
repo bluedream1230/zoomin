@@ -71,12 +71,11 @@ const NavCollapse = ({ menu, level }) => {
             <ListItemButton
                 sx={{
                     borderRadius: `${customization.borderRadius}px`,
-                    mb: 0.5,
+                    mb: 5,
                     flexDirection: `${customization.isCollapse ? 'column' : 'row'}`,
                     alignItems: `${customization.isCollapse ? 'center' : 'flex-start'}`,
                     backgroundColor: level > 1 ? 'transparent !important' : 'inherit',
-                    py: level > 1 ? 1 : 1.25,
-                    pl: `${level * 24}px`
+                    pl: `${level * 40}px`
                 }}
                 // selected={selected === menu.id}
                 onClick={handleClick}
@@ -88,7 +87,7 @@ const NavCollapse = ({ menu, level }) => {
                 </ListItemIcon>
                 <ListItemText
                     primary={
-                        <Typography variant={selected === menu.id ? 'h5' : 'body1'} color="inherit" sx={{ my: 'auto' }}>
+                        <Typography variant={selected === menu.id ? 'h5' : 'body1'} color="inherit" sx={{ my: 'auto' }} fontFamily="inter">
                             {menu.title}
                         </Typography>
                     }

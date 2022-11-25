@@ -26,7 +26,7 @@ export default function componentStyleOverrides(theme) {
             styleOverrides: {
                 root: {
                     color: theme.colors?.textDark,
-                    padding: '24px'
+                    padding: '30px'
                 },
                 title: {
                     fontSize: '1.125rem'
@@ -36,14 +36,26 @@ export default function componentStyleOverrides(theme) {
         MuiCardContent: {
             styleOverrides: {
                 root: {
-                    padding: '24px'
+                    padding: '30px'
                 }
             }
         },
         MuiCardActions: {
             styleOverrides: {
                 root: {
-                    padding: '24px'
+                    padding: '30px'
+                }
+            }
+        },
+        MuiGrid: {
+            styleOverrides: {
+                root: {
+                    padding: '0px',
+                    margin: '0px',
+                    '& .MuiGrid-item': {
+                        padding: '0px',
+                        paddingRight: '20px'
+                    }
                 }
             }
         },
@@ -51,25 +63,32 @@ export default function componentStyleOverrides(theme) {
             styleOverrides: {
                 root: {
                     color: '#B9B9B9',
-                    paddingTop: '10px',
-                    paddingBottom: '10px',
                     '& .MuiListItemIcon-root': {
-                        color: '#B9B9B9'
+                        '& svg:hover': {
+                            stroke: '#04B4DD',
+                            fill: '#04B4DD'
+                        }
                     },
                     '&.Mui-selected': {
                         color: theme.menuSelected,
-                        backgroundColor: theme.menuSelectedBack,
+                        backgroundColor: 'transparent',
                         '&:hover': {
-                            backgroundColor: theme.menuSelectedBack
+                            backgroundColor: 'transparent'
                         },
                         '& .MuiListItemIcon-root': {
-                            color: theme.menuSelected
+                            '& svg': {
+                                stroke: '#04B4DD',
+                                fill: '#04B4DD'
+                            }
                         }
                     },
                     '&:hover': {
                         color: '#04B4DD',
                         '& .MuiListItemIcon-root': {
-                            color: theme.menuSelected
+                            '& svg': {
+                                stroke: '#04B4DD',
+                                fill: '#04B4DD'
+                            }
                         }
                     }
                 }
@@ -192,11 +211,13 @@ export default function componentStyleOverrides(theme) {
                 }
             }
         },
+
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    backgroundColor: '#360068',
-                    opacity: 0.9
+                    backgroundColor: '#36006844',
+                    boxShow: '40px 7px 132px rgba(0,0,0,0.37px)',
+                    borderRadus: '20px'
                 }
             }
         },
@@ -210,8 +231,16 @@ export default function componentStyleOverrides(theme) {
         MuiPickersCalendarHeader: {
             styleOverrides: {
                 root: {
+                    background: '#EC3E50',
                     flexDirection: 'row-reverse',
                     color: 'white',
+                    marginTop: 0,
+                    marginBottom: 0,
+                    paddingTop: '16px',
+                    paddingBottom: '18px',
+                    paddingLeft: '24px',
+                    paddingRight: '12px',
+                    maxHeight: '50px',
                     '& .MuiPickersArrowSwitcher-root': {
                         '& .MuiIconButton-edgeStart': {
                             position: 'absolute',
@@ -224,6 +253,12 @@ export default function componentStyleOverrides(theme) {
                         '& .css-xb7uwb-MuiPickersArrowSwitcher-spacer': {
                             width: '45px'
                         }
+                    },
+                    '& .MuiPickersCalendarHeader-labelContainer': {
+                        '& .MuiPickersFadeTransitionGroup-root': {
+                            border: 'none !important',
+                            background: 'none !important'
+                        }
                     }
                 }
             }
@@ -231,9 +266,50 @@ export default function componentStyleOverrides(theme) {
         MuiPickersPopper: {
             styleOverrides: {
                 root: {
-                    maxWidth: '650px',
+                    maxWidth: '320px',
                     width: '100%',
-                    transform: 'translate(1130px, 340px) !important'
+                    background: 'linear-gradient(158.72deg, rgba(0, 0, 0, 0.4) 3.01%, rgba(255, 255, 255, 0) 103.3%)',
+                    backdropFilter: 'blur(42px)',
+                    borderRadius: '23px',
+                    overflow: 'hidden'
+                }
+            }
+        },
+        MuiPickersFadeTransitionGroup: {
+            styleOverrides: {
+                root: {
+                    '& .MuiDayPicker-header .MuiDayPicker-weekDayLabel:first-child': {
+                        color: '#EC3E50'
+                    },
+                    '& .MuiDayPicker-header .MuiDayPicker-weekDayLabel': {
+                        color: '#FFFFFF',
+                        fontSize: '15px',
+                        fontWeight: '500'
+                    },
+                    '& .MuiDayPicker-header': {
+                        borderBottom: '0.5px solid #FFFFFF',
+                        marginBottom: '20px'
+                    },
+                    '& .MuiDayPicker-weekContainer > button:first-child': {
+                        color: '#EC3E50'
+                    },
+                    '& .MuiDayPicker-weekContainer > button': {
+                        backgroundColor: 'transparent',
+                        color: '#FFF',
+                        fontSize: '15px',
+                        fontWeight: '500'
+                    },
+                    '& .MuiDayPicker-weekContainer > button:hover': {
+                        border: '1px solid #04B4DD'
+                    },
+                    '& .MuiDayPicker-weekContainer > button.Mui-selected': {
+                        backgroundColor: '#EC3E50'
+                    },
+                    border: '1px solid #04B4DD',
+                    borderBottomLeftRadius: '23px',
+                    borderBottomRightRadius: '23px',
+                    borderTop: '0px',
+                    background: 'linear-gradient(158.72deg, rgba(0, 0, 0, 0.4) 3.01%, rgba(255, 255, 255, 0) 103.3%)'
                 }
             }
         }

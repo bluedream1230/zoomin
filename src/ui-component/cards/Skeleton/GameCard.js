@@ -55,7 +55,7 @@ const useStyles = makeStyles({
      * same values used in Material-Ui Card Demos
      */
     card: {
-        maxWidth: 345
+        maxWidth: 450
     },
 
     /**
@@ -94,32 +94,52 @@ export default function ImgMediaCard(props) {
     };
 
     return (
-        <Box onClick={handleClick} sx={{ width: '360px', paddingLeft: '50px' }} component={LaunchSummaryView} to="/launch/summary/index">
-            <Grid container direction="column">
-                <Grid item>
-                    <FiCard className={classes.card} sx={{ height: '248px', cursor: 'pointer' }}>
-                        <Checkbox
-                            checked={selected}
-                            icon={<PanoramaFishEyeRounded sx={{ color: 'white' }} />}
-                            checkedIcon={<CheckCircleRounded sx={{ color: '#02DF6A' }} />}
-                            sx={{ zIndex: 10, color: 'white', position: 'absolute', top: '0px', right: '0px' }}
-                        />
-                        <FiCardMedia media="picture" alt="Contemplative Reptile" image={props.card_image} title="Contemplative Reptile" />
-                        <FiCardActions className={classes.fiCardContent}>
-                            <Button
-                                size="small"
-                                color="inherit"
-                                variant="none"
-                                sx={{ fontSize: '20px', padding: '0px' }}
-                                onClick={handlePlay}
-                            >
-                                Play Now
-                            </Button>
-                            <SvgIcon component={East} />
-                        </FiCardActions>
-                    </FiCard>
-                </Grid>
-            </Grid>
-        </Box>
+        <FiCard
+            onClick={handleClick}
+            className={classes.card}
+            sx={{
+                height: '280px',
+                cursor: 'pointer',
+                '& .MuiCardMedia-root:hover': {
+                    border: '1px solid #FF0676'
+                }
+            }}
+        >
+            <Checkbox
+                checked={selected}
+                icon={<PanoramaFishEyeRounded sx={{ color: 'white' }} />}
+                checkedIcon={<CheckCircleRounded sx={{ color: '#02DF6A' }} />}
+                sx={{ zIndex: 10, color: 'white', position: 'absolute', top: '0px', right: '0px' }}
+            />
+            <FiCardMedia
+                media="picture"
+                alt="Contemplative Reptile"
+                image={props.card_image}
+                title="Contemplative Reptile"
+                sx={{
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover',
+                    borderRadius: '20px',
+                    position: 'relative',
+                    objectFit: 'cover',
+                    transition: '0.3s',
+                    display: 'inline-block'
+                }}
+            />
+            <FiCardActions className={classes.fiCardContent}>
+                <Button
+                    component={LaunchSummaryView}
+                    to="/launch/summary/index"
+                    size="small"
+                    color="inherit"
+                    variant="none"
+                    sx={{ fontSize: '20px', padding: '0px' }}
+                    onClick={handlePlay}
+                >
+                    Play Now
+                </Button>
+                <SvgIcon component={East} />
+            </FiCardActions>
+        </FiCard>
     );
 }

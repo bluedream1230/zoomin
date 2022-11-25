@@ -11,13 +11,7 @@ const Dashboard = () => {
         setLoading(false);
     }, []);
     console.log('errr');
-    return (
-        <Grid container spacing={gridSpacing}>
-            <Grid item xs={12}>
-                <Campaigns></Campaigns>
-            </Grid>
-        </Grid>
-    );
+    return <Campaigns sx={{ backgroundColor: '#36006844', boxShadow: '40px 7px 132px rgb(0,0,0,0.7)', borderRadius: '20px' }} />;
 };
 
 export default Dashboard;

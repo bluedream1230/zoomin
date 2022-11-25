@@ -80,7 +80,6 @@ export default function themeTypography(theme) {
                 padding: '20px 14px 20px !important',
                 backgroundColor: 'transparent !important',
                 color: '#FFFFFF',
-                border: '1,5px solid #FFFFFF',
                 borderRadius: '19px',
                 fontFamily: 'Inter',
                 fontStyle: 'normal',
@@ -110,12 +109,20 @@ export default function themeTypography(theme) {
             },
             //Autocomplete combox
             '& > div > div': {
+                height: '68px',
                 backgroundColor: 'transparent !important',
                 color: '#FFFFFF'
             },
             '& > div > div > input': {
+                padding: '14px 14px 14px !important',
                 backgroundColor: 'transparent !important',
-                color: '#FFFFFF'
+                color: '#FFFFFF',
+                borderRadius: '19px',
+                fontFamily: 'Inter',
+                fontStyle: 'normal',
+                fontWeight: '400',
+                fontSize: '20px',
+                lineHeight: '39px'
             },
             '& > div > label': {
                 top: -5,
@@ -129,8 +136,9 @@ export default function themeTypography(theme) {
         mainContent: {
             backgroundColor: theme.background,
             width: '100%',
+            minHeight: '100vh',
             flexGrow: 1,
-            padding: '70px',
+            padding: '55px 55px 0px 55px',
             borderRadius: `${theme?.customization?.borderRadius}px`
         },
         menuCaption: {

@@ -71,16 +71,25 @@ const SelectGamePage = () => {
         <>
             <Grid container spacing={5}>
                 <Grid item xs={12}>
-                    <Grid item xs={12} style={{ paddingRight: '24px', paddingLeft: '44px' }}>
-                        <Grid item sx={{ paddingBottom: '45px' }}>
-                            <Typography variant="h1" color="white">
+                    <Grid item xs={12}>
+                        <Grid item sx={{ marginBottom: '45px' }}>
+                            <Typography
+                                sx={{
+                                    fontFamily: 'Inter',
+                                    fontStyle: 'normal',
+                                    fontWeight: '700',
+                                    fontSize: '30px',
+                                    lineHeight: '36px',
+                                    color: '#FFFFFF'
+                                }}
+                            >
                                 Select Games
                             </Typography>
                         </Grid>
-                        <Grid container spacing={5}>
+                        <Grid container>
                             {tempcard.map((item, index) => {
                                 return (
-                                    <Grid item lg={3} md={6} sm={6} xs={12}>
+                                    <Grid item lg={4} md={6} sm={6} xs={12} sx={{ marginBottom: '25px' }}>
                                         <ImgMediaCard
                                             card_name={item.name}
                                             card_image={item.icon}

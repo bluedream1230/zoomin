@@ -16,7 +16,7 @@ const Dashboard = () => {
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
                 <LineChart></LineChart>
-                <Grid style={{ height: '20px' }}></Grid>
+                <Grid style={{ height: '35px' }}></Grid>
                 <Campaigns></Campaigns>
             </Grid>
         </Grid>

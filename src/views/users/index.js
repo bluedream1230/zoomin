@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
-import { Button, CardContent, Grid, Typography } from '@mui/material';
+import { Button, CardContent, Grid, Typography, useMediaQuery } from '@mui/material';
 
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
@@ -11,7 +11,7 @@ import Users from 'ui-component/Users';
 
 const UserList = ({ isLoading }) => {
     const theme = useTheme();
-
+    const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
     return (
         <>
             {isLoading ? (
@@ -68,13 +68,10 @@ const UserList = ({ isLoading }) => {
                             </Grid>
                         </CardContent>
                     </MainCard>
-
-                    <MainCard content={false}>
-                        <CardContent>
-                            <Grid container spacing={gridSpacing}>
-                                <Users />
-                            </Grid>
-                        </CardContent>
+                    <MainCard content={false} sx={{ padding: `${matchesSM ? '10px' : '25px 45px'}` }}>
+                        <Grid container spacing={gridSpacing}>
+                            <Users />
+                        </Grid>
                     </MainCard>
                 </>
             )}

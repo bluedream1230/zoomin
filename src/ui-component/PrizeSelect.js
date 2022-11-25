@@ -10,7 +10,9 @@ export default function PrizeSelect() {
             disablePortal
             id="combo-box-demo"
             options={top100Films}
-            sx={{ ...theme.typography.customInput }}
+            sx={{
+                ...theme.typography.customInput
+            }}
             renderInput={(params) => <TextField {...params} label="Select Price" />}
         />
     );

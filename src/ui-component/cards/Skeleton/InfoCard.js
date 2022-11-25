@@ -29,35 +29,44 @@ const InfoCard = (props) => {
             }
         };
         console.log(newSupportChart.colors);
-        ApexCharts.exec(`support-chart`, 'updateOptions', newSupportChart);
+        ApexCharts.exec(props.chartData.options.chart.id, 'updateOptions', newSupportChart);
     }, [navType, lineColor]);
 
     return (
-        <Card sx={{ bgcolor: '#360068' }}>
-            <Grid container sx={{ p: 2, pb: 0, color: '#fff' }}>
-                <Grid item xs={12}>
+        <Card sx={{ bgcolor: '#36006844', boxShadow: '40px 7px 132px rgba(0,0,0,0.7)', borderRadius: '20px' }}>
+            <Grid container sx={{ padding: '20px', paddingBottom: '0px', color: '#fff' }}>
+                <Grid item xs={12} sx={{ paddingRight: '0px !important' }}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
-                            <Typography variant="subtitle1" sx={{ color: '#FFFFFF', fontSize: '55px' }}>
+                            <Typography
+                                sx={{
+                                    color: '#FFFFFF',
+                                    fontSize: '55px',
+                                    fontFamily: 'Inter',
+                                    fontStyle: 'normal',
+                                    fontWeight: '700',
+                                    lineHeight: '66px'
+                                }}
+                            >
                                 {props.value}
                             </Typography>
                         </Grid>
-                        <Grid item>
-                            <Button
-                                variant="contained"
+                        <Grid item sx={{ paddingRight: '0px !important' }}>
+                            <Typography
                                 sx={{
-                                    borderRadius: '50px',
-                                    border: '0px',
-                                    height: '45px',
-                                    fontSize: '20px',
+                                    fontFamily: 'Inter',
+                                    fontStyle: 'normal',
                                     fontWeight: '700',
+                                    fontSize: '20px',
+                                    lineHeight: '24px',
                                     color: lineColor,
                                     backgroundColor: '#310241',
-                                    width: '80%'
+                                    borderRadius: '50px',
+                                    padding: '10px 17px'
                                 }}
                             >
                                 {props.label}
-                            </Button>
+                            </Typography>
                         </Grid>
                     </Grid>
                 </Grid>

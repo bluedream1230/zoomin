@@ -68,7 +68,16 @@ const LineChart = () => {
                     <Grid item xs={12}>
                         <Grid container alignContent="center" justifyContent="space-between">
                             <Grid item>
-                                <Typography variant="h1" color="white">
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: '700',
+                                        fontSize: '30px',
+                                        lineHeight: '36px',
+                                        color: '#FFFFFF'
+                                    }}
+                                >
                                     User supplied data
                                 </Typography>
                             </Grid>

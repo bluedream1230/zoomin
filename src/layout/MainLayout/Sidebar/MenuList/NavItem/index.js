@@ -74,12 +74,11 @@ const NavItem = ({ item, level }) => {
             disabled={item.disabled}
             sx={{
                 borderRadius: `${customization.borderRadius}px`,
-                mb: 0.5,
+                mb: 5,
                 flexDirection: `${customization.isCollapse && level == 1 ? 'column' : 'row'}`,
                 alignItems: `${customization.isCollapse ? 'center' : 'flex-start'}`,
                 backgroundColor: level > 1 ? 'transparent !important' : 'inherit',
-                py: level > 1 ? 1 : 1.25,
-                pl: `${customization.isCollapse && level !== 1 ? '0px' : `${level * 24}px`}`
+                pl: `${customization.isCollapse && level !== 1 ? '0px' : `${level * 40}px`}`
             }}
             selected={customization.isOpen.findIndex((id) => id === item.id) > -1}
             onClick={() => itemHandler(item.id)}
@@ -91,7 +90,11 @@ const NavItem = ({ item, level }) => {
             </ListItemIcon>
             <ListItemText
                 primary={
-                    <Typography variant={customization.isOpen.findIndex((id) => id === item.id) > -1 ? 'h5' : 'body1'} color="inherit">
+                    <Typography
+                        variant={customization.isOpen.findIndex((id) => id === item.id) > -1 ? 'h5' : 'body1'}
+                        fontFamily="inter"
+                        color="inherit"
+                    >
                         {item.title}
                     </Typography>
                 }

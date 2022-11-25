@@ -12,7 +12,6 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import { appDrawerWidth } from 'store/constant';
 import { SET_MENU } from 'store/actions';
-import './scrollbar.css';
 
 //backgroundImg imports
 import BackgroundImg from '../../assets/images/content-colomn-img.png';
@@ -28,26 +27,16 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
             duration: theme.transitions.duration.leavingScreen
         }),
         [theme.breakpoints.down('lg')]: {
-            marginLeft: '0px',
-            width: `calc(100% - ${appDrawerWidth}px)`,
-            padding: '70px'
+            width: `calc(100% - ${appDrawerWidth}px)`
         },
         [theme.breakpoints.down('md')]: {
-            marginLeft: '20px',
-            width: `calc(100% - ${appDrawerWidth}px)`,
-            padding: '70px'
+            width: `calc(100% - ${appDrawerWidth}px)`
         },
         [theme.breakpoints.down('sm')]: {
-            marginLeft: '10px',
-            width: `calc(100% - ${appDrawerWidth}px)`,
-            padding: '70px',
-            marginRight: '10px'
+            width: `calc(100% - ${appDrawerWidth}px)`
         },
         [theme.breakpoints.up('lg')]: {
-            marginLeft: -(appDrawerWidth - 20),
-            width: `calc(100% - ${appDrawerWidth}px)`,
-            padding: '70px',
-            marginRight: '10px'
+            width: `calc(100% - ${appDrawerWidth}px)`
         }
     }),
     ...(open && {
@@ -60,12 +49,10 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
         borderBottomRightRadius: 0,
         width: `calc(100% - ${appDrawerWidth}px)`,
         [theme.breakpoints.down('md')]: {
-            marginLeft: '20px',
-            padding: '70px'
+            marginLeft: '20px'
         },
         [theme.breakpoints.down('sm')]: {
-            marginLeft: '10px',
-            padding: '70px'
+            marginLeft: '10px'
         }
     })
 }));
@@ -73,8 +60,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 
 const MainLayout = () => {
     const theme = useTheme();
-    const matchDownLg = useMediaQuery(theme.breakpoints.down('lg'));
-    const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
+    const matchDownMd = useMediaQuery(theme.breakpoints.down('lg'));
+    const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
     // Handle left drawer
     const leftDrawerOpened = useSelector((state) => state.customization.opened);
     const dispatch = useDispatch();
@@ -83,45 +70,49 @@ const MainLayout = () => {
     };
 
     useEffect(() => {
-        dispatch({ type: SET_MENU, opened: !matchDownLg });
+        dispatch({ type: SET_MENU, opened: !matchDownMd });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [matchDownLg]);
+    }, [matchDownMd]);
 
     return (
-        <div style={{ height: '100px' }}>
+        <Box sx={{ display: 'flex' }}>
             <CssBaseline />
+            {/* header */}
             <AppBar
+                position="fixed"
                 sx={{
-                    position: 'relative',
-                    height: '100px',
+                    height: `${matchDownSM ? '50px' : '100px'}`,
                     backgroundColor: '#36006844',
                     borderBottom: '2px solid #821EF044',
                     paddingLeft: '42px',
-                    paddingRight: '51px'
+                    paddingRight: '51px',
+                    backdropFilter: 'blur(42px)'
                 }}
             >
-                <Toolbar sx={{ padding: '20px 0px 17px 0px !important' }}>
+                <Toolbar sx={{ paddingTop: '20px' }}>
                     <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
                 </Toolbar>
             </AppBar>
-            <Box sx={{ display: 'flex' }}>
-                <Sidebar drawerOpen={leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
-                <Main
-                    theme={theme}
-                    open={leftDrawerOpened}
-                    sx={{
-                        overflowY: 'scroll',
-                        scrollbarColor: 'trasparent',
-                        backgroundImage: `url(${BackgroundImg})`,
-                        height: 'calc(100vh - 100px)',
-                        borderRadius: '0px'
-                    }}
-                    className="scrollbar-hide"
-                >
-                    {/* <Outlet /> */}
-                </Main>
-            </Box>
-        </div>
+
+            {/* drawer */}
+            <Sidebar drawerOpen={leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
+
+            {/* main content */}
+            <Main
+                theme={theme}
+                open={leftDrawerOpened}
+                sx={{
+                    position: 'relative',
+                    backgroundImage: `url(${BackgroundImg})`,
+                    top: `${matchDownSM ? '50px' : '100px'}`,
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover',
+                    padding: `${matchDownSM ? '10px 5px 0px 5px !important' : '55px 55px 0px 55px'}`
+                }}
+            >
+                <Outlet />
+            </Main>
+        </Box>
     );
 };
 

@@ -3,9 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { CardContent, Divider, Grid, Typography, Box, Checkbox } from '@mui/material';
+import { CardContent, Divider, Grid, Typography, Box, Checkbox, useMediaQuery } from '@mui/material';
 //Tomik progress bar imports
 import { CircularProgressBar } from '@tomik23/react-circular-progress-bar';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
@@ -61,49 +62,136 @@ const UserListData = [
 
 const Users = ({ isLoading }) => {
     const theme = useTheme();
-
+    const matchesLG = useMediaQuery(theme.breakpoints.down('lg'));
     const [selected, setSelected] = React.useState(true);
 
     const listTable = UserListData.map((item, index) => {
         return (
-            <Grid item xs={12} key={index} style={{ paddingRight: '24px', paddingLeft: '44px' }}>
+            <Grid item xs={12} key={index} sx={{ minWidth: '980px' }}>
                 <Grid container direction="column">
                     <Grid item>
                         <Grid container alignItems="center" justifyContent="space-between">
-                            <Grid item lg={3} xs={12} md={12} sm={12}>
-                                <Typography variant="subtitle1" color="inherit">
+                            <Grid item lg={3} xs={3} md={2} sm={2}>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '500'}`,
+                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '15px'
+                                    }}
+                                >
                                     Name
                                 </Typography>
-                                <Typography variant="subtitle1" color="#FFFFFF" fontWeight={'600'} fontSize="20px" alignItems="left">
+                                <Typography
+                                    color="#FFFFFF"
+                                    alignItems="left"
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '600'}`,
+                                        fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                        lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                    }}
+                                >
                                     {item.Name}
                                 </Typography>
                             </Grid>
-                            <Grid item lg={2} xs={12} md={12} sm={12}>
-                                <Typography variant="subtitle1" color="inherit">
+                            <Grid item lg={2} xs={2} md={2} sm={2}>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '500'}`,
+                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '15px'
+                                    }}
+                                >
                                     Phone Number
                                 </Typography>
-                                <Typography variant="subtitle1" color="#FF4C9D" fontWeight={'600'} fontSize="20px">
+                                <Typography
+                                    color="#FF4C9D"
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '600'}`,
+                                        fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                        lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                    }}
+                                >
                                     {item.PhoneNumber}
                                 </Typography>
                             </Grid>
-                            <Grid item lg={3} xs={12} md={12} sm={12}>
-                                <Typography variant="subtitle1" color="inherit">
+                            <Grid item lg={3} xs={3} md={4} sm={4}>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '500'}`,
+                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '15px'
+                                    }}
+                                >
                                     Email Address
                                 </Typography>
-                                <Typography variant="subtitle1" color="#04B4DD" fontWeight={'600'} fontSize="20px">
+                                <Typography
+                                    color="#04B4DD"
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '600'}`,
+                                        fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                        lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                    }}
+                                >
                                     {item.EmailAddress}
                                 </Typography>
                             </Grid>
-                            <Grid item lg={2} xs={12} md={12} sm={12}>
-                                <Typography variant="subtitle1" color="inherit">
+                            <Grid item lg={2} xs={2} md={2} sm={2}>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '500'}`,
+                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '15px'
+                                    }}
+                                >
                                     Campaign
                                 </Typography>
-                                <Typography variant="subtitle1" color="#FFFFFF" fontWeight={'600'} fontSize="20px">
+                                <Typography
+                                    color="#FFFFFF"
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '600'}`,
+                                        fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                        lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                    }}
+                                >
                                     {item.Campaign}
                                 </Typography>
                             </Grid>
-                            <Grid item lg={1} xs={12} md={12} sm={12}>
-                                <Typography variant="subtitle1" color="inherit">
+                            <Grid item lg={1} xs={1} md={1} sm={1}>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '500'}`,
+                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '15px'
+                                    }}
+                                >
                                     Opt-In
                                 </Typography>
                                 <Box sx={{ height: '20px', width: '20px', cursor: 'pointer' }}>
@@ -114,7 +202,7 @@ const Users = ({ isLoading }) => {
                                     />
                                 </Box>
                             </Grid>
-                            <Grid item lg={1} xs={12} md={12} sm={12}>
+                            <Grid item lg={1} xs={1} md={1} sm={1}>
                                 <CircularProgressBar
                                     colorCircle="#39064A"
                                     linearGradient={['#04b4dd', '#ff4d9d', '#ffc857', '#4207c7']}
@@ -141,13 +229,14 @@ const Users = ({ isLoading }) => {
             {isLoading ? (
                 <SkeletonPopularCard />
             ) : (
-                <MainCard content={false}>
-                    <CardContent>
-                        <Grid container spacing={gridSpacing}>
-                            {listTable}
-                        </Grid>
-                    </CardContent>
-                </MainCard>
+                <PerfectScrollbar
+                    component="div"
+                    style={{
+                        width: '100%'
+                    }}
+                >
+                    {listTable}
+                </PerfectScrollbar>
             )}
         </>
     );

@@ -4,8 +4,7 @@ import { useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography } from '@mui/material';
-
+import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography, useMediaQuery } from '@mui/material';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
@@ -82,54 +81,151 @@ const CampaignPerformances = ({ isLoading }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
     const campaignTable = CampaignsList.map((item, index) => {
         return (
-            <Grid item xs={12} key={index} style={{ paddingRight: '24px', paddingLeft: '44px' }}>
-                <Grid container direction="column">
-                    <Grid item>
+            <Grid item xs={12} key={index}>
+                <Grid container direction="column" sx={{ marginTop: '40px', marginBottom: '40px' }}>
+                    <Grid item sx={{ height: '60px' }}>
                         <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item xs={3}>
-                                <Typography variant="subtitle1" color="inherit">
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesMD ? '300' : '500'}`,
+                                        fontSize: `${matchesMD ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesMD ? '13px' : '18px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '16px'
+                                    }}
+                                >
                                     Name
                                 </Typography>
-                                <Typography variant="subtitle1" color="#FFFFFF" fontWeight={'600'} fontSize="20px" alignItems="left">
+                                <Typography
+                                    variant="subtitle1"
+                                    color="#FFFFFF"
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesMD ? '400' : '600'}`,
+                                        fontSize: `${matchesMD ? '15px' : '20px'}`,
+                                        lineHeight: `${matchesMD ? '18px' : '24px'}`
+                                    }}
+                                    alignItems="left"
+                                >
                                     {item.Name}
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}>
-                                <Typography variant="subtitle1" color="inherit">
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesMD ? '300' : '500'}`,
+                                        fontSize: `${matchesMD ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesMD ? '13px' : '18px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '16px'
+                                    }}
+                                >
                                     Game
                                 </Typography>
-                                <Typography variant="subtitle1" color="#FF4C9D" fontWeight={'600'} fontSize="20px">
+                                <Typography
+                                    variant="subtitle1"
+                                    color="#FF4C9D"
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesMD ? '400' : '600'}`,
+                                        fontSize: `${matchesMD ? '15px' : '20px'}`,
+                                        lineHeight: `${matchesMD ? '18px' : '24px'}`
+                                    }}
+                                >
                                     {item.Game}
                                 </Typography>
                             </Grid>
                             <Grid item xs={2}>
-                                <Typography variant="subtitle1" color="inherit">
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesMD ? '300' : '500'}`,
+                                        fontSize: `${matchesMD ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesMD ? '13px' : '18px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '16px'
+                                    }}
+                                >
                                     Prize
                                 </Typography>
-                                <Typography variant="subtitle1" color="#04B4DD" fontWeight={'600'} fontSize="20px">
+                                <Typography
+                                    variant="subtitle1"
+                                    color="#04B4DD"
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesMD ? '400' : '600'}`,
+                                        fontSize: `${matchesMD ? '15px' : '20px'}`,
+                                        lineHeight: `${matchesMD ? '18px' : '24px'}`
+                                    }}
+                                >
                                     {item.Prize}
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}>
-                                <Typography variant="subtitle1" color="inherit">
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesMD ? '300' : '500'}`,
+                                        fontSize: `${matchesMD ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesMD ? '13px' : '18px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '16px'
+                                    }}
+                                >
                                     Link
                                 </Typography>
-                                <Typography variant="subtitle1" color="#FFFFFF" fontWeight={'600'} fontSize="20px">
+                                <Typography
+                                    variant="subtitle1"
+                                    color="#FFFFFF"
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesMD ? '400' : '600'}`,
+                                        fontSize: `${matchesMD ? '10px' : '20px'}`,
+                                        lineHeight: `${matchesMD ? '18px' : '24px'}`
+                                    }}
+                                >
                                     {item.Link}
                                 </Typography>
                             </Grid>
                             <Grid item xs={1}>
-                                <Typography variant="subtitle1" color="inherit">
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesMD ? '300' : '500'}`,
+                                        fontSize: `${matchesMD ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesMD ? '13px' : '18px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '16px'
+                                    }}
+                                >
                                     Status
                                 </Typography>
                                 <Typography
                                     variant="subtitle1"
                                     color={`${item.Status == 'Live' ? '#43CC83' : '#FF0000'}`}
-                                    fontWeight={'600'}
-                                    fontSize="20px"
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesMD ? '400' : '600'}`,
+                                        fontSize: `${matchesMD ? '10px' : '20px'}`,
+                                        lineHeight: `${matchesMD ? '18px' : '24px'}`
+                                    }}
                                     alignItems="left"
                                 >
                                     {item.Status}
@@ -138,7 +234,7 @@ const CampaignPerformances = ({ isLoading }) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Divider sx={{ my: 1.5 }} />
+                <Divider />
             </Grid>
         );
     });
@@ -150,7 +246,16 @@ const CampaignPerformances = ({ isLoading }) => {
             ) : (
                 <>
                     <Grid item sx={{ paddingBottom: '50px' }}>
-                        <Typography variant="h1" color="white">
+                        <Typography
+                            sx={{
+                                fontFamily: 'Inter',
+                                fontStyle: 'normal',
+                                fontWeight: '700',
+                                fontSize: '30px',
+                                lineHeight: '36px',
+                                color: '#FFFFFF'
+                            }}
+                        >
                             Your Campaigns
                         </Typography>
                     </Grid>
