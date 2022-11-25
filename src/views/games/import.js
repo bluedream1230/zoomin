@@ -115,10 +115,10 @@ const ImportGames = () => {
             <Grid
                 sx={{
                     position: 'fixed',
-                    top: `${matchDownSM ? '50px' : '100px'}`,
+                    top: '100px',
                     right: '0px',
                     width: 410,
-                    height: `${matchDownSM ? 'calc(100vh - 50px)' : 'calc(100vh - 100px)'}`,
+                    height: 'calc(100vh - 100px)',
                     backgroundColor: '#360068',
                     opacity: '0.86',
                     boxShadow: '40px 7px 132px rgba(0,0,0,0.7)',

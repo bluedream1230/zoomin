@@ -30,7 +30,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
             width: `calc(100% - ${appDrawerWidth}px)`
         },
         [theme.breakpoints.down('md')]: {
-            width: `calc(100% - ${appDrawerWidth}px)`
+            width: `calc(100% - 100px)`
         },
         [theme.breakpoints.down('sm')]: {
             width: `calc(100% - ${appDrawerWidth}px)`
@@ -85,7 +85,7 @@ const MainLayout = () => {
             <AppBar
                 position="fixed"
                 sx={{
-                    height: `${matchDownSM ? '50px' : '100px'}`,
+                    height: '100px',
                     backgroundColor: '#36006844',
                     borderBottom: '2px solid #821EF044',
                     paddingLeft: '42px',
@@ -108,7 +108,7 @@ const MainLayout = () => {
                 sx={{
                     position: 'relative',
                     backgroundImage: `url(${BackgroundImg})`,
-                    top: `${matchDownSM ? '50px' : '100px'}`,
+                    top: '100px',
                     backgroundPosition: 'center',
                     backgroundSize: 'cover',
                     padding: `${matchDownSM ? '10px 5px 0px 5px !important' : '55px 55px 0px 55px'}`
