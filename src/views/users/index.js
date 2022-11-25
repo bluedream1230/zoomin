@@ -20,15 +20,15 @@ const UserList = ({ isLoading }) => {
                 <>
                     <MainCard content={false} sx={{ marginBottom: '50px' }}>
                         <CardContent>
-                            <Grid container spacing={gridSpacing}>
-                                <Grid item xs={12}>
+                            <Grid container>
+                                <Grid item xs={12} sx={{ paddingRight: '0px !important' }}>
                                     <Grid container alignContent="center" justifyContent="space-between">
-                                        <Grid item sx={{ paddingLeft: '20px' }} xs={10}>
+                                        <Grid item sx={{ paddingLeft: '35px' }}>
                                             <Typography variant="h1" color="white">
                                                 List of Users
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={1}>
+                                        <Grid item sx={{ paddingRight: '0px !important' }}>
                                             <Button
                                                 // component={AddPrize}
                                                 // to="/prizes/manage"
@@ -39,13 +39,13 @@ const UserList = ({ isLoading }) => {
                                                     width: '100px',
                                                     height: '40px',
                                                     fontSize: '16px',
-                                                    fontWeight: '700'
+                                                    fontWeight: '700',
+                                                    marginRight: '22px'
                                                 }}
                                             >
                                                 Imports
                                             </Button>
-                                        </Grid>
-                                        <Grid item xs={1}>
+
                                             <Button
                                                 // component={AddPrize}
                                                 // to="/launch/index"
@@ -69,7 +69,7 @@ const UserList = ({ isLoading }) => {
                         </CardContent>
                     </MainCard>
                     <MainCard content={false} sx={{ padding: `${matchesSM ? '10px' : '25px 45px'}` }}>
-                        <Grid container spacing={gridSpacing}>
+                        <Grid container>
                             <Users />
                         </Grid>
                     </MainCard>

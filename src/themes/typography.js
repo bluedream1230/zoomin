@@ -138,8 +138,8 @@ export default function themeTypography(theme) {
             width: '100%',
             minHeight: '100vh',
             flexGrow: 1,
-            padding: '55px 55px 0px 55px',
-            borderRadius: `${theme?.customization?.borderRadius}px`
+            padding: '55px 55px 0px 55px'
+            // borderRadius: `${theme?.customization?.borderRadius}px`
         },
         menuCaption: {
             fontSize: '0.875rem',

@@ -67,8 +67,8 @@ const Users = ({ isLoading }) => {
 
     const listTable = UserListData.map((item, index) => {
         return (
-            <Grid item xs={12} key={index} sx={{ minWidth: '980px' }}>
-                <Grid container direction="column">
+            <Grid item xs={12} key={index} sx={{ minWidth: '980px', borderBottom: '0.5px solid #821EF088' }}>
+                <Grid container direction="column" sx={{ marginTop: '40px', marginBottom: '40px' }}>
                     <Grid item>
                         <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item lg={3} xs={3} md={2} sm={2}>
@@ -219,7 +219,6 @@ const Users = ({ isLoading }) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Divider sx={{ my: 1.5 }} />
             </Grid>
         );
     });

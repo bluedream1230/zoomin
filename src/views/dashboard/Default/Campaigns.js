@@ -58,7 +58,7 @@ const Campaigns = ({ isLoading }) => {
 
     const campaignTable = CampaignsList.map((item, index) => {
         return (
-            <Grid item xs={12} key={index} sx={{ minWidth: '980px' }}>
+            <Grid item xs={12} key={index} sx={{ minWidth: '980px', borderBottom: '0.5px solid #821EF088' }}>
                 <Grid container direction="column" sx={{ marginTop: '40px', marginBottom: '40px' }}>
                     <Grid item sx={{ height: '60px' }}>
                         <Grid container alignItems="center" justifyContent="space-between">
@@ -201,7 +201,6 @@ const Campaigns = ({ isLoading }) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Divider />
             </Grid>
         );
     });
