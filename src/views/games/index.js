@@ -3,7 +3,8 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useState } from 'react';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import ReactDom from 'react-dom';
+import ModalVideo from 'react-modal-video';
 import {
     Grid,
     Typography,
@@ -25,14 +26,7 @@ import GameDefaultCard from 'ui-component/cards/Skeleton/GameDefaultCard';
 import { gridSpacing } from 'store/constant';
 import MainCard from 'ui-component/cards/MainCard';
 
-import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
-import { ReactComponent as MyDevice } from '../../assets/images/device-icon.svg';
-import { ReactComponent as GoogleDrive } from '../../assets/images/google-drive-icon.svg';
-import { ReactComponent as DropBox } from '../../assets/images/dropbox-icon.svg';
-import { ReactComponent as BoxIcon } from '../../assets/images/box-icon-96.svg';
-import { ReactComponent as Egnyte } from '../../assets/images/egnyte.svg';
-import { ReactComponent as SharePoint } from '../../assets/images/sharepoint-icon.svg';
-import { ReactComponent as OneDrive } from '../../assets/images/one-drive-icon.svg';
+const ImportGame = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/games/import" {...props} role={undefined} />);
 
 export const TCard = withStyles({
     root: {
@@ -169,50 +163,56 @@ const ManageGame = () => {
         }
     ];
 
-    const handlePlay = () => {
-        console.log('Play now: ', props.href, props.card_name);
-        //TODO: Play game
+    const [modalOpen, setModalOpen] = useState(false);
+    const handlePreview = () => {
+        setModalOpen(!modalOpen);
     };
-    const [open, setOpen] = useState(false);
-    const handleToggle = () => {
-        setOpen(!open);
-    };
+
     return (
         <>
             <MainCard content={false} sx={{ marginBottom: '50px' }}>
                 <CardContent>
-                    <Grid container spacing={gridSpacing}>
-                        <Grid item xs={12}>
+                    <Grid container>
+                        <Grid item xs={12} sx={{ paddingRight: '0px !important' }}>
                             <Grid container alignContent="center" justifyContent="space-between">
-                                <Grid item sx={{ paddingLeft: '20px' }} lg={9} md={7} sm={7} xs={12}>
-                                    <Typography variant="h1" color="white">
+                                <Grid item sx={{ paddingLeft: '35px' }}>
+                                    <Typography
+                                        sx={{
+                                            fontFamily: 'Inter',
+                                            fontStyle: 'normal',
+                                            fontWeight: '700',
+                                            fontSize: '30px',
+                                            lineHeight: '36px',
+                                            color: '#FFFFFF'
+                                        }}
+                                    >
                                         Our Games
                                     </Typography>
                                 </Grid>
-                                <Grid item lg={1} md={2} sm={2} xs={4}>
+                                <Grid item sx={{ paddingRight: '0px !important' }}>
                                     <Button
                                         // component={AddPrize}
-                                        // to="/prizes/manage"
+                                        // to="/games/import"
                                         variant="contained"
                                         sx={{
-                                            borderRadius: '9.8',
+                                            borderRadius: '8.8px',
                                             backgroundColor: '#FF0676',
                                             width: '100px',
                                             height: '40px',
                                             fontSize: '16px',
-                                            fontWeight: '700'
+                                            fontWeight: '700',
+                                            marginRight: '22px'
                                         }}
                                     >
                                         Upload
                                     </Button>
-                                </Grid>
-                                <Grid item lg={1} md={1} sm={1} xs={4}></Grid>
-                                <Grid item lg={1} md={2} sm={2} xs={4}>
+
                                     <Button
-                                        onClick={handleToggle}
+                                        component={ImportGame}
+                                        to="/games/import"
                                         variant="outlined"
                                         sx={{
-                                            borderRadius: '9.8',
+                                            borderRadius: '8.8px',
                                             border: '1px solid #04B4DD',
                                             width: '100px',
                                             height: '40px',
@@ -231,28 +231,56 @@ const ManageGame = () => {
             </MainCard>
 
             <Grid item lg={12} md={12} sm={12} xs={12} sx={{ marginBottom: '50px' }}>
-                <TCard className={classes.card} sx={{ height: '416px', cursor: 'pointer' }}>
+                <TCard
+                    className={classes.card}
+                    sx={{
+                        height: '415px',
+                        cursor: 'pointer',
+                        '& .MuiCardMedia-root': {
+                            border: '1px solid transparent'
+                        },
+                        '& .MuiCardMedia-root:hover': {
+                            border: '1px solid #FF0676'
+                        }
+                    }}
+                >
                     <TCardMedia
                         media="picture"
                         alt="Contemplative Reptile"
-                        image={require(`../../assets/images/game-img.jpg`)}
                         title="Contemplative Reptile"
+                        sx={{
+                            backgroundPosition: 'center',
+                            backgroundSize: 'cover',
+                            borderRadius: '20px',
+                            position: 'relative',
+                            objectFit: 'cover',
+                            transition: '0.3s',
+                            display: 'inline-block'
+                        }}
+                        image={require(`../../assets/images/game-img.jpg`)}
                     />
                     <TCardActions className={classes.TCardContent}>
-                        <Button size="small" color="inherit" variant="none" sx={{ fontSize: '20px', padding: '0px' }} onClick={handlePlay}>
+                        <Button
+                            size="small"
+                            color="inherit"
+                            variant="none"
+                            sx={{ fontSize: '20px', padding: '0px' }}
+                            onClick={handlePreview}
+                        >
                             Play Now
                         </Button>
                         <SvgIcon component={East} />
                     </TCardActions>
                 </TCard>
             </Grid>
+
             <Grid container spacing={5}>
                 <Grid item xs={12}>
                     <Grid item xs={12}>
                         <Grid container spacing={5}>
                             {tempcard.map((item, index) => {
                                 return (
-                                    <Grid item lg={3} md={6} sm={6} xs={12}>
+                                    <Grid item xl={4} lg={6} md={12} sm={12} xs={12} sx={{ paddingX: '10px', marginBottom: '25px' }}>
                                         <GameDefaultCard
                                             card_name={item.name}
                                             card_image={item.icon}
@@ -267,123 +295,9 @@ const ManageGame = () => {
                 </Grid>
             </Grid>
 
-            <Drawer
-                anchor="right"
-                onClose={handleToggle}
-                open={open}
-                PaperProps={{
-                    sx: {
-                        position: 'absolute',
-                        top: '100px',
-                        right: '0px',
-                        width: 380,
-                        height: 'calc(100vh - 100px)',
-                        backgroundColor: '#360068'
-                    }
-                }}
-            >
-                <PerfectScrollbar component="div">
-                    <Grid container spacing={2} sx={{ padding: '20px' }}>
-                        <Grid item xs={11}>
-                            <Typography variant="h1" color="#FFFFFF">
-                                Lorem Ipsum
-                            </Typography>
-                            <Typography variant="h5" color="#FFFFFF" sx={{ fontWeight: '400' }}>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit at quam diam.
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={1} sx={{ paddingLeft: '0px' }} onClick={handleToggle}>
-                            <HighlightOffOutlinedIcon />
-                        </Grid>
-                    </Grid>
-                    <Grid container sx={{ padding: '20px' }}>
-                        <Grid item xs={6}>
-                            <Card sx={{ backgroundColor: 'transparent', borderColor: '1px solid #FFFFFF' }}>
-                                <CardContent>
-                                    <Avatar variant="rounded" sx={{ backgroundColor: 'transparent', width: 60, height: 60, left: 30 }}>
-                                        <MyDevice />
-                                    </Avatar>
-                                </CardContent>
-                                <CardActions sx={{ justifyContent: 'center' }}>
-                                    <Typography>My Device</Typography>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Card sx={{ backgroundColor: 'transparent', borderColor: '1px solid #FFFFFF' }}>
-                                <CardContent>
-                                    <Avatar variant="rounded" sx={{ backgroundColor: 'transparent', width: 60, height: 60, left: 30 }}>
-                                        <GoogleDrive />
-                                    </Avatar>
-                                </CardContent>
-                                <CardActions sx={{ justifyContent: 'center' }}>
-                                    <Typography>Google Drive</Typography>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Card sx={{ backgroundColor: 'transparent', borderColor: '1px solid #FFFFFF' }}>
-                                <CardContent>
-                                    <Avatar variant="rounded" sx={{ backgroundColor: 'transparent', width: 60, height: 60, left: 30 }}>
-                                        <DropBox />
-                                    </Avatar>
-                                </CardContent>
-                                <CardActions sx={{ justifyContent: 'center' }}>
-                                    <Typography>Drop Box</Typography>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Card sx={{ backgroundColor: 'transparent', borderColor: '1px solid #FFFFFF' }}>
-                                <CardContent>
-                                    <Avatar variant="rounded" sx={{ backgroundColor: 'transparent', width: 60, height: 60, left: 30 }}>
-                                        <BoxIcon />
-                                    </Avatar>
-                                </CardContent>
-                                <CardActions sx={{ justifyContent: 'center' }}>
-                                    <Typography>Box</Typography>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Card sx={{ backgroundColor: 'transparent', borderColor: '1px solid #FFFFFF' }}>
-                                <CardContent>
-                                    <Avatar variant="rounded" sx={{ backgroundColor: 'transparent', width: 60, height: 60, left: 30 }}>
-                                        <OneDrive />
-                                    </Avatar>
-                                </CardContent>
-                                <CardActions sx={{ justifyContent: 'center' }}>
-                                    <Typography>One Drive</Typography>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Card sx={{ backgroundColor: 'transparent', borderColor: '1px solid #FFFFFF' }}>
-                                <CardContent>
-                                    <Avatar variant="rounded" sx={{ backgroundColor: 'transparent', width: 60, height: 60, left: 30 }}>
-                                        <SharePoint />
-                                    </Avatar>
-                                </CardContent>
-                                <CardActions sx={{ justifyContent: 'center' }}>
-                                    <Typography>Share Point</Typography>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Card sx={{ backgroundColor: 'transparent', borderColor: '1px solid #FFFFFF' }}>
-                                <CardContent>
-                                    <Avatar variant="rounded" sx={{ backgroundColor: 'transparent', width: 60, height: 60, left: 30 }}>
-                                        <Egnyte />
-                                    </Avatar>
-                                </CardContent>
-                                <CardActions sx={{ justifyContent: 'center' }}>
-                                    <Typography>Egnyte</Typography>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                    </Grid>
-                </PerfectScrollbar>
-            </Drawer>
+            <React.Fragment>
+                <ModalVideo channel="" isOpen={modalOpen} videoId="" onClose={handlePreview} />
+            </React.Fragment>
         </>
     );
 };
