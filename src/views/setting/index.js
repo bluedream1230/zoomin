@@ -207,17 +207,95 @@ const Setting = () => {
                             />
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <Grid container>
-                            <TextField
-                                fullWidth
-                                label="Date Select TODO"
-                                margin="normal"
-                                name="date"
-                                type="text"
-                                defaultValue=""
-                                sx={{ ...theme.typography.customInput }}
-                            />
+                    <Grid
+                        item
+                        xs={12}
+                        sm={4}
+                        sx={{
+                            border: '1px solid #FFFFFF',
+                            borderRadius: '11px',
+                            paddingRight: '0px !important',
+                            maxWidth: `${matchesSM ? 'calc(100% - 20px) !important' : 'calc(33.3333% - 20px) !important'}`,
+                            margin: '8px 0px'
+                        }}
+                    >
+                        <Grid container sx={{ padding: '8px 14px 8px' }}>
+                            <Grid item xs={3} sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: '400',
+                                        fontSize: '14px',
+                                        lineHeight: '180%',
+                                        color: '#FFFFFF'
+                                    }}
+                                >
+                                    Expiration Dare
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={9} sx={{ paddingRight: '0px !important' }}>
+                                <Grid container>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            label="MM"
+                                            type="number"
+                                            sx={{
+                                                ...theme.typography.customInput,
+                                                '& > label': {
+                                                    top: '0px !important',
+                                                    left: 0,
+                                                    color: '#e0e0e0',
+                                                    '&[data-shrink="false"]': {
+                                                        top: 5
+                                                    }
+                                                },
+                                                '& > div > input': {
+                                                    padding: '10px 7px 10px !important',
+                                                    backgroundColor: 'transparent !important',
+                                                    color: '#FFFFFF',
+                                                    borderRadius: '19px',
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '400',
+                                                    fontSize: '20px',
+                                                    lineHeight: '39px'
+                                                },
+                                                margin: '0px !important'
+                                            }}
+                                        ></TextField>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            label="YY"
+                                            type="number"
+                                            sx={{
+                                                ...theme.typography.customInput,
+                                                '& > label': {
+                                                    top: '0px !important',
+                                                    left: 0,
+                                                    color: '#e0e0e0',
+                                                    '&[data-shrink="false"]': {
+                                                        top: '0px !important'
+                                                    }
+                                                },
+                                                '& > div > input': {
+                                                    padding: '10px 7px 10px !important',
+                                                    backgroundColor: 'transparent !important',
+                                                    color: '#FFFFFF',
+                                                    borderRadius: '19px',
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '400',
+                                                    fontSize: '20px',
+                                                    lineHeight: '39px'
+                                                },
+                                                margin: '0px !important'
+                                            }}
+                                        ></TextField>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>

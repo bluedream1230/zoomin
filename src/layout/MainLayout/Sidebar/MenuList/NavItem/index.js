@@ -21,7 +21,8 @@ const NavItem = ({ item, level }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const customization = useSelector((state) => state.customization);
-    const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
+    const matchesDownLG = useMediaQuery(theme.breakpoints.down('lg'));
+    const matchesDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
     const Icon = item.icon;
     const itemIcon = item?.icon ? <Icon width="20" height="20" size="1.3rem" stroke="#B9B9B9" fill="#B9B9B9" /> : <></>;
@@ -40,7 +41,7 @@ const NavItem = ({ item, level }) => {
 
     const itemHandler = (id) => {
         dispatch({ type: MENU_OPEN, id });
-        if (matchesSM) dispatch({ type: SET_MENU, opened: false });
+        if (matchesDownLG) dispatch({ type: SET_MENU, opened: false });
         let arr = new Array(7).fill(false);
         dispatch({ type: SET_SELETED, selected: arr });
     };
@@ -66,7 +67,8 @@ const NavItem = ({ item, level }) => {
                 flexDirection: `${customization.isCollapse && level == 1 ? 'column' : 'row'}`,
                 alignItems: `${customization.isCollapse ? 'center' : 'flex-start'}`,
                 backgroundColor: level > 1 ? 'transparent !important' : 'inherit',
-                pl: `${customization.isCollapse && level !== 1 ? '0px' : level !== 1 ? '60px' : `${level * 40}px`}`
+                pl: `${customization.isCollapse ? '0px' : level !== 1 ? '60px' : `${level * 40}px`}`,
+                pr: `${customization.isCollapse ? '0px' : '16px'}`
             }}
             selected={customization.isOpen.findIndex((id) => id === item.id) > -1}
             onClick={() => itemHandler(item.id)}
@@ -76,15 +78,17 @@ const NavItem = ({ item, level }) => {
             >
                 {itemIcon}
             </ListItemIcon>
-            <ListItemText>
-                <Typography
-                    variant={customization.isOpen.findIndex((id) => id === item.id) > -1 ? 'h5' : 'body1'}
-                    fontFamily="inter"
-                    color="inherit"
-                >
-                    {item.title}
-                </Typography>
-            </ListItemText>
+            {!matchesDownSM && (
+                <ListItemText>
+                    <Typography
+                        variant={customization.isOpen.findIndex((id) => id === item.id) > -1 ? 'h5' : 'body1'}
+                        fontFamily="inter"
+                        color="inherit"
+                    >
+                        {item.title}
+                    </Typography>
+                </ListItemText>
+            )}
             {/* {item.chip && (
                 <Chip
                     color={item.chip.color}

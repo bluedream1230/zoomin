@@ -12,6 +12,7 @@ import LogoSection from '../LogoSection';
 import ProfileSection from './ProfileSection';
 import NotificationSection from './NotificationSection';
 import { Direction } from 'tabler-icons-react';
+import { ReactComponent as HambergIcon } from '../../../assets/images/hamberg.svg';
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
@@ -21,6 +22,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
     const customization = useSelector((state) => state.customization);
     const isCollapse = useSelector((state) => state.customization.isCollapse);
     const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
+    const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
     const handleClick = () => {
         dispatch({ type: SET_COLLAPSE, isCollapse: !isCollapse });
     };
@@ -30,17 +32,23 @@ const Header = ({ handleLeftDrawerToggle }) => {
             {/* logo & toggler button */}
             <Box
                 sx={{
-                    // width: 228,
                     display: 'flex',
-                    [theme.breakpoints.down('md')]: {
-                        width: 'auto'
-                    }
+                    alignItems: 'center',
+                    marginLeft: `${matchDownSM ? '-20px' : '-30px'}`,
+                    marginRight: '30px'
                 }}
             >
-                <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
+                {!matchUpMd && <HambergIcon width="20" height="20" size="1.3rem" stroke="#B9B9B9" fill="#B9B9B9" onClick={handleClick} />}
+            </Box>
+            <Box
+                sx={{
+                    // width: 228,
+                    display: 'flex'
+                }}
+            >
+                <Box component="span">
                     <LogoSection />
                 </Box>
-                {!matchUpMd && <SvgIcon component={DehazeOutlinedIcon} onClick={handleClick} />}
             </Box>
 
             <Box sx={{ flexGrow: 1 }} />

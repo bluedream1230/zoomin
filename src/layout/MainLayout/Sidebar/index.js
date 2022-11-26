@@ -35,30 +35,32 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
                     height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 88px)'
                 }}
             >
-                <ListItemButton
-                    onClick={handleClick}
-                    sx={{
-                        width: 'auto',
-                        marginLeft: '40px',
-                        marginTop: '38px',
-                        padding: '0px',
-                        marginBottom: '20px',
-                        paddingRight: '20px',
-                        flexDirection: `${customization.isCollapse ? 'column' : 'row'}`,
-                        alignItems: `${customization.isCollapse ? 'center' : 'flex-start'}`
-                    }}
-                >
-                    <ListItemIcon
+                {matchUpMd && (
+                    <ListItemButton
+                        onClick={handleClick}
                         sx={{
-                            my: 'auto',
-                            justifyContent: `${customization.isCollapse ? 'center' : 'left'}`
+                            width: 'auto',
+                            marginLeft: `${customization.isCollapse ? '0px' : '40px'}`,
+                            marginTop: '38px',
+                            padding: '0px',
+                            marginBottom: '20px',
+                            paddingRight: `${customization.isCollapse ? '0px' : '40px'}`,
+                            flexDirection: `${customization.isCollapse ? 'column' : 'row'}`,
+                            alignItems: `${customization.isCollapse ? 'center' : 'flex-start'}`
                         }}
                     >
-                        <HambergIcon width="20" height="20" size="1.3rem" stroke="#B9B9B9" fill="#B9B9B9" />
-                    </ListItemIcon>
-                </ListItemButton>
+                        <ListItemIcon
+                            sx={{
+                                my: 'auto',
+                                justifyContent: `${customization.isCollapse ? 'center' : 'left'}`
+                            }}
+                        >
+                            <HambergIcon width="20" height="20" size="1.3rem" stroke="#B9B9B9" fill="#B9B9B9" />
+                        </ListItemIcon>
+                    </ListItemButton>
+                )}
                 <MenuList />
-                <Divider sx={{ opacity: 0.3, padding: '20px 0px', margin: '0px 40px' }} />
+                {!customization.isCollapse && <Divider sx={{ opacity: 0.3, padding: '20px 0px', margin: '0px 40px' }} />}
                 <LogoutComponent />
             </PerfectScrollbar>
         </BrowserView>
@@ -71,7 +73,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
             component="nav"
             sx={{
                 flexShrink: { md: 0 },
-                width: matchUpMd ? (!isCollapse ? '320px' : '140px') : 'auto'
+                width: !isCollapse ? (matchUpMd ? '320px' : 'auto') : '100px'
             }}
             aria-label="mailbox folders"
         >
@@ -83,7 +85,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
                 onClose={drawerToggle}
                 sx={{
                     '& .MuiDrawer-paper': {
-                        width: !isCollapse ? '320px' : '140px',
+                        width: !isCollapse ? '320px' : '100px',
                         backgroundColor: '#36006844',
                         boxShadow: '40px 7px 132px rgba(0,0,0,0.7)',
                         borderRadius: '0px',
@@ -94,7 +96,11 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
                             left: '0px',
                             transform: 'none !important',
                             visibility: 'visible !important'
-                        }
+                        },
+                        transform: isCollapse ? 'none !important' : 'translateX(-100px)',
+                        visibility: isCollapse ? 'visible !important' : 'hidden',
+                        top: isCollapse ? '100px' : '0',
+                        left: isCollapse ? '0px' : '0px'
                     }
                 }}
                 ModalProps={{ keepMounted: true }}

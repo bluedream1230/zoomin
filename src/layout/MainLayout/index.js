@@ -30,7 +30,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
             width: `calc(100% - ${appDrawerWidth}px)`
         },
         [theme.breakpoints.down('md')]: {
-            width: `calc(100% - 100px)`
+            width: `calc(100% - ${appDrawerWidth}px)`
         },
         [theme.breakpoints.down('sm')]: {
             width: `calc(100% - ${appDrawerWidth}px)`

@@ -250,7 +250,7 @@ const PrizeList = ({ isLoading }) => {
                                                 backgroundColor: '#FF0676',
                                                 width: '120px',
                                                 height: '40px',
-                                                fontSize: '18px',
+                                                fontSize: '16px',
                                                 fontWeight: '700'
                                             }}
                                         >

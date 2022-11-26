@@ -6,7 +6,18 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography, Popover, Popper, Fade } from '@mui/material';
+import {
+    Collapse,
+    List,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Typography,
+    Popover,
+    Popper,
+    Fade,
+    useMediaQuery
+} from '@mui/material';
 
 // project imports
 import NavItem from '../NavItem';
@@ -25,6 +36,7 @@ const NavCollapse = ({ index, menu, level }) => {
     const customization = useSelector((state) => state.customization);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [selected, setSelected] = useState(customization);
+    const matchesDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         console.log(customization);
@@ -85,7 +97,8 @@ const NavCollapse = ({ index, menu, level }) => {
                     flexDirection: `${customization.isCollapse ? 'column' : 'row'}`,
                     alignItems: `${customization.isCollapse ? 'center' : 'flex-start'}`,
                     backgroundColor: level > 1 ? 'transparent !important' : 'inherit',
-                    pl: `${level * 40}px`
+                    pl: `${customization.isCollapse ? '0px' : `${level * 40}px`}`,
+                    pr: `${customization.isCollapse ? '0px' : '16px'}`
                 }}
                 // selected={selected === menu.id}
                 onClick={handleClick}
@@ -95,20 +108,27 @@ const NavCollapse = ({ index, menu, level }) => {
                 >
                     {menuIcon}
                 </ListItemIcon>
-                <ListItemText
-                    primary={
-                        <Typography variant={selected === menu.id ? 'h5' : 'body1'} color="inherit" sx={{ my: 'auto' }} fontFamily="inter">
-                            {menu.title}
-                        </Typography>
-                    }
-                    secondary={
-                        menu.caption && (
-                            <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
-                                {menu.caption}
+                {!matchesDownSM && (
+                    <ListItemText
+                        primary={
+                            <Typography
+                                variant={selected === menu.id ? 'h5' : 'body1'}
+                                color="inherit"
+                                sx={{ my: 'auto' }}
+                                fontFamily="inter"
+                            >
+                                {menu.title}
                             </Typography>
-                        )
-                    }
-                />
+                        }
+                        secondary={
+                            menu.caption && (
+                                <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
+                                    {menu.caption}
+                                </Typography>
+                            )
+                        }
+                    />
+                )}
                 {customization.isCollapse ? (
                     <></>
                 ) : (customization && customization?.selected && customization.selected[index]) || false ? (
