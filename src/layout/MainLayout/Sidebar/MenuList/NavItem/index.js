@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
-import { MENU_OPEN, SET_MENU } from 'store/actions';
+import { MENU_OPEN, SET_MENU, SET_SELETED } from 'store/actions';
 
 // assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -41,6 +41,8 @@ const NavItem = ({ item, level }) => {
     const itemHandler = (id) => {
         dispatch({ type: MENU_OPEN, id });
         if (matchesSM) dispatch({ type: SET_MENU, opened: false });
+        let arr = new Array(7).fill(false);
+        dispatch({ type: SET_SELETED, selected: arr });
     };
 
     // active menu item on page load
