@@ -28,7 +28,7 @@ export default function ProfileMenu() {
                 R
             </Avatar>
 
-            <Popover
+            {/* <Popover
                 id="basic-menu"
                 anchorEl={anchorEl}
                 open={open}
@@ -80,7 +80,7 @@ export default function ProfileMenu() {
                     </ListItemIcon>
                     <ListItemText>Logout</ListItemText>
                 </MenuItem>
-            </Popover>
+            </Popover> */}
         </div>
     );
 }
