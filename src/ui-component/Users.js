@@ -21,7 +21,7 @@ const UserListData = [
         Name: 'Ogra Megi',
         EmailAddress: 'Dummy@gmail.com',
         Campaign: 'Lorem Ipsum',
-        Status: '77'
+        Status: '100'
     },
     {
         PhoneNumber: '(555) 555-1263',

@@ -28,7 +28,6 @@ const InfoCard = (props) => {
                 theme: 'light'
             }
         };
-        console.log(newSupportChart.colors);
         ApexCharts.exec(props.chartData.options.chart.id, 'updateOptions', newSupportChart);
     }, [navType, lineColor]);
 
