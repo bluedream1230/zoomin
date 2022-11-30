@@ -39,7 +39,6 @@ const NavCollapse = ({ index, menu, level }) => {
     const matchesDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
-        console.log(customization);
         // setSelected(customization.selected[index]);
     }, []);
 

@@ -1,5 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
@@ -25,12 +28,18 @@ import { Formik } from 'formik';
 
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
+import { login } from 'services/apis/user';
+import { SET_TOKEN } from 'store/actions';
+
+import { store } from 'store';
 
 const DashboardPage = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/dashbaord" {...props} role={undefined} />);
 const ForgotPasswordPage = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/auth/forgotpassword" {...props} role={undefined} />);
 
 const FirebaseLogin = ({ ...others }) => {
     const theme = useTheme();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const scriptedRef = useScriptRef();
     const [checked, setChecked] = useState(true);
 
@@ -41,6 +50,17 @@ const FirebaseLogin = ({ ...others }) => {
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
+    };
+
+    const state = store.getState();
+    const onLogin = async () => {
+        const data = await login({
+            email: 'test@gmail.com',
+            password: '123123'
+        });
+        const { access_token } = data;
+        dispatch({ type: SET_TOKEN, token: access_token });
+        navigate('/dashboard');
     };
 
     return (
@@ -196,8 +216,9 @@ const FirebaseLogin = ({ ...others }) => {
                         <Box sx={{ mt: 2 }}>
                             <AnimateButton>
                                 <Button
-                                    component={DashboardPage}
-                                    to="/dashboard"
+                                    // component={DashboardPage}
+                                    // to="/dashboard"
+                                    onClick={onLogin}
                                     disableElevation
                                     disabled={isSubmitting}
                                     fullWidth

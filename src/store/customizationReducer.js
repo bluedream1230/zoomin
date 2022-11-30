@@ -53,5 +53,4 @@ const customizationReducer = (state = initialState, action) => {
             return state;
     }
 };
-
 export default customizationReducer;
