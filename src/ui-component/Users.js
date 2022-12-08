@@ -206,7 +206,7 @@ const Users = ({ isLoading }) => {
                                 <CircularProgressBar
                                     colorCircle="#39064A"
                                     linearGradient={['#04b4dd', '#ff4d9d', '#ffc857', '#4207c7']}
-                                    percent={item.Status}
+                                    percent={Number(item.Status)}
                                     round
                                     strokeBottom={5}
                                     rotation={-360}

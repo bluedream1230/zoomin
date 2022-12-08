@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Grid } from '@mui/material';
 
 import { gridSpacing } from 'store/constant';
@@ -7,11 +8,9 @@ import Campaigns from './Campaigns';
 import CircleChart from './CircleChart';
 import LineChart from '../SingleReport/LineChart';
 import BarChart from './VerticalChart';
+import { GET_EVENTS, LOADING } from 'store/actions';
+
 const Dashboard = () => {
-    const [isLoading, setLoading] = useState(true);
-    useEffect(() => {
-        setLoading(false);
-    }, []);
     return (
         <>
             <Grid container marginBottom="35px" minHeight="300px">

@@ -80,7 +80,7 @@ const MainRoutes = {
                     element: <PerformaceView />
                 },
                 {
-                    path: 'information',
+                    path: 'information/:id',
                     element: <InformationView />
                 }
             ]

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -22,12 +22,16 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
+import jwt_decode from 'jwt-decode';
+import { stringify } from 'json5';
+import { updatePass } from 'services/apis/server';
 
 const LoginPage = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/auth/login" {...props} role={undefined} />);
 
 const CreatePassword = ({ ...others }) => {
     const theme = useTheme();
     const scriptedRef = useScriptRef();
+    const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => {
@@ -36,6 +40,20 @@ const CreatePassword = ({ ...others }) => {
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
+    };
+
+    const token = useParams();
+    console.log('sdfasdfa', stringify(token.token));
+    const decoded = jwt_decode(token.token);
+    console.log(decoded);
+
+    const onUpdatepassword = async (values) => {
+        const data = await updatePass({
+            email: decoded.email,
+            password: values.password
+        });
+        console.log(data);
+        navigate('/auth/login');
     };
 
     return (
@@ -65,7 +83,13 @@ const CreatePassword = ({ ...others }) => {
                 }}
                 validationSchema={Yup.object().shape({
                     password: Yup.string().max(255).required('Password is required'),
-                    confirm: Yup.string().max(255).required('Confirm is required')
+                    confirm: Yup.string()
+                        .when('password', {
+                            is: (val) => (val && val.length > 0 ? true : false),
+                            then: Yup.string().oneOf([Yup.ref('password')], 'Both password need to be the same')
+                        })
+                        .max(255)
+                        .required('Confirm is required')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
@@ -122,7 +146,7 @@ const CreatePassword = ({ ...others }) => {
                         </FormControl>
                         <FormControl
                             fullWidth
-                            error={Boolean(touched.confirm && errors.confirm)}
+                            error={Boolean(touched.confirm && errors.confirm && values.password != values.confirm)}
                             sx={{ ...theme.typography.customInput, marginBottom: '51px' }}
                         >
                             <InputLabel htmlFor="outlined-adornment-password-login">Confirm Password</InputLabel>
@@ -136,7 +160,7 @@ const CreatePassword = ({ ...others }) => {
                                 label="Password"
                                 inputProps={{}}
                             />
-                            {touched.confirm && errors.confirm && (
+                            {touched.confirm && errors.confirm && values.password != values.confirm && (
                                 <FormHelperText error id="standard-weight-helper-text-password-login">
                                     {errors.confirm}
                                 </FormHelperText>
@@ -151,14 +175,15 @@ const CreatePassword = ({ ...others }) => {
                         <Box sx={{ mt: 2 }}>
                             <AnimateButton>
                                 <Button
-                                    component={LoginPage}
-                                    to="/auth/login"
+                                    // component={LoginPage}
+                                    // to="/auth/login"
                                     disableElevation
-                                    disabled={isSubmitting}
+                                    // disabled={isSubmitting}
                                     fullWidth
                                     size="large"
                                     type="submit"
                                     variant="contained"
+                                    onClick={() => onUpdatepassword(values)}
                                     sx={{
                                         backgroundColor: '#FF0676',
                                         borderRadius: '18px',

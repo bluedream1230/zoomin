@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 /* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
@@ -32,6 +32,18 @@ import InfoCard from 'ui-component/cards/Skeleton/InfoCard';
 import QRCode from 'react-qr-code';
 //Icon imports
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import { useParams } from 'react-router';
+import { getEventInfo } from 'services/apis/server';
+import { GET_EVENT_INFO_ITEM } from 'store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+
+import PerfectScrollbar from 'react-perfect-scrollbar';
+import { ReactComponent as Square } from '../../assets/images/square.svg';
+import { ReactComponent as CheckBoxIcon } from '../../assets/images/check.svg';
+//pagination
+import Pagination from '@mui/material/Pagination';
+import { TablePagination } from '@mui/material';
+import usePagination from 'ui-component/Pagination';
 
 const UsersData = {
     type: 'area',
@@ -152,13 +164,215 @@ const CompletionData = {
 
 const CampaignInformation = ({ isLoading }) => {
     const theme = useTheme();
+    const dispatch = useDispatch();
+    const { id } = useParams();
+    const [eventInfo, setEventInfo] = useState([]);
+
+    const load = async () => {
+        const eventInfo = await getEventInfo(id);
+        dispatch({ type: GET_EVENT_INFO_ITEM, eventInfo: eventInfo });
+        setEventInfo(eventInfo);
+    };
+
+    useEffect(() => {
+        load();
+    }, []);
     const matchesLG = useMediaQuery(theme.breakpoints.down('lg'));
     const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
     const [selected, setSelected] = React.useState(true);
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+    const campaignData = useSelector((state) => state.campaign);
+    let info = [];
+    let mydate;
+    if (campaignData.eventInfo.totalData) {
+        info = campaignData.eventInfo.totalData;
+        mydate = new Date(campaignData.eventInfo.event[0].start_time);
+    }
+    let y;
+    let m;
+    let d;
+    if (mydate) {
+        y = mydate.getFullYear();
+        m = mydate.getMonth() + 1;
+        d = mydate.getDate();
+    }
+    const count = Math.ceil(info.length / rowsPerPage);
+    const _DATA = usePagination(info, rowsPerPage);
+    const handleChange = (e, p) => {
+        setPage(p);
+        _DATA.jump(p);
+    };
+
+    const listTable = _DATA.currentData().map((item, index) => {
+        return (
+            <Grid item xs={12} key={index} sx={{ minWidth: '980px', borderBottom: '0.5px solid #821EF088' }}>
+                <Grid container direction="column" sx={{ marginTop: '40px', marginBottom: '40px' }}>
+                    <Grid item>
+                        <Grid container alignItems="center" justifyContent="space-between">
+                            <Grid item lg={3} xs={3} md={2} sm={2}>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '500'}`,
+                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '15px'
+                                    }}
+                                >
+                                    Name
+                                </Typography>
+                                <Typography
+                                    color="#FFFFFF"
+                                    alignItems="left"
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '600'}`,
+                                        fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                        lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                    }}
+                                >
+                                    {item.fan.name}
+                                </Typography>
+                            </Grid>
+                            <Grid item lg={2} xs={2} md={2} sm={2}>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '500'}`,
+                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '15px'
+                                    }}
+                                >
+                                    Phone Number
+                                </Typography>
+                                <Typography
+                                    color="#FF4C9D"
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '600'}`,
+                                        fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                        lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                    }}
+                                >
+                                    {item.fan.phone}
+                                </Typography>
+                            </Grid>
+                            <Grid item lg={3} xs={3} md={4} sm={4}>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '500'}`,
+                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '15px'
+                                    }}
+                                >
+                                    Email Address
+                                </Typography>
+                                <Typography
+                                    color="#04B4DD"
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '600'}`,
+                                        fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                        lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                    }}
+                                >
+                                    {item.fan.email}
+                                </Typography>
+                            </Grid>
+                            <Grid item lg={2} xs={2} md={2} sm={2}>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '500'}`,
+                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '15px'
+                                    }}
+                                >
+                                    Campaign
+                                </Typography>
+                                <Typography
+                                    color="#FFFFFF"
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '600'}`,
+                                        fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                        lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                    }}
+                                >
+                                    {campaignData.eventInfo.event[0].name}
+                                </Typography>
+                            </Grid>
+                            <Grid item lg={1} xs={1} md={1} sm={1}>
+                                <Typography
+                                    sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: `${matchesLG ? '300' : '500'}`,
+                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                        color: '#B9B9B9',
+                                        marginBottom: '15px'
+                                    }}
+                                >
+                                    Opt-In
+                                </Typography>
+                                <Box sx={{ height: '20px', width: '20px', cursor: 'pointer' }}>
+                                    <Checkbox
+                                        icon={<Square stroke="#43CC83" />}
+                                        checkedIcon={<CheckBoxIcon stroke="#43CC83" />}
+                                        onChange={(e) => !e.target.checked}
+                                    />
+                                </Box>
+                            </Grid>
+                            <Grid item lg={1} xs={1} md={1} sm={1}>
+                                <CircularProgressBar
+                                    colorCircle="#39064A"
+                                    linearGradient={['#04b4dd', '#ff4d9d', '#ffc857', '#4207c7']}
+                                    percent={Number(item.fan.completion)}
+                                    round
+                                    strokeBottom={5}
+                                    rotation={-360}
+                                    size={100}
+                                    fontSize="20px"
+                                    fontWeight={700}
+                                    fontColor="#FFFFFF"
+                                />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        );
+    });
+
     return (
         <>
-            {isLoading ? (
+            {isLoading || eventInfo.length == 0 ? (
                 <SkeletonPopularCard />
             ) : (
                 <>
@@ -210,7 +424,7 @@ const CampaignInformation = ({ isLoading }) => {
                                                             }}
                                                             alignItems="left"
                                                         >
-                                                            Shock & Awe
+                                                            {eventInfo && eventInfo.event[0].game.name}
                                                         </Typography>
                                                     </Grid>
                                                     <Grid item xs={6} lg={3} sm={6} md={6}>
@@ -238,7 +452,7 @@ const CampaignInformation = ({ isLoading }) => {
                                                                 lineHeight: `${matchesLG ? '22px' : '42px'}`
                                                             }}
                                                         >
-                                                            8.6.2022
+                                                            {d}.{m}.{y}
                                                         </Typography>
                                                     </Grid>
                                                     <Grid item xs={6} lg={3} sm={6} md={6}>
@@ -294,7 +508,7 @@ const CampaignInformation = ({ isLoading }) => {
                                                                 lineHeight: `${matchesLG ? '22px' : '42px'}`
                                                             }}
                                                         >
-                                                            $300
+                                                            {eventInfo && eventInfo.event && eventInfo.event[0].event_coins}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -305,7 +519,13 @@ const CampaignInformation = ({ isLoading }) => {
                                 <Grid item lg={3} xs={12} md={6} sm={12}>
                                     <Grid container alignContent="center" justifyContent="space-between">
                                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', width: '150px' }}>
-                                            <QRCode value="dummylink.com" bgColor="transparent" fgColor="#FFFFFF" size={150} />
+                                            <QRCode
+                                                value={eventInfo && eventInfo.event[0].qr_code}
+                                                // value="sdfs"
+                                                bgColor="transparent"
+                                                fgColor="#FFFFFF"
+                                                size={150}
+                                            />
                                         </Grid>
                                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
                                             <Link
@@ -323,11 +543,12 @@ const CampaignInformation = ({ isLoading }) => {
                                                     padding: '9px 12px',
                                                     display: 'flex',
                                                     alignItems: 'center',
-                                                    width: '150px'
+                                                    width: '150px',
+                                                    justifyContent: 'center'
                                                 }}
                                             >
                                                 <FileDownloadOutlinedIcon />
-                                                dummylink.com
+                                                {eventInfo && eventInfo.event[0].qr_code}
                                             </Link>
                                         </Grid>
                                     </Grid>
@@ -337,17 +558,22 @@ const CampaignInformation = ({ isLoading }) => {
                     </MainCard>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12} lg={4} md={12} sm={12} sx={{ marginBottom: '40px' }}>
-                            <InfoCard lineColor="#FF4D9D" label="Users" value="105" chartData={UsersData}></InfoCard>
+                            <InfoCard lineColor="#FF4D9D" label="Users" value={eventInfo.user_num} chartData={UsersData}></InfoCard>
                         </Grid>
                         <Grid item xs={12} lg={4} md={12} sm={12} sx={{ marginBottom: '40px' }}>
-                            <InfoCard lineColor="#43CC83" label="Winners" value="05" chartData={WinnersData}></InfoCard>
+                            <InfoCard
+                                lineColor="#43CC83"
+                                label="Winners"
+                                value={eventInfo && eventInfo.win_num}
+                                chartData={WinnersData}
+                            ></InfoCard>
                         </Grid>
                         <Grid item xs={12} lg={4} md={12} sm={12} sx={{ marginBottom: '40px' }}>
                             <InfoCard lineColor="#FFC857" label="Completion" value="60%" chartData={CompletionData}></InfoCard>
                         </Grid>
                     </Grid>
                     <MainCard content={false} sx={{ padding: `${matchesSM ? '10px' : '30px 40px'}` }}>
-                        <Grid container spacing={gridSpacing} sx={{ marginBottom: '25px' }}>
+                        <Grid container spacing={gridSpacing} sx={{ marginBottom: '25px', flexDirection: 'row', flexWrap: 'nowrap' }}>
                             <Grid item xs={12}>
                                 <Typography
                                     sx={{
@@ -362,8 +588,33 @@ const CampaignInformation = ({ isLoading }) => {
                                     List of Users
                                 </Typography>
                             </Grid>
+                            <TablePagination
+                                component="div"
+                                count={info.length}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                rowsPerPage={rowsPerPage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                sx={{ display: 'flex', justifyContent: 'flex-end' }}
+                            />
                         </Grid>
-                        <Users />
+                        <PerfectScrollbar
+                            component="div"
+                            style={{
+                                width: '100%'
+                            }}
+                        >
+                            {listTable}
+                        </PerfectScrollbar>
+                        <Pagination
+                            count={count}
+                            size="large"
+                            page={page}
+                            variant="outlined"
+                            shape="rounded"
+                            onChange={handleChange}
+                            sx={{ display: 'flex', flexDirection: 'row-reverse' }}
+                        />
                     </MainCard>
                 </>
             )}

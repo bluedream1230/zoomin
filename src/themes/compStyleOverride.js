@@ -275,6 +275,27 @@ export default function componentStyleOverrides(theme) {
                 }
             }
         },
+        MuiTablePagination: {
+            styleOverrides: {
+                root: {
+                    '& > div > p': {
+                        display: 'none'
+                    },
+                    '& .MuiTablePagination-actions': {
+                        display: 'none'
+                    },
+                    '& .MuiInputBase-root': {
+                        margin: '0px',
+                        '& > div': {
+                            color: '#B9B9B9'
+                        },
+                        '& > svg': {
+                            color: '#B9B9B9'
+                        }
+                    }
+                }
+            }
+        },
         MuiPickersFadeTransitionGroup: {
             styleOverrides: {
                 root: {

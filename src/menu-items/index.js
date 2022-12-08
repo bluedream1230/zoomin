@@ -70,7 +70,7 @@ const menuItem = {
                     id: 'single-campaign',
                     title: 'Single Campaign',
                     type: 'item',
-                    url: '/campaigns/information',
+                    url: '/campaigns/information/1',
                     breadcrumbs: false
                 },
                 {
@@ -125,7 +125,7 @@ const logout = {
             id: 'logout',
             title: 'Logout',
             type: 'item',
-            url: '/auth/login',
+            url: '/auth/logout',
             icon: LogoutIcon,
             breadcrumbs: false
         }

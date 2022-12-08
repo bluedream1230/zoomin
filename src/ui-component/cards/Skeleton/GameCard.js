@@ -2,7 +2,7 @@ import * as React from 'react';
 import { CardActionArea, Box, Grid, Card, CardActions, CardContent, CardMedia, Button, Typography, SvgIcon, Checkbox } from '@mui/material';
 import { East, CheckCircleRounded, PanoramaFishEyeRounded } from '@mui/icons-material';
 import { withStyles, makeStyles } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 const LaunchSummaryView = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/launch/summary/index" {...props} role={undefined} />);
 
@@ -82,9 +82,13 @@ const useStyles = makeStyles({
 export default function ImgMediaCard(props) {
     const classes = useStyles();
     const [selected, setSelected] = React.useState(false);
-
+    const navigate = useNavigate();
     const handlePlay = () => {
-        console.log('Play now: ', props.href, props.card_name);
+        console.log('Play now: ', props.href, props.card_name, props.state.eventInfo);
+        const eventInfo = props.state.eventInfo;
+        const prizeId = props.state.prize;
+        const audienceId = props.state.audience;
+        navigate('/launch/summary/index', { state: { eventInfo, prizeId, audienceId, gameId: 1 } });
         //TODO: Play game
     };
 
@@ -132,8 +136,8 @@ export default function ImgMediaCard(props) {
             />
             <FiCardActions className={classes.fiCardContent}>
                 <Button
-                    component={LaunchSummaryView}
-                    to="/launch/summary/index"
+                    // component={LaunchSummaryView}
+                    // to="/launch/summary/index"
                     size="small"
                     color="inherit"
                     variant="none"

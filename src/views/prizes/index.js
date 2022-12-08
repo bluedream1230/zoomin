@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button, CardContent, Divider, Grid, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -9,64 +10,57 @@ import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
 
-const AddPrize = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/prizes/manage" {...props} role={undefined} />);
+import Pagination from '@mui/material/Pagination';
+import { TablePagination } from '@mui/material';
+import usePagination from 'ui-component/Pagination';
+import { getRewardInfo } from 'services/apis/server';
+import { GET_REWARDS_INFO } from 'store/actions';
+import { store } from 'store';
 
-const PrizeListData = [
-    {
-        Status: 'Live',
-        Name: 'Ogra Megi',
-        CreatedDate: '11.06.2022',
-        Campaign: 'Lorem Ipsum',
-        Winners: '2000,00'
-    },
-    {
-        Status: 'No Live',
-        Name: 'Grim Stroke',
-        CreatedDate: '11.06.2022',
-        Campaign: 'Lorem Ipsum',
-        Winners: '2000,00'
-    },
-    {
-        Status: 'Live',
-        Name: 'Jessica',
-        CreatedDate: '11.06.2022',
-        Campaign: 'Lorem Ipsum',
-        Winners: '2000,00'
-    },
-    {
-        Status: 'Live',
-        Name: 'Jessica',
-        CreatedDate: '11.06.2022',
-        Campaign: 'Lorem Ipsum',
-        Winners: '2000,00'
-    },
-    {
-        Status: 'No Live',
-        Name: 'Grim Stroke',
-        CreatedDate: '11.06.2022',
-        Campaign: 'Lorem Ipsum',
-        Winners: '2000,00'
-    },
-    {
-        Status: 'Live',
-        Name: 'Jessica',
-        CreatedDate: '11.06.2022',
-        Campaign: 'Lorem Ipsum',
-        Winners: '2000,00'
-    },
-    {
-        Status: 'No Live',
-        Name: 'Ogra Megi',
-        CreatedDate: '11.06.2022',
-        Campaign: 'Lorem Ipsum',
-        Winners: '2000,00'
-    }
-];
+const AddPrize = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/prizes/manage" {...props} role={undefined} />);
 
 const PrizeList = ({ isLoading }) => {
     const theme = useTheme();
+    const dispatch = useDispatch();
+    const state = store.getState();
     const matchesLG = useMediaQuery(theme.breakpoints.down('lg'));
-    const listTable = PrizeListData.map((item, index) => {
+    const [rewardsInfo, setRewardsInfo] = useState([]);
+
+    const load = async () => {
+        const rewardsInfo = await getRewardInfo();
+        dispatch({ type: GET_REWARDS_INFO, rewardsInfo: rewardsInfo });
+        setRewardsInfo(rewardsInfo);
+    };
+
+    React.useEffect(() => {
+        load();
+    }, []);
+
+    const allEvents = useSelector((state) => state.campaign);
+    const PrizeListData = allEvents.rewardsInfo;
+    console.log(allEvents);
+
+    const today = new Date();
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    const count = Math.ceil(PrizeListData.length / rowsPerPage);
+    const _DATA = usePagination(PrizeListData, rowsPerPage);
+    const handleChange = (e, p) => {
+        setPage(p);
+        _DATA.jump(p);
+    };
+
+    const listTable = _DATA.currentData().map((item, index) => {
         return (
             <Grid item xs={12} key={index} sx={{ borderBottom: '0.5px solid #821EF088' }}>
                 <Grid container direction="column" sx={{ marginTop: '40px', marginBottom: '40px' }}>
@@ -97,7 +91,7 @@ const PrizeList = ({ isLoading }) => {
                                     }}
                                     alignItems="left"
                                 >
-                                    {item.Name}
+                                    {item.reward.name}
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}>
@@ -124,7 +118,7 @@ const PrizeList = ({ isLoading }) => {
                                         lineHeight: `${matchesLG ? '15px' : '23px'}`
                                     }}
                                 >
-                                    {item.CreatedDate}
+                                    {item.reward.createdAt}
                                 </Typography>
                             </Grid>
                             <Grid item xs={2}>
@@ -151,7 +145,7 @@ const PrizeList = ({ isLoading }) => {
                                         lineHeight: `${matchesLG ? '15px' : '23px'}`
                                     }}
                                 >
-                                    {item.Campaign}
+                                    {item.event ? item.event.name : 'Not Launch'}
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}>
@@ -178,7 +172,7 @@ const PrizeList = ({ isLoading }) => {
                                         lineHeight: `${matchesLG ? '15px' : '23px'}`
                                     }}
                                 >
-                                    {item.Winners}
+                                    {item.users_num}
                                 </Typography>
                             </Grid>
                             <Grid item xs={1}>
@@ -195,19 +189,35 @@ const PrizeList = ({ isLoading }) => {
                                 >
                                     Status
                                 </Typography>
-                                <Typography
-                                    color={`${item.Status == 'Live' ? '#43CC83' : '#FF0000'}`}
-                                    sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: `${matchesLG ? '300' : '600'}`,
-                                        fontSize: `${matchesLG ? '12px' : '18px'}`,
-                                        lineHeight: `${matchesLG ? '15px' : '23px'}`
-                                    }}
-                                    alignItems="left"
-                                >
-                                    {item.Status}
-                                </Typography>
+                                {item.event ? (
+                                    <Typography
+                                        color={new Date(item.event.end_time).getTime() >= today.getTime() ? '#43CC83' : '#FF0000'}
+                                        sx={{
+                                            fontFamily: 'Inter',
+                                            fontStyle: 'normal',
+                                            fontWeight: `${matchesLG ? '300' : '600'}`,
+                                            fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                            lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                        }}
+                                        alignItems="left"
+                                    >
+                                        {new Date(item.event.end_time).getTime() >= today.getTime() ? 'Live' : 'No Live'}
+                                    </Typography>
+                                ) : (
+                                    <Typography
+                                        color="#FF0000"
+                                        sx={{
+                                            fontFamily: 'Inter',
+                                            fontStyle: 'normal',
+                                            fontWeight: `${matchesLG ? '300' : '600'}`,
+                                            fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                            lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                        }}
+                                        alignItems="left"
+                                    >
+                                        No Live
+                                    </Typography>
+                                )}
                             </Grid>
                         </Grid>
                     </Grid>
@@ -262,7 +272,25 @@ const PrizeList = ({ isLoading }) => {
                         </CardContent>
                     </MainCard>
                     <MainCard content={false} sx={{ padding: '10px 30px' }}>
+                        <TablePagination
+                            component="div"
+                            count={PrizeListData.length}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            rowsPerPage={rowsPerPage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            sx={{ display: 'flex', justifyContent: 'flex-end' }}
+                        />
                         {listTable}
+                        <Pagination
+                            count={count}
+                            size="large"
+                            page={page}
+                            variant="outlined"
+                            shape="rounded"
+                            onChange={handleChange}
+                            sx={{ display: 'flex', flexDirection: 'row-reverse' }}
+                        />
                     </MainCard>
                 </>
             )}

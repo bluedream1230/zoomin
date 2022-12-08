@@ -1,19 +1,29 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Stack, Typography, useMediaQuery, Box, Button } from '@mui/material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import AuthWrapper1 from '../AuthWrapper1';
 import AnimateButton from 'ui-component/extended/AnimateButton';
+import { resetPassword, sendMail } from 'services/apis/server';
 
 const ResetPasswordPage = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/auth/resetpassword" {...props} role={undefined} />);
 
 const ForgotPassword = () => {
     const theme = useTheme();
+    const navigate = useNavigate();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-
+    const { state } = useLocation();
+    console.log(state);
+    const email = state.values.email;
+    const handleNext = () => {
+        if (!email) {
+            return alert('Please Enter Your Email!');
+        }
+        navigate('/auth/resetpassword', { state: { email } });
+    };
     return (
         <AuthWrapper1>
             <PerfectScrollbar
@@ -94,8 +104,9 @@ const ForgotPassword = () => {
                                                 <Box sx={{ mt: 2 }}>
                                                     <AnimateButton>
                                                         <Button
-                                                            component={ResetPasswordPage}
-                                                            to="/auth/resetpassword"
+                                                            // component={ResetPasswordPage}
+                                                            // to="/auth/resetpassword"
+                                                            onClick={handleNext}
                                                             disableElevation
                                                             fullWidth
                                                             size="large"

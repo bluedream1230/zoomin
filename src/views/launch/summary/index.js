@@ -1,13 +1,17 @@
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { Button, CardContent, Grid, Typography, Card, CardMedia, useMediaQuery } from '@mui/material';
 import { createTheme } from '@material-ui/core';
 
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 import { Edit } from 'tabler-icons-react';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { createEvent, getGame } from 'services/apis/server';
+import { GET_GAMES } from 'store/actions';
+import { values } from 'lodash';
+import { store } from 'store';
 const CampaignPerformances = React.forwardRef((props, ref) => (
     <RouterLink ref={ref} to="/campaigns/performance" {...props} role={undefined} />
 ));
@@ -15,6 +19,47 @@ const CampaignPerformances = React.forwardRef((props, ref) => (
 const CampaignEdit = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/launch/index" {...props} role={undefined} />);
 
 const CampaignSummary = () => {
+    const dispatch = useDispatch();
+    const states = store.getState();
+    const { state } = useLocation();
+    const [game, setGame] = React.useState([]);
+
+    const load = async () => {
+        const games = await getGame();
+        dispatch({ type: GET_GAMES, games: games });
+        setGame(games);
+    };
+
+    React.useEffect(() => {
+        load();
+    }, []);
+
+    const allEvents = useSelector((state) => state.campaign);
+    const PrizeListData = allEvents.rewards;
+    console.log(allEvents);
+    let prizeLabel = '';
+    PrizeListData.forEach((item) => {
+        if (item.id == state.prizeId.prize) {
+            prizeLabel = item.name;
+        }
+    });
+
+    const AudienceListData = allEvents.audiences;
+    let audienceLabel = '';
+    AudienceListData.forEach((item) => {
+        if (item.id == state.audienceId.audience) {
+            audienceLabel = item.name;
+        }
+    });
+
+    const GameListData = allEvents.games;
+    let gameLabel = '';
+    GameListData.forEach((item) => {
+        if (item.id == state.gameId) {
+            gameLabel = item.name;
+        }
+    });
+
     const theme = createTheme({
         breakpoints: {
             values: {
@@ -27,6 +72,43 @@ const CampaignSummary = () => {
         }
     });
     const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
+
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        const eventInfo = state.eventInfo;
+        const prizeId = state.prizeId;
+        const audienceId = state.audienceId;
+        navigate('/launch/index', { state: { eventInfo, prizeId, audienceId } });
+    };
+    console.log('time:', state.eventInfo.endtime.$d);
+    const [isLoading, setLoading] = React.useState(false);
+    const onCreateEvent = async () => {
+        try {
+            setLoading(true);
+            const data = await createEvent(
+                {
+                    name: state.eventInfo.selectname,
+                    location: state.eventInfo.location,
+                    start_time: state.eventInfo.launchdate.$d,
+                    end_time: state.eventInfo.endtime.$d,
+                    user_limit: state.eventInfo.userlimit,
+                    qr_code: state.eventInfo.eventcoin,
+                    user: states.auth.user
+                },
+                state.gameId,
+                state.prizeId.prize,
+                state.audienceId.audience
+            );
+            console.log('data:', data);
+            navigate('/campaigns/performance');
+            setLoading(false);
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    };
     return (
         <MainCard>
             <form>
@@ -89,7 +171,7 @@ const CampaignSummary = () => {
                                             color: '#FF0676'
                                         }}
                                     >
-                                        Steve Jobs Gaming
+                                        {state.eventInfo.selectname}
                                     </Typography>
                                 </CardContent>
                             </Grid>
@@ -124,7 +206,8 @@ const CampaignSummary = () => {
                                                 color: '#FFFFFF'
                                             }}
                                         >
-                                            09.06.2022
+                                            {state.eventInfo.launchdate.$M + 1}.{state.eventInfo.launchdate.$D}.
+                                            {state.eventInfo.launchdate.$y}
                                         </Typography>
                                     </CardContent>
                                 </Grid>
@@ -160,7 +243,7 @@ const CampaignSummary = () => {
                                                 color: '#04B4DD'
                                             }}
                                         >
-                                            100$
+                                            ${state.eventInfo.eventcoin}
                                         </Typography>
                                     </CardContent>
                                 </Grid>
@@ -201,7 +284,7 @@ const CampaignSummary = () => {
                                                     color: '#FFC857'
                                                 }}
                                             >
-                                                Lorem Ipsum Dummy
+                                                {audienceLabel}
                                             </Typography>
                                         </CardContent>
                                     </Grid>
@@ -235,7 +318,7 @@ const CampaignSummary = () => {
                                                     color: '#43CC83'
                                                 }}
                                             >
-                                                Long Winter Cars
+                                                {gameLabel}
                                             </Typography>
                                         </CardContent>
                                     </Grid>
@@ -268,9 +351,10 @@ const CampaignSummary = () => {
                 </Grid>
                 <Grid item sx={{ marginTop: `${matchesMD ? '35px' : '70px'}` }}>
                     <Button
-                        component={CampaignPerformances}
-                        to="/campaigns/performance"
+                        // component={CampaignPerformances}
+                        // to="/campaigns/performance"
                         variant="contained"
+                        onClick={onCreateEvent}
                         sx={{
                             borderRadius: '9.8px',
                             backgroundColor: '#FF0676',
@@ -284,8 +368,9 @@ const CampaignSummary = () => {
                         Launch Your Campaign
                     </Button>
                     <Button
-                        component={CampaignEdit}
-                        to="/launch/index"
+                        // component={CampaignEdit}
+                        // to="/launch/index"
+                        onClick={() => handleClick()}
                         variant="outlined"
                         sx={{
                             borderRadius: '9.8px',

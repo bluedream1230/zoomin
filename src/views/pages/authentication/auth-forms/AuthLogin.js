@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -19,19 +18,21 @@ import {
     InputLabel,
     OutlinedInput,
     Stack,
-    Typography
+    Typography,
+    TextField
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import * as Yup from 'yup';
-import { Formik } from 'formik';
+import { Formik, Form, useFormik } from 'formik';
 
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
-import { login } from 'services/apis/user';
-import { SET_TOKEN } from 'store/actions';
+import { login, logout } from 'services/apis/user';
+import { GET_EVENTS, GET_GAMES, GET_REWARDS, SET_TOKEN, LOG_OUT } from 'store/actions';
 
 import { store } from 'store';
+import { getCampaign, getGame, getReward } from 'services/apis/server';
 
 const DashboardPage = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/dashbaord" {...props} role={undefined} />);
 const ForgotPasswordPage = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/auth/forgotpassword" {...props} role={undefined} />);
@@ -52,17 +53,55 @@ const FirebaseLogin = ({ ...others }) => {
         event.preventDefault();
     };
 
+    const validationSchema = Yup.object({
+        email: Yup.string('Enter your email').email('Enter a valid email').required('Email is required'),
+        password: Yup.string('Enter your password')
+            .min(6, 'Password should be of minimum 6 characters length')
+            .required('Password is required')
+    });
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: ''
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            onLogin(values);
+        }
+    });
     const state = store.getState();
-    const onLogin = async () => {
+    const onLogin = async (values) => {
         const data = await login({
-            email: 'test@gmail.com',
-            password: '123123'
+            email: values.email,
+            password: values.password
         });
         const { access_token } = data;
         dispatch({ type: SET_TOKEN, token: access_token });
         navigate('/dashboard');
     };
 
+    useEffect(() => {
+        let success = false;
+
+        try {
+            const payload = jwt(auth.token);
+            if (payload.exp * 1000 > Date.now()) {
+                success = true;
+            } else {
+                toast(`Your token is expired!`, { type: 'error' });
+            }
+        } catch {}
+        if (!success) {
+            logout();
+        }
+    }, []);
+    console.log(state);
+    const handleNext = (values) => {
+        if (!values.email) {
+            return alert('Please Enter Your Email!');
+        }
+        navigate('/auth/forgotpassword', { state: { values } });
+    };
     return (
         <>
             <Grid container direction="column" justifyContent="center" spacing={2}>
@@ -83,168 +122,93 @@ const FirebaseLogin = ({ ...others }) => {
                     </Box>
                 </Grid>
             </Grid>
+            <form onSubmit={formik.handleSubmit}>
+                <TextField
+                    fullWidth
+                    id="email"
+                    name="email"
+                    label="Email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                    sx={{ ...theme.typography.customInput, marginBottom: '45px' }}
+                />
+                <TextField
+                    fullWidth
+                    id="password"
+                    name="password"
+                    label="Password"
+                    type="password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    error={formik.touched.password && Boolean(formik.errors.password)}
+                    helperText={formik.touched.password && formik.errors.password}
+                    sx={{ ...theme.typography.customInput, marginBottom: '45px' }}
+                />
 
-            <Formik
-                initialValues={{
-                    submit: null
-                }}
-                validationSchema={Yup.object().shape({
-                    email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                    password: Yup.string().max(255).required('Password is required')
-                })}
-                onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-                    try {
-                        if (scriptedRef.current) {
-                            setStatus({ success: true });
-                            setSubmitting(false);
+                <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={checked}
+                                onChange={(event) => setChecked(event.target.checked)}
+                                name="checked"
+                                color="primary"
+                            />
                         }
-                    } catch (err) {
-                        console.error(err);
-                        if (scriptedRef.current) {
-                            setStatus({ success: false });
-                            setErrors({ submit: err.message });
-                            setSubmitting(false);
-                        }
-                    }
-                }}
-            >
-                {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-                    <form noValidate onSubmit={handleSubmit} {...others}>
-                        <FormControl
-                            fullWidth
-                            error={Boolean(touched.email && errors.email)}
-                            sx={{ ...theme.typography.customInput, marginBottom: '45px' }}
-                        >
-                            <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-email-login"
-                                type="email"
-                                value={values.email}
-                                name="email"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                label="Email Address / Username"
-                                inputProps={{}}
-                            />
-                            {touched.email && errors.email && (
-                                <FormHelperText error id="standard-weight-helper-text-email-login">
-                                    {errors.email}
-                                </FormHelperText>
-                            )}
-                        </FormControl>
-
-                        <FormControl
-                            fullWidth
-                            error={Boolean(touched.password && errors.password)}
-                            sx={{ ...theme.typography.customInput, marginBottom: '45px' }}
-                        >
-                            <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-password-login"
-                                type={showPassword ? 'text' : 'password'}
-                                value={values.password}
-                                name="password"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                            size="large"
-                                        >
-                                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label="Password"
-                                inputProps={{}}
-                            />
-                            {touched.password && errors.password && (
-                                <FormHelperText error id="standard-weight-helper-text-password-login">
-                                    {errors.password}
-                                </FormHelperText>
-                            )}
-                        </FormControl>
-                        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={checked}
-                                        onChange={(event) => setChecked(event.target.checked)}
-                                        name="checked"
-                                        color="primary"
-                                    />
-                                }
-                                sx={{
-                                    color: '#FFFFFF',
-                                    '& > span': {
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: '400',
-                                        fontSize: '21px',
-                                        lineHeight: '39px'
-                                    }
-                                }}
-                                label="Remember me"
-                            />
-                            <Typography
-                                color="#FFFFFF"
-                                sx={{
-                                    textDecoration: 'none',
-                                    cursor: 'pointer',
-                                    fontFamily: 'Inter',
-                                    fontStyle: 'normal',
-                                    fontWeight: '600',
-                                    fontSize: '21px',
-                                    lineHeight: '180%'
-                                }}
-                                component={ForgotPasswordPage}
-                                to="/auth/forgotpassword"
-                            >
-                                Forgot Password?
-                            </Typography>
-                        </Stack>
-                        {errors.submit && (
-                            <Box sx={{ mt: 3 }}>
-                                <FormHelperText error>{errors.submit}</FormHelperText>
-                            </Box>
-                        )}
-
-                        <Box sx={{ mt: 2 }}>
-                            <AnimateButton>
-                                <Button
-                                    // component={DashboardPage}
-                                    // to="/dashboard"
-                                    onClick={onLogin}
-                                    disableElevation
-                                    disabled={isSubmitting}
-                                    fullWidth
-                                    size="large"
-                                    type="submit"
-                                    variant="contained"
-                                    sx={{
-                                        backgroundColor: '#FF0676',
-                                        marginTop: '50px',
-                                        marginBottom: '50px',
-                                        borderRadius: '18px',
-                                        height: '90px',
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: '700',
-                                        fontSize: '27px',
-                                        lineHeight: '34px'
-                                    }}
-                                >
-                                    Login
-                                </Button>
-                            </AnimateButton>
-                        </Box>
-                    </form>
-                )}
-            </Formik>
+                        sx={{
+                            color: '#FFFFFF',
+                            '& > span': {
+                                fontFamily: 'Inter',
+                                fontStyle: 'normal',
+                                fontWeight: '400',
+                                fontSize: '21px',
+                                lineHeight: '39px'
+                            }
+                        }}
+                        label="Remember me"
+                    />
+                    <Typography
+                        color="#FFFFFF"
+                        sx={{
+                            textDecoration: 'none',
+                            cursor: 'pointer',
+                            fontFamily: 'Inter',
+                            fontStyle: 'normal',
+                            fontWeight: '600',
+                            fontSize: '21px',
+                            lineHeight: '180%'
+                        }}
+                        onClick={() => handleNext(formik.values)}
+                        // component={ForgotPasswordPage}
+                        // to="/auth/forgotpassword"
+                    >
+                        Forgot Password?
+                    </Typography>
+                </Stack>
+                <Button
+                    disableElevation
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                        backgroundColor: '#FF0676',
+                        marginTop: '50px',
+                        marginBottom: '50px',
+                        borderRadius: '18px',
+                        height: '90px',
+                        fontFamily: 'Inter',
+                        fontStyle: 'normal',
+                        fontWeight: '700',
+                        fontSize: '27px',
+                        lineHeight: '34px'
+                    }}
+                >
+                    Login
+                </Button>
+            </form>
         </>
     );
 };

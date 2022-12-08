@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 // material-ui
 import { Grid, Typography } from '@mui/material';
+import { useLocation } from 'react-router';
 
 import ImgMediaCard from 'ui-component/cards/Skeleton/GameCard';
 
@@ -67,6 +68,9 @@ const SelectGamePage = () => {
             icon: require(`../../../assets/images/game-img12.jpg`)
         }
     ];
+
+    const { state } = useLocation();
+    console.log(state);
     return (
         <>
             <Grid container spacing={5}>
@@ -95,6 +99,7 @@ const SelectGamePage = () => {
                                             card_image={item.icon}
                                             key={index}
                                             href={item.href}
+                                            state={state}
                                         ></ImgMediaCard>
                                     </Grid>
                                 );

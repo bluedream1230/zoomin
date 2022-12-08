@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import { Box, Button, FormControl, FormHelperText, Grid, InputLabel, OutlinedInput, Typography } from '@mui/material';
 import * as Yup from 'yup';
@@ -8,12 +8,24 @@ import { Formik } from 'formik';
 
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
+import { resetPassword } from 'services/apis/server';
 
 const CreatePasswordPage = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/auth/createpassword" {...props} role={undefined} />);
 
 const ResetPassword = ({ ...others }) => {
     const theme = useTheme();
     const scriptedRef = useScriptRef();
+    const { state } = useLocation();
+    const email = state.email;
+    const sendForMail = async (values) => {
+        try {
+            console.log(values, email);
+            const data = await resetPassword({ email: values, userid: email });
+            console.log(data);
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     return (
         <>
@@ -38,7 +50,8 @@ const ResetPassword = ({ ...others }) => {
 
             <Formik
                 initialValues={{
-                    submit: null
+                    submit: null,
+                    email: email ? email : ''
                 }}
                 validationSchema={Yup.object().shape({
                     email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
@@ -75,7 +88,7 @@ const ResetPassword = ({ ...others }) => {
                                 name="email"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                label="Email Address / Username"
+                                label="Email Address"
                                 inputProps={{}}
                             />
                             {touched.email && errors.email && (
@@ -94,13 +107,14 @@ const ResetPassword = ({ ...others }) => {
                         <Box sx={{ mt: 2 }}>
                             <AnimateButton>
                                 <Button
-                                    component={CreatePasswordPage}
-                                    to="/auth/createpassword"
+                                    // component={CreatePasswordPage}
+                                    // to="/auth/createpassword"
                                     disableElevation
-                                    disabled={isSubmitting}
+                                    // disabled={isSubmitting}
                                     fullWidth
                                     size="large"
                                     type="submit"
+                                    onClick={() => sendForMail(values.email)}
                                     variant="contained"
                                     sx={{
                                         backgroundColor: '#FF0676',
