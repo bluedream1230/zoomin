@@ -41,7 +41,7 @@ const Login = () => {
                                 lg={12}
                                 sx={{
                                     marginLeft: '166px',
-                                    marginRight: '283px'
+                                    marginRight: '100px'
                                 }}
                             >
                                 <Grid container alignItems="left" justifyContent="left">

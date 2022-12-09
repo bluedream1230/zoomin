@@ -193,7 +193,7 @@ const CampaignInformation = ({ isLoading }) => {
     const campaignData = useSelector((state) => state.campaign);
     let info = [];
     let mydate;
-    if (campaignData.eventInfo.totalData) {
+    if (campaignData.eventInfo.event && campaignData.eventInfo.event.length != 0) {
         info = campaignData.eventInfo.totalData;
         mydate = new Date(campaignData.eventInfo.event[0].start_time);
     }
@@ -205,6 +205,7 @@ const CampaignInformation = ({ isLoading }) => {
         m = mydate.getMonth() + 1;
         d = mydate.getDate();
     }
+    const dateView = d + '.' + m + '.' + y;
     const count = Math.ceil(info.length / rowsPerPage);
     const _DATA = usePagination(info, rowsPerPage);
     const handleChange = (e, p) => {
@@ -424,7 +425,7 @@ const CampaignInformation = ({ isLoading }) => {
                                                             }}
                                                             alignItems="left"
                                                         >
-                                                            {eventInfo && eventInfo.event[0].game.name}
+                                                            {eventInfo.event[0] && eventInfo.event[0].game.name}
                                                         </Typography>
                                                     </Grid>
                                                     <Grid item xs={6} lg={3} sm={6} md={6}>
@@ -508,7 +509,7 @@ const CampaignInformation = ({ isLoading }) => {
                                                                 lineHeight: `${matchesLG ? '22px' : '42px'}`
                                                             }}
                                                         >
-                                                            {eventInfo && eventInfo.event && eventInfo.event[0].event_coins}
+                                                            {eventInfo && eventInfo.event[0] && eventInfo.event[0].event_coins}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -520,7 +521,7 @@ const CampaignInformation = ({ isLoading }) => {
                                     <Grid container alignContent="center" justifyContent="space-between">
                                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', width: '150px' }}>
                                             <QRCode
-                                                value={eventInfo && eventInfo.event[0].qr_code}
+                                                value={eventInfo.event.length != 0 ? eventInfo.event[0].qr_code : ''}
                                                 // value="sdfs"
                                                 bgColor="transparent"
                                                 fgColor="#FFFFFF"
@@ -548,7 +549,7 @@ const CampaignInformation = ({ isLoading }) => {
                                                 }}
                                             >
                                                 <FileDownloadOutlinedIcon />
-                                                {eventInfo && eventInfo.event[0].qr_code}
+                                                {eventInfo.event[0] && eventInfo.event[0].qr_code}
                                             </Link>
                                         </Grid>
                                     </Grid>

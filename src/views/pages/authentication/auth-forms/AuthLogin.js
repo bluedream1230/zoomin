@@ -114,7 +114,7 @@ const FirebaseLogin = ({ ...others }) => {
                             fontWeight="400"
                             fontSize="21px"
                             lineHeight="40px"
-                            marginBottom="65px"
+                            marginBottom="25px"
                         >
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. At quam diam viverra pellentesque tincidunt duis in.
                             Ornare.
