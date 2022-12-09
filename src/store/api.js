@@ -1,4 +1,5 @@
 export const API_USER_SIGN_IN = '/api/auth/login';
+export const API_USER_SIGN_UP = '/api/auth/create';
 export const API_CAMPAIGN_DATA = '/api/events/:gameId&:rewardId&:audienceId';
 export const API_GET_CAMPAIGN_DATA = '/api/events';
 export const API_GET_REWARD_DATA = 'api/rewards/rewardsinfo';

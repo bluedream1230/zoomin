@@ -139,7 +139,20 @@ const FirebaseLogin = ({ ...others }) => {
                     id="password"
                     name="password"
                     label="Password"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge="end"
+                                size="large"
+                            >
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                        </InputAdornment>
+                    }
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     error={formik.touched.password && Boolean(formik.errors.password)}

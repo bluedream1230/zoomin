@@ -10,6 +10,7 @@ const ForgotPassword = Loadable(lazy(() => import('views/pages/authentication/au
 const ResetPassword = Loadable(lazy(() => import('views/pages/authentication/authentication/ResetPassword')));
 const CreatePassword = Loadable(lazy(() => import('views/pages/authentication/authentication/CreatePassword')));
 const AuthLogout = Loadable(lazy(() => import('views/pages/authentication/auth-forms/AuthLogout')));
+const SignUp = Loadable(lazy(() => import('views/pages/authentication/authentication/SignUp')));
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
@@ -35,6 +36,10 @@ const AuthenticationRoutes = {
         {
             path: '/auth/createpassword/:token',
             element: <CreatePassword />
+        },
+        {
+            path: '/auth/signup',
+            element: <SignUp />
         },
         {
             path: '/auth/logout',

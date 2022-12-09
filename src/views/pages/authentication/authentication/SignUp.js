@@ -6,9 +6,9 @@ import { Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import AuthWrapper1 from '../AuthWrapper1';
-import AuthLogin from '../auth-forms/AuthLogin';
+import AuthSignUp from '../auth-forms/AuthSignUp';
 
-const Login = () => {
+const Signup = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -71,23 +71,7 @@ const Login = () => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <AuthLogin />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid item container direction="row" alignItems="left" xs={12}>
-                                            <Typography sx={{ lineHeight: '39px', fontSize: '21.5px', fontWeight: '400' }}>
-                                                Don&apos;t have an account?
-                                            </Typography>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;
-                                            <Typography
-                                                component={Link}
-                                                to="/auth/signup"
-                                                variant="subtitle1"
-                                                sx={{ textDecoration: 'none', lineHeight: '39px', fontSize: '21.5px', fontWeight: '400' }}
-                                            >
-                                                Sign up
-                                            </Typography>
-                                        </Grid>
+                                        <AuthSignUp />
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -99,4 +83,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Signup;
