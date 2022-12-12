@@ -1,76 +1,36 @@
 /* eslint-disable no-unused-vars */
 // material-ui
+import React from 'react';
 import { Grid, Typography } from '@mui/material';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
+import { getGame } from 'services/apis/server';
+import { GET_GAMES } from 'store/actions';
+import { store } from 'store';
 
 import ImgMediaCard from 'ui-component/cards/Skeleton/GameCard';
 
 const SelectGamePage = () => {
-    const tempcard = [
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../../assets/images/game-img1.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../../assets/images/game-img2.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../../assets/images/game-img3.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../../assets/images/game-img4.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../../assets/images/game-img5.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../../assets/images/game-img6.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../../assets/images/game-img7.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../../assets/images/game-img8.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../../assets/images/game-img9.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../../assets/images/game-img10.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../../assets/images/game-img11.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../../assets/images/game-img12.jpg`)
-        }
-    ];
+    const dispatch = useDispatch();
+    const state = store.getState();
+    const [games, setGames] = useState([]);
 
-    const { state } = useLocation();
-    console.log(state);
+    const load = async () => {
+        const games = await getGame();
+        dispatch({ type: GET_GAMES, games: games });
+        console.log(games);
+        setGames(games);
+    };
+
+    React.useEffect(() => {
+        load();
+    }, []);
+    const allEvents = useSelector((state) => state.campaign);
+    const gameListData = allEvents.games;
+    console.log('allEvents:', gameListData);
+    const { state: navigateState } = useLocation();
+    console.log(navigateState);
     return (
         <>
             <Grid container spacing={5}>
@@ -91,19 +51,21 @@ const SelectGamePage = () => {
                             </Typography>
                         </Grid>
                         <Grid container>
-                            {tempcard.map((item, index) => {
-                                return (
-                                    <Grid item xl={4} lg={6} md={12} sm={12} xs={12} sx={{ paddingX: '10px', marginBottom: '25px' }}>
-                                        <ImgMediaCard
-                                            card_name={item.name}
-                                            card_image={item.icon}
-                                            key={index}
-                                            href={item.href}
-                                            state={state}
-                                        ></ImgMediaCard>
-                                    </Grid>
-                                );
-                            })}
+                            {gameListData &&
+                                gameListData.length != 0 &&
+                                gameListData.map((item, index) => {
+                                    return (
+                                        <Grid item xl={4} lg={6} md={12} sm={12} xs={12} sx={{ paddingX: '10px', marginBottom: '25px' }}>
+                                            <ImgMediaCard
+                                                card_name={item.name}
+                                                card_image={item.img_url ? item.img_url : item.name}
+                                                key={index}
+                                                game_id={item.id}
+                                                state={navigateState}
+                                            ></ImgMediaCard>
+                                        </Grid>
+                                    );
+                                })}
                         </Grid>
                     </Grid>
                 </Grid>

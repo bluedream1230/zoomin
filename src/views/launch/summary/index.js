@@ -22,17 +22,6 @@ const CampaignSummary = () => {
     const dispatch = useDispatch();
     const states = store.getState();
     const { state } = useLocation();
-    const [game, setGame] = React.useState([]);
-
-    const load = async () => {
-        const games = await getGame();
-        dispatch({ type: GET_GAMES, games: games });
-        setGame(games);
-    };
-
-    React.useEffect(() => {
-        load();
-    }, []);
 
     const allEvents = useSelector((state) => state.campaign);
     const PrizeListData = allEvents.rewards;
@@ -245,7 +234,7 @@ const CampaignSummary = () => {
                                                 color: '#04B4DD'
                                             }}
                                         >
-                                            ${state.eventInfo.eventcoin}
+                                            ${state.eventInfo.eventcoins}
                                         </Typography>
                                     </CardContent>
                                 </Grid>

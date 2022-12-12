@@ -84,11 +84,12 @@ export default function ImgMediaCard(props) {
     const [selected, setSelected] = React.useState(false);
     const navigate = useNavigate();
     const handlePlay = () => {
-        console.log('Play now: ', props.href, props.card_name, props.state.eventInfo);
+        console.log('Play now: ', props.card_name, props.state.eventInfo, props.card_image, props.game_id);
         const eventInfo = props.state.eventInfo;
         const prizeId = props.state.prize;
         const audienceId = props.state.audience;
-        navigate('/launch/summary/index', { state: { eventInfo, prizeId, audienceId, gameId: 1 } });
+        console.log('navi', eventInfo, prizeId, audienceId);
+        navigate('/launch/summary/index', { state: { eventInfo, prizeId, audienceId, gameId: props.game_id } });
         //TODO: Play game
     };
 
@@ -121,9 +122,9 @@ export default function ImgMediaCard(props) {
             />
             <FiCardMedia
                 media="picture"
-                alt="Contemplative Reptile"
+                alt={props.card_name}
                 image={props.card_image}
-                title="Contemplative Reptile"
+                title={props.card_name}
                 sx={{
                     backgroundPosition: 'center',
                     backgroundSize: 'cover',
@@ -144,7 +145,7 @@ export default function ImgMediaCard(props) {
                     sx={{ fontSize: '20px', padding: '0px' }}
                     onClick={handlePlay}
                 >
-                    Play Now
+                    Select Game
                 </Button>
                 <SvgIcon component={East} />
             </FiCardActions>
