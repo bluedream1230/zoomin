@@ -71,9 +71,9 @@ const LaunchPage = () => {
         launchdate: Yup.date('Enter Launch Date').required('Launch Date is required'),
         location: Yup.string('Enter Location').required('Location is required'),
         userlimit: Yup.number('Enter user limit').required('User limit is required'),
-        eventcoin: Yup.number('Enter Eventcoin').required('Eventcoin is required'),
+        eventcoins: Yup.number('Enter Eventcoins').required('Eventcoins is required'),
         endtime: Yup.date('Enter end time').required('End time is required'),
-        qrcode: Yup.string('Enter QR code').required('QR code is required')
+        qr_code: Yup.string('Enter QR code').required('QR code is required')
     });
 
     const validationSchema2 = Yup.object({
@@ -98,9 +98,9 @@ const LaunchPage = () => {
             launchdate: '',
             location: '',
             userlimit: '',
-            eventcoin: '',
+            eventcoins: '',
             endtime: '',
-            qrcode: ''
+            qr_code: ''
         },
         validationSchema: validationSchema1,
         onSubmit: (values) => {}
@@ -314,12 +314,12 @@ const LaunchPage = () => {
                                     fullWidth
                                     label="Event Coins"
                                     margin="normal"
-                                    name="eventcoin"
+                                    name="eventcoins"
                                     type="number"
-                                    value={formik1.values.eventcoin}
+                                    value={formik1.values.eventcoins}
                                     onChange={formik1.handleChange}
-                                    error={formik1.touched.eventcoin && Boolean(formik1.errors.eventcoin)}
-                                    helperText={formik1.touched.eventcoin && formik1.errors.eventcoin}
+                                    error={formik1.touched.eventcoins && Boolean(formik1.errors.eventcoins)}
+                                    helperText={formik1.touched.eventcoins && formik1.errors.eventcoins}
                                     sx={{ ...theme.typography.customInput }}
                                 />
                             </Grid>
@@ -330,12 +330,12 @@ const LaunchPage = () => {
                                     fullWidth
                                     label="QR Code"
                                     margin="normal"
-                                    name="qrcode"
+                                    name="qr_code"
                                     type="text"
-                                    value={formik1.values.qrcode}
+                                    value={formik1.values.qr_code}
                                     onChange={formik1.handleChange}
-                                    error={formik1.touched.qrcode && Boolean(formik1.errors.qrcode)}
-                                    helperText={formik1.touched.qrcode && formik1.errors.qrcode}
+                                    error={formik1.touched.qr_code && Boolean(formik1.errors.qr_code)}
+                                    helperText={formik1.touched.qr_code && formik1.errors.qr_code}
                                     sx={{ ...theme.typography.customInput }}
                                 />
                             </Grid>

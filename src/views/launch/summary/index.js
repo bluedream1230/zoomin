@@ -82,6 +82,7 @@ const CampaignSummary = () => {
         navigate('/launch/index', { state: { eventInfo, prizeId, audienceId } });
     };
     console.log('time:', state.eventInfo.endtime.$d);
+    console.log('state', state);
     const [isLoading, setLoading] = React.useState(false);
     const onCreateEvent = async () => {
         try {
@@ -93,7 +94,8 @@ const CampaignSummary = () => {
                     start_time: state.eventInfo.launchdate.$d,
                     end_time: state.eventInfo.endtime.$d,
                     user_limit: state.eventInfo.userlimit,
-                    qr_code: state.eventInfo.eventcoin,
+                    event_coins: state.eventInfo.eventcoins,
+                    qr_code: state.eventInfo.qr_code,
                     user: states.auth.user
                 },
                 state.gameId,
