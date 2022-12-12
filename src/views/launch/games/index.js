@@ -58,7 +58,7 @@ const SelectGamePage = () => {
                                         <Grid item xl={4} lg={6} md={12} sm={12} xs={12} sx={{ paddingX: '10px', marginBottom: '25px' }}>
                                             <ImgMediaCard
                                                 card_name={item.name}
-                                                card_image={item.img_url ? item.img_url : item.name}
+                                                card_image={item.img_url}
                                                 key={index}
                                                 game_id={item.id}
                                                 state={navigateState}

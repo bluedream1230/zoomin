@@ -89,7 +89,7 @@ export default function ImgMediaCard(props) {
         const prizeId = props.state.prize;
         const audienceId = props.state.audience;
         console.log('navi', eventInfo, prizeId, audienceId);
-        navigate('/launch/summary/index', { state: { eventInfo, prizeId, audienceId, gameId: props.game_id } });
+        navigate('/launch/summary/index', { state: { eventInfo, prizeId, audienceId, gameId: props.game_id, gameImg: props.card_image } });
         //TODO: Play game
     };
 
@@ -121,7 +121,7 @@ export default function ImgMediaCard(props) {
                 sx={{ zIndex: 10, color: 'white', position: 'absolute', top: '0px', right: '0px' }}
             />
             <FiCardMedia
-                media="picture"
+                component="img"
                 alt={props.card_name}
                 image={props.card_image}
                 title={props.card_name}

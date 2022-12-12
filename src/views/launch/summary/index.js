@@ -328,9 +328,9 @@ const CampaignSummary = () => {
                             >
                                 <CardMedia
                                     component="img"
-                                    image={require(`../../../assets/images/game-img1.jpg`)}
+                                    image={state.gameImg}
                                     width="100%"
-                                    alt="green iguana"
+                                    alt={gameLabel}
                                     sx={{
                                         borderRadius: '20px',
                                         height: `${matchesMD ? '210px' : '285px'}`
