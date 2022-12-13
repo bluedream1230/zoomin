@@ -84,7 +84,7 @@ const CampaignSummary = () => {
                     end_time: state.eventInfo.endtime.$d,
                     user_limit: state.eventInfo.userlimit,
                     event_coins: state.eventInfo.eventcoins,
-                    qr_code: state.eventInfo.qr_code,
+                    duration: state.eventInfo.timelimit,
                     user: states.auth.user
                 },
                 state.gameId,

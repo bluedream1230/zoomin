@@ -73,7 +73,7 @@ const LaunchPage = () => {
         userlimit: Yup.number('Enter user limit').required('User limit is required'),
         eventcoins: Yup.number('Enter Eventcoins').required('Eventcoins is required'),
         endtime: Yup.date('Enter end time').required('End time is required'),
-        qr_code: Yup.string('Enter QR code').required('QR code is required')
+        timelimit: Yup.string('Enter Time limit').required('Time limit is required')
     });
 
     const validationSchema2 = Yup.object({
@@ -100,7 +100,7 @@ const LaunchPage = () => {
             userlimit: '',
             eventcoins: '',
             endtime: '',
-            qr_code: ''
+            timelimit: ''
         },
         validationSchema: validationSchema1,
         onSubmit: (values) => {}
@@ -328,14 +328,14 @@ const LaunchPage = () => {
                             <Grid container>
                                 <TextField
                                     fullWidth
-                                    label="QR Code"
+                                    label="Time Limit"
                                     margin="normal"
-                                    name="qr_code"
+                                    name="timelimit"
                                     type="text"
-                                    value={formik1.values.qr_code}
+                                    value={formik1.values.timelimit}
                                     onChange={formik1.handleChange}
-                                    error={formik1.touched.qr_code && Boolean(formik1.errors.qr_code)}
-                                    helperText={formik1.touched.qr_code && formik1.errors.qr_code}
+                                    error={formik1.touched.timelimit && Boolean(formik1.errors.timelimit)}
+                                    helperText={formik1.touched.timelimit && formik1.errors.timelimit}
                                     sx={{ ...theme.typography.customInput }}
                                 />
                             </Grid>

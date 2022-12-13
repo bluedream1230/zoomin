@@ -29,7 +29,7 @@ import { gridSpacing } from 'store/constant';
 import Users from 'ui-component/Users';
 import InfoCard from 'ui-component/cards/Skeleton/InfoCard';
 // QR Code imports
-import QRCode from 'react-qr-code';
+import QRCode from './qr-code';
 //Icon imports
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { useParams } from 'react-router';
@@ -170,6 +170,7 @@ const CampaignInformation = ({ isLoading }) => {
 
     const load = async () => {
         const eventInfo = await getEventInfo(id);
+        console.log(eventInfo);
         dispatch({ type: GET_EVENT_INFO_ITEM, eventInfo: eventInfo });
         setEventInfo(eventInfo);
     };
@@ -190,6 +191,7 @@ const CampaignInformation = ({ isLoading }) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
+
     const campaignData = useSelector((state) => state.campaign);
     let info = [];
     let mydate;
@@ -212,6 +214,7 @@ const CampaignInformation = ({ isLoading }) => {
         setPage(p);
         _DATA.jump(p);
     };
+    console.log(campaignData);
 
     const listTable = _DATA.currentData().map((item, index) => {
         return (
@@ -370,7 +373,13 @@ const CampaignInformation = ({ isLoading }) => {
             </Grid>
         );
     });
+    var base64 = '';
 
+    if (eventInfo.event) {
+        const qrcode = require('qrcode-js');
+
+        base64 = qrcode.toDataURL(eventInfo.event[0].qr_code, 4);
+    }
     return (
         <>
             {isLoading || eventInfo.length == 0 ? (
@@ -520,13 +529,7 @@ const CampaignInformation = ({ isLoading }) => {
                                 <Grid item lg={3} xs={12} md={6} sm={12}>
                                     <Grid container alignContent="center" justifyContent="space-between">
                                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', width: '150px' }}>
-                                            <QRCode
-                                                value={eventInfo.event.length != 0 ? eventInfo.event[0].qr_code : ''}
-                                                // value="sdfs"
-                                                bgColor="transparent"
-                                                fgColor="#FFFFFF"
-                                                size={150}
-                                            />
+                                            <QRCode url={base64} />
                                         </Grid>
                                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
                                             <Link
