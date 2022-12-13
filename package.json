@@ -50,6 +50,7 @@
         "material-ui-popup-state": "^4.0.1",
         "mui-validate": "^1.0.0",
         "prop-types": "^15.8.1",
+        "qrcode-js": "^0.0.2",
         "react": "^18.2.0",
         "react-apexcharts": "^1.4.0",
         "react-chartjs-2": "^4.3.1",
