@@ -13,4 +13,4 @@ export const API_RESETPASSWORD = '/api/mail/resetpassword';
 export const API_UPDATE_USER_INFO = '/api/users/update';
 export const API_UPDATE_BILL_INFO = '/api/users/bill';
 export const API_UPDATE_PASS = '/api/auth/updatePass';
-export const API_ADD_TRIVIA = 'https://saviour.earth/ZoomIn/api/index.php/Trivia/addTrivia';
+export const API_ADD_TRIVIA = 'http://saviour.earth/ZoomIn/api/index.php/Trivia/addTrivia';
