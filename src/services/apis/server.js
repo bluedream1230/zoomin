@@ -14,7 +14,8 @@ import {
     API_UPDATE_BILL_INFO,
     API_UPDATE_RESET_PASS,
     API_UPDATE_PASS,
-    API_ADD_TRIVIA
+    API_ADD_TRIVIA,
+    API_PAYMENT
 } from 'store/api';
 
 export const getCampaign = async () => {
@@ -60,6 +61,10 @@ export const createEvent = async (data, videourl, rewardIds, gameId, audienceId,
         { gameId, audienceId },
         files
     );
+};
+
+export const payment = async (data) => {
+    return Api.post(API_PAYMENT, data);
 };
 
 export const sendMail = async (data) => {

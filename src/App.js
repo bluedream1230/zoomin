@@ -14,6 +14,12 @@ import themes from 'themes';
 import NavigationScroll from 'layout/NavigationScroll';
 
 // ==============================|| APP ||============================== //
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+
+const stripePromise = loadStripe(
+    'pk_test_51MH4PLHWzArqsHgyKQcUQckv4GXgGNFBsDszodt1GXho4if2AjraWqAVZOqXH5HOhSzkjBNiBXc7FUFZojO8BqB500z5bk58sn'
+);
 
 const App = () => {
     const customization = useSelector((state) => state.customization);
@@ -23,7 +29,9 @@ const App = () => {
             <ThemeProvider theme={themes(customization)}>
                 <CssBaseline />
                 <NavigationScroll>
-                    <Routes />
+                    <Elements stripe={stripePromise}>
+                        <Routes />
+                    </Elements>
                 </NavigationScroll>
             </ThemeProvider>
         </StyledEngineProvider>

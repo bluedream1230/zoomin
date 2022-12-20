@@ -426,9 +426,8 @@ const LaunchPage = () => {
                                     )}
                                 />
                                 <Dialog open={open} onClose={handleClose}>
-                                    <DialogTitle>Add a new audience</DialogTitle>
+                                    <DialogTitle sx={{ color: '#FFFFFF' }}>Add a new audience</DialogTitle>
                                     <DialogContent>
-                                        <DialogContentText>Did you miss any audience in our list? Please, add it!</DialogContentText>
                                         <TextField
                                             margin="dense"
                                             id="name"
@@ -440,14 +439,19 @@ const LaunchPage = () => {
                                                     label: event.target.value
                                                 })
                                             }
-                                            label="label"
+                                            // label="label"
                                             type="text"
                                             variant="standard"
+                                            sx={{ ...theme.typography.customInput }}
                                         />
                                     </DialogContent>
                                     <DialogActions>
-                                        <Button onClick={handleClose}>Cancel</Button>
-                                        <Button onClick={handleCreateAudience}>Add</Button>
+                                        <Button sx={{ color: '#FFFFFF' }} onClick={handleClose}>
+                                            Cancel
+                                        </Button>
+                                        <Button sx={{ color: '#FFFFFF' }} onClick={handleCreateAudience}>
+                                            Add
+                                        </Button>
                                     </DialogActions>
                                 </Dialog>
                             </Grid>

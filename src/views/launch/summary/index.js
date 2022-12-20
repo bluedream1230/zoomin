@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addTrivia, createEvent, getGame } from 'services/apis/server';
 import { GET_GAMES } from 'store/actions';
 import { values } from 'lodash';
+import jwt_decode from 'jwt-decode';
 import { store } from 'store';
 const CampaignPerformances = React.forwardRef((props, ref) => (
     <RouterLink ref={ref} to="/campaigns/performance" {...props} role={undefined} />
@@ -26,6 +27,7 @@ const CampaignSummary = () => {
     const allEvents = useSelector((state) => state.campaign);
     const PrizeListData = allEvents.rewards;
     console.log(state);
+    const decoded = jwt_decode(states.auth.token);
     let prizeLabel = [];
     PrizeListData.forEach((item) => {
         state.navigateState.screen1.prize.prize.forEach((prizeitem) => {
@@ -75,7 +77,7 @@ const CampaignSummary = () => {
             // navigate('https://saviour.earth/ZoomIn/trivia/create_trivia.php');
             trivia = await addTrivia({
                 name: state.navigateState.screen1.eventInfo.selectname,
-                user_id: states.auth.user
+                user_id: decoded.id
             });
         } catch (e) {
             console.log(e);
@@ -404,7 +406,7 @@ const CampaignSummary = () => {
                     >
                         Edit
                     </Button>
-                    {gameInfo.type == 'trivia' && gameInfo.name == 'trivia' && (
+                    {(gameInfo.type == 'trivia' || gameInfo.name == 'Trivia') && (
                         <Button
                             // component={CampaignEdit}
                             // to="/launch/index"

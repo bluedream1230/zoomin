@@ -1,29 +1,78 @@
 /* eslint-disable no-unused-vars */
 // material-ui
 import React from 'react';
-import { Grid, Typography, TextField, Button, CardContent, Card, CardActions, CardHeader } from '@mui/material';
+import { Grid, Typography, TextField, Button, CardContent, Card, CardActions, CardHeader, Modal, Box } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
-import { getGame } from 'services/apis/server';
+import { getGame, payment } from 'services/apis/server';
 import { GET_GAMES } from 'store/actions';
 import { store } from 'store';
 import * as Yup from 'yup';
 import { FormikProvider, useFormik } from 'formik';
+import jwt_decode from 'jwt-decode';
 
 import ImgMediaCard from 'ui-component/cards/Skeleton/GameCard';
 import { useTheme } from '@emotion/react';
+
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 
 const SelectSubscriptionPage = () => {
     const theme = useTheme();
     const navigate = useNavigate();
     const state = store.getState();
+    const [openModal, setOpenModal] = React.useState(false);
+    const handleCloseModal = () => setOpenModal(false);
+    const [price, setPrice] = React.useState(20);
+    const stripe = useStripe();
+    const elements = useElements();
 
+    const decoded = jwt_decode(state.auth.token);
+    console.log('state:', state, decoded);
     const { state: navigateState } = useLocation();
     console.log(navigateState);
     const handleNext = () => {
+        createSubscription();
         navigate('/launch/summary/index', { state: { navigateState } });
     };
+
+    const handleOpenSubscribeModal = (type) => {
+        console.log('open modal ', type);
+        if (type == 1) setPrice(20);
+        else if (type == 2) setPrice(100);
+        else setPrice(1000);
+        setOpenModal(true);
+    };
+
+    const createSubscription = async () => {
+        // create a payment method
+        const paymentMethod = await stripe?.createPaymentMethod({
+            type: 'card',
+            card: elements?.getElement(CardElement),
+            billing_details: {
+                name: decoded.name,
+                email: decoded.email
+            }
+        });
+
+        // call the backend to create subscription
+        const response = await payment({
+            paymentMethod: paymentMethod?.paymentMethod?.id,
+            name: decoded.name,
+            email: decoded.email,
+            price: price
+        });
+
+        // confirm the payment by the user
+        const confirmPayment = await stripe?.confirmCardPayment(response.clientSecret);
+
+        if (confirmPayment?.error) {
+            alert(confirmPayment.error.message);
+        } else {
+            console.log('Success! Check your email for the invoice.');
+        }
+    };
+
     return (
         <>
             <Grid container spacing={5}>
@@ -105,7 +154,12 @@ const SelectSubscriptionPage = () => {
                                 </Typography>
                             </CardContent>
                             <CardActions sx={{ justifyContent: 'center' }}>
-                                <Button sx={{ fontSize: '40px', textAlign: 'center', lineHeight: '70px', width: '100%' }}>Subscribe</Button>
+                                <Button
+                                    sx={{ fontSize: '40px', textAlign: 'center', lineHeight: '70px', width: '100%' }}
+                                    onClick={(e) => handleOpenSubscribeModal(1)}
+                                >
+                                    Subscribe
+                                </Button>
                             </CardActions>
                         </Card>
                     </Grid>
@@ -168,7 +222,12 @@ const SelectSubscriptionPage = () => {
                                 </Typography>
                             </CardContent>
                             <CardActions sx={{ justifyContent: 'center' }}>
-                                <Button sx={{ fontSize: '40px', textAlign: 'center', lineHeight: '70px', width: '100%' }}>Subscribe</Button>
+                                <Button
+                                    sx={{ fontSize: '40px', textAlign: 'center', lineHeight: '70px', width: '100%' }}
+                                    onClick={(e) => handleOpenSubscribeModal(2)}
+                                >
+                                    Subscribe
+                                </Button>
                             </CardActions>
                         </Card>
                     </Grid>
@@ -231,35 +290,93 @@ const SelectSubscriptionPage = () => {
                                 </Typography>
                             </CardContent>
                             <CardActions sx={{ justifyContent: 'center' }}>
-                                <Button sx={{ fontSize: '40px', textAlign: 'center', lineHeight: '70px', width: '100%' }}>Subscribe</Button>
+                                <Button
+                                    sx={{ fontSize: '40px', textAlign: 'center', lineHeight: '70px', width: '100%' }}
+                                    onClick={(e) => handleOpenSubscribeModal(3)}
+                                >
+                                    Subscribe
+                                </Button>
                             </CardActions>
                         </Card>
                     </Grid>
                 </Grid>
                 {/* <StripePayment /> */}
-                <Grid item xs={3} sx={{ marginTop: '40px' }}>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        onClick={async () => {
-                            handleNext();
-                        }}
+
+                <Modal
+                    open={openModal}
+                    onClose={handleCloseModal}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box
                         sx={{
-                            borderRadius: '8.8',
-                            backgroundColor: '#FF0676',
-                            width: '100px',
-                            height: '45px',
-                            fontSize: '16px',
-                            fontWeight: '700',
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            lineHeight: '19px',
-                            color: '#FFFFFF'
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: 1000,
+                            bgcolor: '#360068',
+                            // bgcolor: '#f00',
+
+                            // border: '2px solid #000',
+                            // boxShadow: '39.9357px 7.35657px 132.418px rgba(0, 0, 0, 0.4)'
+                            p: 8
                         }}
                     >
-                        Next
-                    </Button>
-                </Grid>
+                        <Box
+                            sx={{
+                                border: '1px solid #FFFFFF',
+                                boxShadow: '39.9357px 7.35657px 132.418px rgba(0, 0, 0, 0.4)',
+                                borderRadius: '12px',
+                                p: 1
+                            }}
+                        >
+                            <CardElement
+                                options={{
+                                    style: {
+                                        base: {
+                                            // height: '30px !important',
+                                            color: '#FFFFFF',
+                                            fontWeight: 500,
+                                            fontFamily: 'Inter',
+                                            fontSize: '20px',
+                                            border: '1px solid #f00',
+                                            fontSmoothing: 'antialiased',
+                                            margin: '10px',
+                                            '::placeholder': {
+                                                color: '#CFD7DF'
+                                            }
+                                        },
+                                        invalid: {
+                                            color: '#E25950'
+                                        }
+                                    }
+                                }}
+                            />
+                        </Box>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            onClick={async () => {
+                                handleNext();
+                            }}
+                            sx={{
+                                borderRadius: '12px',
+                                backgroundColor: '#FF0676',
+                                width: '100%',
+                                height: '30px',
+                                fontSize: '16px',
+                                fontWeight: '700',
+                                fontFamily: 'Inter',
+                                fontStyle: 'normal',
+                                lineHeight: '19px',
+                                color: '#FFFFFF'
+                            }}
+                        >
+                            Pay
+                        </Button>
+                    </Box>
+                </Modal>
             </Grid>
         </>
     );
