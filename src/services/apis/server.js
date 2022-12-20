@@ -57,7 +57,7 @@ export const getUsers = async (id) => {
 export const createEvent = async (data, videourl, rewardIds, gameId, audienceId, files) => {
     return Api.uploadFile(
         API_CAMPAIGN_DATA,
-        { data: JSON.stringify(data), rewardIds: JSON.stringify(rewardIds), videourl: JSON.stringify(videourl) },
+        { data: JSON.stringify(data), rewardIds: JSON.stringify(rewardIds), videourl: videourl },
         { gameId, audienceId },
         files
     );

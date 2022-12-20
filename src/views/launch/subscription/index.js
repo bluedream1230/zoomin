@@ -31,8 +31,10 @@ const SelectSubscriptionPage = () => {
     console.log('state:', state, decoded);
     const { state: navigateState } = useLocation();
     console.log(navigateState);
-    const handleNext = () => {
-        createSubscription();
+    const handleNext = async () => {
+        // Show Loading
+        await createSubscription();
+        // Hide Loading
         navigate('/launch/summary/index', { state: { navigateState } });
     };
 
