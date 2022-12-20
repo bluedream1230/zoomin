@@ -7,4 +7,7 @@ const config = {
     borderRadius: 12
 };
 
+export const stripePublicKey =
+    'pk_test_51MH4PLHWzArqsHgyKQcUQckv4GXgGNFBsDszodt1GXho4if2AjraWqAVZOqXH5HOhSzkjBNiBXc7FUFZojO8BqB500z5bk58sn';
+
 export default config;
