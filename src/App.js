@@ -17,9 +17,7 @@ import NavigationScroll from 'layout/NavigationScroll';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
-const stripePromise = loadStripe(
-    'pk_test_51MH4PLHWzArqsHgyKQcUQckv4GXgGNFBsDszodt1GXho4if2AjraWqAVZOqXH5HOhSzkjBNiBXc7FUFZojO8BqB500z5bk58sn'
-);
+const stripePromise = loadStripe(process.env.API_PUBLIC_KEY);
 
 const App = () => {
     const customization = useSelector((state) => state.customization);
