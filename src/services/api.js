@@ -101,8 +101,9 @@ class Api {
         return sendRequest(axios.create());
     }
 
-    static uploadFile(route, data, params, file) {
+    static uploadFile(route, data, params, files) {
         const state = store.getState();
+        console.log('apidata:', route, data, params, files);
 
         const sendRequest = (axiosInstance) => {
             const url = Api.replaceVariables(route, params);
@@ -115,7 +116,12 @@ class Api {
             }
 
             var formData = new FormData();
-            formData.append('file', file);
+            for (const file of files) {
+                console.log('file::', file);
+                // formData.append('file', file);
+                formData.append('file[]', file);
+            }
+            console.log('formdata:', formData);
             Object.keys(data).forEach((key) => formData.append(key, data[key]));
 
             const options = {
@@ -123,7 +129,7 @@ class Api {
                 url,
                 method: 'post',
                 headers,
-                timeout: 15000,
+                timeout: 30000,
                 data: formData
             };
 

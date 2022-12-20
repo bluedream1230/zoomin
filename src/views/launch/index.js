@@ -5,22 +5,46 @@ import { useState } from 'react';
 import * as Yup from 'yup';
 import { Validate, ValidationGroup } from 'mui-validate';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, CardContent, Grid, TextField, Typography, Select, Backdrop, CircularProgress, Snackbar, Alert } from '@mui/material';
+import {
+    Button,
+    CardContent,
+    Grid,
+    TextField,
+    Typography,
+    Select,
+    Backdrop,
+    CircularProgress,
+    Snackbar,
+    Alert,
+    Modal,
+    Box,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers';
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 import PrizeSelect from 'ui-component/PrizeSelect';
 import { FormikProvider, useFormik } from 'formik';
-import { getReward, getCampaign, createPrize, getAudience } from 'services/apis/server';
+import { getReward, getCampaign, createPrize, getAudience, createAudience } from 'services/apis/server';
 import { GET_AUDIENCES, GET_REWARDS } from 'store/actions';
 import { store } from 'store';
+import ReactPlayer from 'react-player';
+import screenfull from 'screenfull';
+import Container from '@mui/material/Container';
+import Iframe from 'react-iframe';
 
 import { useForm } from 'react-hook-form';
 import { values } from 'lodash';
+import Dropzone from 'react-dropzone';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 const LaunchGameView = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/launch/games/index" {...props} role={undefined} />);
 const CreatePrize = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/prizes/manage" {...props} role={undefined} />);
@@ -30,15 +54,25 @@ const styles = {
     }
 };
 
+const filter = createFilterOptions();
+
 const LaunchPage = () => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const state = store.getState();
+
+    const [videoUrl, setVideoUrl] = useState('simple');
     const [value, setValue] = React.useState(null);
+    const [open, toggleOpen] = React.useState(false);
     const [reward, setReward] = useState([]);
     const [audience, setAudience] = useState([]);
+    const [isLoading, setLoading] = React.useState(false);
+    const [openModal, setOpenModal] = React.useState(false);
 
     const { state: navigateState } = useLocation();
+
+    const navigate = useNavigate();
+    const allEvents = useSelector((state) => state.campaign);
 
     const load = async () => {
         const rewards = await getReward();
@@ -52,28 +86,20 @@ const LaunchPage = () => {
     React.useEffect(() => {
         load();
     }, []);
-    const allEvents = useSelector((state) => state.campaign);
-    console.log(allEvents);
     const PrizeListData = allEvents.rewards;
+    const AudienceListData = allEvents.audiences;
+    const TypeLabelList = [{ label: 'Reward' }, { label: 'Coupon' }];
     const PrizeLabelList = React.useMemo(() => {
         if (!PrizeListData) return [];
         return PrizeListData.map((item, index) => ({ label: item.name, id: item.id, key: index }));
     }, [PrizeListData]);
 
-    const AudienceListData = allEvents.audiences;
-    const AudienceLabelList = React.useMemo(() => {
-        if (!AudienceListData) return [];
-        return AudienceListData.map((item, index) => ({ label: item.name, id: item.id, key: index }));
-    }, [AudienceListData]);
-
     const validationSchema1 = Yup.object({
         selectname: Yup.string('Enter Prize name').required('Name is required'),
         launchdate: Yup.date('Enter Launch Date').required('Launch Date is required'),
         location: Yup.string('Enter Location').required('Location is required'),
-        userlimit: Yup.number('Enter user limit').required('User limit is required'),
-        eventcoins: Yup.number('Enter Eventcoins').required('Eventcoins is required'),
         endtime: Yup.date('Enter end time').required('End time is required'),
-        timelimit: Yup.string('Enter Time limit').required('Time limit is required')
+        audience: Yup.string('Enter Audience').required('Audience is required')
     });
 
     const validationSchema2 = Yup.object({
@@ -87,20 +113,21 @@ const LaunchPage = () => {
         ratelimit: Yup.number('Rate Limit must be number').required('Rate Limit is required')
     });
     const validationSchema3 = Yup.object({
-        audience: Yup.string('Enter Audience').required('Audience is required')
+        prize: Yup.array().min(1).required('Prize is required')
     });
     const validationSchema4 = Yup.object({
-        prize: Yup.string('Enter Prize').required('Prize is required')
+        videourl: Yup.string('Enter Video Url').required('Video Url is required'),
+        sponsorname: Yup.string('Enter Sponsor Name').required('Sponsor Name is required'),
+        files: Yup.array().min(1).required('Image is required')
     });
+
     const formik1 = useFormik({
         initialValues: {
             selectname: '',
             launchdate: '',
             location: '',
-            userlimit: '',
-            eventcoins: '',
             endtime: '',
-            timelimit: ''
+            audience: ''
         },
         validationSchema: validationSchema1,
         onSubmit: (values) => {}
@@ -121,25 +148,25 @@ const LaunchPage = () => {
         validationSchema: validationSchema2,
         onSubmit: (values) => {}
     });
-    const formik4 = useFormik({
+
+    const formik3 = useFormik({
         initialValues: {
-            audience: ''
+            prize: []
         },
         validationSchema: validationSchema3,
         onSubmit: (values) => {}
     });
-    const formik3 = useFormik({
+    const formik4 = useFormik({
         initialValues: {
-            prize: ''
+            videourl: '',
+            sponsorname: '',
+            logoUrl: '',
+            files: []
         },
         validationSchema: validationSchema4,
         onSubmit: (values) => {}
     });
 
-    const navigate = useNavigate();
-    const [isLoading, setLoading] = React.useState(false);
-    // const [isSnakebar, setSnakebar] = React.useState({ open: false, vertical: 'top', horizontal: 'right' });
-    // const { vertical, horizontal, open } = isSnakebar;
     const onCreatePrize = async (values) => {
         try {
             setLoading(true);
@@ -166,20 +193,55 @@ const LaunchPage = () => {
         }
     };
 
-    const handleNext = (eventInfo, prize, audience) => {
-        navigate('/launch/games/index', { state: { eventInfo, prize, audience } });
+    const handleNext = (eventInfo, prize, sponsor) => {
+        navigate('/launch/games/index', { state: { eventInfo, prize, sponsor } });
     };
 
-    React.useEffect(() => {
-        async function setInitialValues() {
-            if (!navigateState) return;
-            else {
-                await formik1.setValues(navigateState.eventInfo, false);
-                // await formik3.setValues(navigateState.prizeId, false);
-            }
-        }
-        setInitialValues();
-    }, [navigateState]);
+    // React.useEffect(() => {
+    //     async function setInitialValues() {
+    //         if (!navigateState) return;
+    //         else {
+    //             await formik1.setValues(navigateState.eventInfo, false);
+    //             // await formik3.setValues(navigateState.prizeId, false);
+    //         }
+    //     }
+    //     setInitialValues();
+    // }, [navigateState]);
+
+    const handleOpenModal = () => setOpenModal(true);
+    const handleCloseModal = () => setOpenModal(false);
+    const handleClose = () => {
+        setDialogValue({
+            label: ''
+        });
+        toggleOpen(false);
+    };
+
+    const [dialogValue, setDialogValue] = React.useState({
+        label: ''
+    });
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setValue({
+            label: dialogValue.label
+        });
+        handleClose();
+    };
+
+    const handleCreateAudience = async () => {
+        // console.log(dialogValue);
+        const data = await createAudience({
+            name: dialogValue.label
+        });
+        const audiences = await getAudience();
+        dispatch({ type: GET_AUDIENCES, audiences: audiences });
+        handleClose();
+    };
+    const AudienceLabelList = React.useMemo(() => {
+        if (!AudienceListData) return [];
+        return AudienceListData.map((item, index) => ({ label: item.name, id: item.id, key: index }));
+    }, [allEvents]);
 
     return (
         <>
@@ -276,7 +338,7 @@ const LaunchPage = () => {
                                 </LocalizationProvider>
                             </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm v={6}>
                             <Grid container>
                                 <TextField
                                     fullWidth
@@ -292,53 +354,220 @@ const LaunchPage = () => {
                                 />
                             </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Grid container>
-                                <TextField
-                                    fullWidth
-                                    label="User Limit"
-                                    margin="normal"
-                                    name="userlimit"
-                                    type="number"
-                                    value={formik1.values.userlimit}
-                                    onChange={formik1.handleChange}
-                                    error={formik1.touched.userlimit && Boolean(formik1.errors.userlimit)}
-                                    helperText={formik1.touched.userlimit && formik1.errors.userlimit}
-                                    sx={{ ...theme.typography.customInput }}
+                        <Grid item xs={6} sx={{ marginBottom: '50px', width: '100%' }}>
+                            <Grid
+                                container
+                                sx={{
+                                    '& .MuiAutocomplete-popper': {
+                                        '& .MuiPaper-root': {
+                                            backgroundColor: '#360068'
+                                        }
+                                    }
+                                }}
+                            >
+                                <Autocomplete
+                                    disablePortal
+                                    id="audience_label_list"
+                                    name="audience"
+                                    options={AudienceLabelList}
+                                    sx={{
+                                        ...theme.typography.customInput
+                                    }}
+                                    onChange={(e, v) => {
+                                        formik1.setFieldValue('audience', v.id);
+                                        if (typeof v === 'string') {
+                                            // timeout to avoid instant validation of the dialog's form.
+                                            setTimeout(() => {
+                                                toggleOpen(true);
+                                                setDialogValue({
+                                                    label: v
+                                                });
+                                            });
+                                        } else if (v && v.inputValue) {
+                                            toggleOpen(true);
+                                            setDialogValue({
+                                                label: v.inputValue
+                                            });
+                                        } else {
+                                            setValue(v);
+                                        }
+                                    }}
+                                    getOptionLabel={(option) => {
+                                        // e.g value selected with enter, right from the input
+                                        if (typeof option === 'string') {
+                                            return option;
+                                        }
+                                        if (option.inputValue) {
+                                            return option.inputValue;
+                                        }
+                                        return option.label;
+                                    }}
+                                    filterOptions={(options, params) => {
+                                        const filtered = filter(options, params);
+
+                                        if (params.inputValue !== '') {
+                                            filtered.push({
+                                                inputValue: params.inputValue,
+                                                label: `Add "${params.inputValue}"`
+                                            });
+                                            console.log(filtered);
+                                        }
+
+                                        return filtered;
+                                    }}
+                                    renderOption={(props, option) => <li {...props}>{option.label}</li>}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            error={formik1.touched.audience && Boolean(formik1.errors.audience)}
+                                            helperText={formik1.touched.audience && formik1.errors.audience}
+                                            label="Select Audience"
+                                        />
+                                    )}
                                 />
+                                <Dialog open={open} onClose={handleClose}>
+                                    <DialogTitle>Add a new audience</DialogTitle>
+                                    <DialogContent>
+                                        <DialogContentText>Did you miss any audience in our list? Please, add it!</DialogContentText>
+                                        <TextField
+                                            margin="dense"
+                                            id="name"
+                                            name="label"
+                                            value={dialogValue.label}
+                                            onChange={(event) =>
+                                                setDialogValue({
+                                                    ...dialogValue,
+                                                    label: event.target.value
+                                                })
+                                            }
+                                            label="label"
+                                            type="text"
+                                            variant="standard"
+                                        />
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleClose}>Cancel</Button>
+                                        <Button onClick={handleCreateAudience}>Add</Button>
+                                    </DialogActions>
+                                </Dialog>
                             </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Grid container>
-                                <TextField
-                                    fullWidth
-                                    label="Event Coins"
-                                    margin="normal"
-                                    name="eventcoins"
-                                    type="number"
-                                    value={formik1.values.eventcoins}
-                                    onChange={formik1.handleChange}
-                                    error={formik1.touched.eventcoins && Boolean(formik1.errors.eventcoins)}
-                                    helperText={formik1.touched.eventcoins && formik1.errors.eventcoins}
-                                    sx={{ ...theme.typography.customInput }}
-                                />
-                            </Grid>
+                    </Grid>
+                </form>
+
+                <Grid item xs={12} sx={{ marginBottom: '30px' }}>
+                    <Grid container alignContent="center" justifyContent="space-between">
+                        <Grid item>
+                            <Typography
+                                sx={{
+                                    fontFamily: 'Inter',
+                                    fontStyle: 'normal',
+                                    fontWeight: '700',
+                                    fontSize: '30px',
+                                    lineHeight: '36px',
+                                    color: '#FFFFFF'
+                                }}
+                            >
+                                Sponsorship
+                            </Typography>
                         </Grid>
+                    </Grid>
+                </Grid>
+                <form onSubmit={formik4.handleSubmit}>
+                    <Grid container spacing={gridSpacing}>
                         <Grid item xs={12} sm={6}>
                             <Grid container>
                                 <TextField
                                     fullWidth
-                                    label="Time Limit"
+                                    label="Sponsor Name"
                                     margin="normal"
-                                    name="timelimit"
+                                    name="sponsorname"
                                     type="text"
-                                    value={formik1.values.timelimit}
-                                    onChange={formik1.handleChange}
-                                    error={formik1.touched.timelimit && Boolean(formik1.errors.timelimit)}
-                                    helperText={formik1.touched.timelimit && formik1.errors.timelimit}
+                                    value={formik4.values.sponsorname}
+                                    onChange={formik4.handleChange}
+                                    error={formik4.touched.sponsorname && Boolean(formik4.errors.sponsorname)}
+                                    helperText={formik4.touched.sponsorname && formik4.errors.sponsorname}
                                     sx={{ ...theme.typography.customInput }}
                                 />
                             </Grid>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Grid container>
+                                <TextField
+                                    fullWidth
+                                    label="Video Url"
+                                    margin="normal"
+                                    name="videourl"
+                                    type="text"
+                                    value={formik4.values.videourl}
+                                    onChange={(e) => {
+                                        formik4.handleChange(e);
+                                        setVideoUrl(e.target.value);
+                                    }}
+                                    error={formik4.touched.videourl && Boolean(formik4.errors.videourl)}
+                                    helperText={formik4.touched.videourl && formik4.errors.videourl}
+                                    sx={{ ...theme.typography.customInput }}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12} sm={6} sx={{ cursor: 'pointer' }}>
+                            <Grid container sx={{ border: '1px solid #FFF', borderRadius: '12px', height: '100%' }}>
+                                <Dropzone
+                                    onDrop={(acceptedFiles) => {
+                                        acceptedFiles.forEach((item, index) => {
+                                            if (formik4.values.files.length >= 3) return;
+                                            formik4.values.files.push(item);
+                                        });
+                                    }}
+                                    maxFiles={3}
+                                >
+                                    {({ getRootProps, getInputProps, open, acceptedFiles }) => (
+                                        <div {...getRootProps()} style={{ height: '35vh', width: '100%', textAlign: 'center' }}>
+                                            <input {...getInputProps()} />
+
+                                            <img
+                                                src={
+                                                    formik4.values.logoUrl.length !== 0
+                                                        ? baseServerUrl + '/companies/' + formik4.values.logoUrl
+                                                        : ''
+                                                }
+                                                alt=""
+                                            />
+                                            <p
+                                                style={{
+                                                    borderBottom: '1px solid',
+                                                    fontSize: '25px',
+                                                    margin: '0px',
+                                                    paddingBottom: '15px'
+                                                }}
+                                            >
+                                                Upload logo
+                                            </p>
+                                            <div style={{ display: 'flex', padding: '20px' }}>
+                                                {formik4.values.files.map((file, index) => {
+                                                    return (
+                                                        <div key={index} style={{ width: '33.33%' }}>
+                                                            {/* <DeleteOutlinedIcon onClick={console.log(index)} /> */}
+                                                            <img
+                                                                src={URL.createObjectURL(file)}
+                                                                alt="preview"
+                                                                style={{ padding: '10px', height: '25vh', width: '100%' }}
+                                                            />
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
+                                </Dropzone>
+                                {/* <DropzoneAreaExample /> */}
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Container>
+                                <ReactPlayer width={'100%'} height="100%" url={videoUrl} playing={true} muted={true} controls={true} />
+                                {/* <ControlIcons /> */}
+                            </Container>
                         </Grid>
                     </Grid>
                 </form>
@@ -363,13 +592,7 @@ const LaunchPage = () => {
                             <Button
                                 disableElevation
                                 variant="contained"
-                                onClick={async () => {
-                                    const errors = await formik2.validateForm();
-                                    formik2.submitForm();
-                                    if (Object.keys(errors).length == 0) {
-                                        onCreatePrize(formik2.values);
-                                    }
-                                }}
+                                onClick={handleOpenModal}
                                 sx={{
                                     borderRadius: '8.8',
                                     backgroundColor: '#04B4DD',
@@ -402,6 +625,7 @@ const LaunchPage = () => {
                             >
                                 <Autocomplete
                                     disablePortal
+                                    multiple
                                     id="prize_label_list"
                                     name="prize"
                                     options={PrizeLabelList}
@@ -409,7 +633,13 @@ const LaunchPage = () => {
                                         ...theme.typography.customInput
                                     }}
                                     onChange={(e, v) => {
-                                        formik3.setFieldValue('prize', v.id);
+                                        console.log(v);
+                                        formik3.values.prize = [];
+                                        v.forEach((item, index) => {
+                                            console.log(item);
+                                            formik3.values.prize.push(item.id);
+                                        });
+                                        console.log(formik3.values.prize);
                                     }}
                                     renderOption={(props, option) => {
                                         return (
@@ -431,219 +661,232 @@ const LaunchPage = () => {
                         </Grid>
                     </Grid>
                 </form>
-                <form onSubmit={formik2.handleSubmit}>
-                    <Grid container spacing={gridSpacing}>
-                        <Grid item xs={12} sx={{ width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-                            <Grid container alignContent="center" justifyContent="space-between">
-                                <Grid item>
-                                    <Typography
+                <Modal
+                    open={openModal}
+                    onClose={handleCloseModal}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: 1400,
+                            bgcolor: '#360068',
+                            opacity: '0.88',
+
+                            border: '2px solid #000',
+                            boxShadow: '39.9357px 7.35657px 132.418px rgba(0, 0, 0, 0.4)',
+                            p: 8
+                        }}
+                    >
+                        <form onSubmit={formik2.handleSubmit}>
+                            <Grid container spacing={gridSpacing}>
+                                <Grid item xs={12} sx={{ width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+                                    <Grid container alignContent="center" justifyContent="space-between">
+                                        <Grid item>
+                                            <Typography
+                                                sx={{
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '400',
+                                                    fontSize: '26px',
+                                                    lineHeight: '180%',
+                                                    color: '#FFFFFF',
+                                                    marginBottom: '30px'
+                                                }}
+                                            >
+                                                Please Add Your Prize
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <Grid container>
+                                        <TextField
+                                            fullWidth
+                                            id="name"
+                                            label="Name"
+                                            margin="normal"
+                                            name="name"
+                                            type="text"
+                                            value={formik2.values.name}
+                                            onChange={formik2.handleChange}
+                                            error={formik2.touched.name && Boolean(formik2.errors.name)}
+                                            helperText={formik2.touched.name && formik2.errors.name}
+                                            sx={{ ...theme.typography.customInput }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <Grid
+                                        container
                                         sx={{
-                                            fontFamily: 'Inter',
-                                            fontStyle: 'normal',
-                                            fontWeight: '400',
-                                            fontSize: '16px',
-                                            lineHeight: '180%',
-                                            color: '#FFFFFF',
-                                            marginBottom: '30px'
+                                            '& .MuiAutocomplete-popper': {
+                                                '& .MuiPaper-root': {
+                                                    backgroundColor: '#360068'
+                                                }
+                                            }
                                         }}
                                     >
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. At quam diam viverra pellentesque tincidunt
-                                        duis in. Ornare.
-                                    </Typography>
+                                        <Autocomplete
+                                            disablePortal
+                                            id="type_label_list"
+                                            name="type"
+                                            options={TypeLabelList}
+                                            sx={{
+                                                ...theme.typography.customInput
+                                            }}
+                                            onChange={(e, v) => {
+                                                formik2.setFieldValue('type', v.label);
+                                            }}
+                                            renderOption={(props, option) => {
+                                                return <li {...props}>{option.label}</li>;
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    error={formik2.touched.type && Boolean(formik2.errors.type)}
+                                                    helperText={formik2.touched.type && formik2.errors.type}
+                                                    label="Type"
+                                                />
+                                            )}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <Grid container>
+                                        <TextField
+                                            fullWidth
+                                            label="Category"
+                                            margin="normal"
+                                            name="category"
+                                            type="text"
+                                            id="category"
+                                            value={formik2.values.category}
+                                            onChange={formik2.handleChange}
+                                            error={formik2.touched.category && Boolean(formik2.errors.category)}
+                                            helperText={formik2.touched.category && formik2.errors.category}
+                                            sx={{ ...theme.typography.customInput }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <Grid container>
+                                        <TextField
+                                            fullWidth
+                                            label="Image URL"
+                                            margin="normal"
+                                            name="image_url"
+                                            type="text"
+                                            id="image_url"
+                                            value={formik2.values.image_url}
+                                            onChange={formik2.handleChange}
+                                            error={formik2.touched.image_url && Boolean(formik2.errors.image_url)}
+                                            helperText={formik2.touched.image_url && formik2.errors.image_url}
+                                            sx={{ ...theme.typography.customInput }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <Grid container>
+                                        <TextField
+                                            fullWidth
+                                            label="Description"
+                                            margin="normal"
+                                            name="description"
+                                            type="text"
+                                            id="description"
+                                            value={formik2.values.description}
+                                            onChange={formik2.handleChange}
+                                            error={formik2.touched.description && Boolean(formik2.errors.description)}
+                                            helperText={formik2.touched.description && formik2.errors.description}
+                                            sx={{ ...theme.typography.customInput }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <Grid container>
+                                        <TextField
+                                            fullWidth
+                                            label="Coin Value"
+                                            margin="normal"
+                                            name="coinvalue"
+                                            type="number"
+                                            id="coinvalue"
+                                            value={formik2.values.coinvalue}
+                                            onChange={formik2.handleChange}
+                                            error={formik2.touched.coinvalue && Boolean(formik2.errors.coinvalue)}
+                                            helperText={formik2.touched.coinvalue && formik2.errors.coinvalue}
+                                            sx={{ ...theme.typography.customInput }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <Grid container>
+                                        <TextField
+                                            fullWidth
+                                            label="Rate Limit"
+                                            margin="normal"
+                                            name="ratelimit"
+                                            type="number"
+                                            id="ratelimit"
+                                            value={formik2.values.ratelimit}
+                                            onChange={formik2.handleChange}
+                                            error={formik2.touched.ratelimit && Boolean(formik2.errors.ratelimit)}
+                                            helperText={formik2.touched.ratelimit && formik2.errors.ratelimit}
+                                            sx={{ ...theme.typography.customInput }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <Grid container>
+                                        <TextField
+                                            fullWidth
+                                            label="Time Limit"
+                                            margin="normal"
+                                            name="timelimit"
+                                            type="number"
+                                            id="timelimit"
+                                            value={formik2.values.timelimit}
+                                            onChange={formik2.handleChange}
+                                            error={formik2.touched.timelimit && Boolean(formik2.errors.timelimit)}
+                                            helperText={formik2.touched.timelimit && formik2.errors.timelimit}
+                                            sx={{ ...theme.typography.customInput }}
+                                        />
+                                    </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Grid container>
-                                <TextField
-                                    fullWidth
-                                    id="name"
-                                    label="Name"
-                                    margin="normal"
-                                    name="name"
-                                    type="text"
-                                    value={formik2.values.name}
-                                    onChange={formik2.handleChange}
-                                    error={formik2.touched.name && Boolean(formik2.errors.name)}
-                                    helperText={formik2.touched.name && formik2.errors.name}
-                                    sx={{ ...theme.typography.customInput }}
-                                />
+                            <Grid item xs={3}>
+                                <Button
+                                    disableElevation
+                                    onClick={async () => {
+                                        const errors = await formik2.validateForm();
+                                        formik2.submitForm();
+                                        if (Object.keys(errors).length == 0) {
+                                            onCreatePrize(formik2.values);
+                                        }
+                                        handleCloseModal();
+                                    }}
+                                    variant="contained"
+                                    sx={{
+                                        borderRadius: '8.8',
+                                        backgroundColor: '#FF0676',
+                                        width: '120px',
+                                        height: '40px',
+                                        fontSize: '16px',
+                                        fontWeight: '700',
+                                        lineHeight: '19px'
+                                    }}
+                                >
+                                    Create
+                                </Button>
                             </Grid>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Grid container>
-                                <TextField
-                                    fullWidth
-                                    label="Type"
-                                    margin="normal"
-                                    name="type"
-                                    type="text"
-                                    id="type"
-                                    value={formik2.values.type}
-                                    onChange={formik2.handleChange}
-                                    error={formik2.touched.type && Boolean(formik2.errors.type)}
-                                    helperText={formik2.touched.type && formik2.errors.type}
-                                    sx={{ ...theme.typography.customInput }}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Grid container>
-                                <TextField
-                                    fullWidth
-                                    label="Category"
-                                    margin="normal"
-                                    name="category"
-                                    type="text"
-                                    id="category"
-                                    value={formik2.values.category}
-                                    onChange={formik2.handleChange}
-                                    error={formik2.touched.category && Boolean(formik2.errors.category)}
-                                    helperText={formik2.touched.category && formik2.errors.category}
-                                    sx={{ ...theme.typography.customInput }}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Grid container>
-                                <TextField
-                                    fullWidth
-                                    label="Image URL"
-                                    margin="normal"
-                                    name="image_url"
-                                    type="text"
-                                    id="image_url"
-                                    value={formik2.values.image_url}
-                                    onChange={formik2.handleChange}
-                                    error={formik2.touched.image_url && Boolean(formik2.errors.image_url)}
-                                    helperText={formik2.touched.image_url && formik2.errors.image_url}
-                                    sx={{ ...theme.typography.customInput }}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Grid container>
-                                <TextField
-                                    fullWidth
-                                    label="Description"
-                                    margin="normal"
-                                    name="description"
-                                    type="text"
-                                    id="description"
-                                    value={formik2.values.description}
-                                    onChange={formik2.handleChange}
-                                    error={formik2.touched.description && Boolean(formik2.errors.description)}
-                                    helperText={formik2.touched.description && formik2.errors.description}
-                                    sx={{ ...theme.typography.customInput }}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Grid container>
-                                <TextField
-                                    fullWidth
-                                    label="Coin Value"
-                                    margin="normal"
-                                    name="coinvalue"
-                                    type="number"
-                                    id="coinvalue"
-                                    value={formik2.values.coinvalue}
-                                    onChange={formik2.handleChange}
-                                    error={formik2.touched.coinvalue && Boolean(formik2.errors.coinvalue)}
-                                    helperText={formik2.touched.coinvalue && formik2.errors.coinvalue}
-                                    sx={{ ...theme.typography.customInput }}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Grid container>
-                                <TextField
-                                    fullWidth
-                                    label="Rate Limit"
-                                    margin="normal"
-                                    name="ratelimit"
-                                    type="number"
-                                    id="ratelimit"
-                                    value={formik2.values.ratelimit}
-                                    onChange={formik2.handleChange}
-                                    error={formik2.touched.ratelimit && Boolean(formik2.errors.ratelimit)}
-                                    helperText={formik2.touched.ratelimit && formik2.errors.ratelimit}
-                                    sx={{ ...theme.typography.customInput }}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Grid container>
-                                <TextField
-                                    fullWidth
-                                    label="Time Limit"
-                                    margin="normal"
-                                    name="timelimit"
-                                    type="number"
-                                    id="timelimit"
-                                    value={formik2.values.timelimit}
-                                    onChange={formik2.handleChange}
-                                    error={formik2.touched.timelimit && Boolean(formik2.errors.timelimit)}
-                                    helperText={formik2.touched.timelimit && formik2.errors.timelimit}
-                                    sx={{ ...theme.typography.customInput }}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </form>
-                <Grid item xs={12} sx={{ marginBottom: '30px' }}>
-                    <Grid container alignContent="center" justifyContent="space-between">
-                        <Grid item>
-                            <Typography
-                                sx={{
-                                    fontFamily: 'Inter',
-                                    fontStyle: 'normal',
-                                    fontWeight: '700',
-                                    fontSize: '30px',
-                                    lineHeight: '36px',
-                                    color: '#FFFFFF'
-                                }}
-                            >
-                                Select Audiance Bucket
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <form onSubmit={formik4.handleSubmit}>
-                    <Grid item xs={12} sx={{ marginBottom: '50px', width: '100%' }}>
-                        <Grid
-                            container
-                            sx={{
-                                '& .MuiAutocomplete-popper': {
-                                    '& .MuiPaper-root': {
-                                        backgroundColor: '#360068'
-                                    }
-                                }
-                            }}
-                        >
-                            <Autocomplete
-                                disablePortal
-                                id="audience_label_list"
-                                name="audience"
-                                options={AudienceLabelList}
-                                sx={{
-                                    ...theme.typography.customInput
-                                }}
-                                onChange={(e, v) => {
-                                    formik4.setFieldValue('audience', v.id);
-                                }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        error={formik4.touched.audience && Boolean(formik4.errors.audience)}
-                                        helperText={formik4.touched.audience && formik4.errors.audience}
-                                        label="Select Audience"
-                                    />
-                                )}
-                            />
-                        </Grid>
-                    </Grid>
-                </form>
+                        </form>
+                    </Box>
+                </Modal>
                 <Grid item xs={3}>
                     <Button
                         type="submit"
@@ -652,6 +895,7 @@ const LaunchPage = () => {
                             const errors = await formik1.validateForm();
                             const errors3 = await formik3.validateForm();
                             const errors4 = await formik4.validateForm();
+                            console.log(errors4, errors, errors3);
                             await formik1.submitForm();
                             await formik3.submitForm();
                             await formik4.submitForm();

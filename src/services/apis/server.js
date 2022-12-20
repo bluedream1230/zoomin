@@ -13,7 +13,8 @@ import {
     API_UPDATE_USER_INFO,
     API_UPDATE_BILL_INFO,
     API_UPDATE_RESET_PASS,
-    API_UPDATE_PASS
+    API_UPDATE_PASS,
+    API_ADD_TRIVIA
 } from 'store/api';
 
 export const getCampaign = async () => {
@@ -36,6 +37,10 @@ export const createPrize = async (data) => {
     return Api.post(API_REWARD_DATA, data);
 };
 
+export const createAudience = async (data) => {
+    return Api.post(API_AUDIENCE_DATA, data);
+};
+
 export const getEventInfo = async (id) => {
     return Api.get(API_EVENT_INFO_ITEM, {}, { id });
 };
@@ -48,8 +53,13 @@ export const getUsers = async (id) => {
     return Api.get(API_USERS_DATA, {}, { id });
 };
 
-export const createEvent = async (data, gameId, rewardId, audienceId) => {
-    return Api.post(API_CAMPAIGN_DATA, data, { gameId, rewardId, audienceId });
+export const createEvent = async (data, videourl, rewardIds, gameId, audienceId, files) => {
+    return Api.uploadFile(
+        API_CAMPAIGN_DATA,
+        { data: JSON.stringify(data), rewardIds: JSON.stringify(rewardIds), videourl: JSON.stringify(videourl) },
+        { gameId, audienceId },
+        files
+    );
 };
 
 export const sendMail = async (data) => {
@@ -70,4 +80,8 @@ export const updateBillInfo = async (data) => {
 
 export const updatePass = async (data) => {
     return Api.post(API_UPDATE_PASS, data);
+};
+
+export const addTrivia = async () => {
+    return Api.post(API_ADD_TRIVIA);
 };

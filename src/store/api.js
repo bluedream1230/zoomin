@@ -1,6 +1,6 @@
 export const API_USER_SIGN_IN = '/api/auth/login';
 export const API_USER_SIGN_UP = '/api/auth/create';
-export const API_CAMPAIGN_DATA = '/api/events/:gameId&:rewardId&:audienceId';
+export const API_CAMPAIGN_DATA = '/api/events/:gameId/:audienceId';
 export const API_GET_CAMPAIGN_DATA = '/api/events';
 export const API_GET_REWARD_DATA = 'api/rewards/rewardsinfo';
 export const API_REWARD_DATA = '/api/rewards';
@@ -13,3 +13,4 @@ export const API_RESETPASSWORD = '/api/mail/resetpassword';
 export const API_UPDATE_USER_INFO = '/api/users/update';
 export const API_UPDATE_BILL_INFO = '/api/users/bill';
 export const API_UPDATE_PASS = '/api/auth/updatePass';
+export const API_ADD_TRIVIA = 'https://saviour.earth/ZoomIn/api/index.php/Trivia/addTrivia';

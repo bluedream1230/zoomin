@@ -81,23 +81,11 @@ const useStyles = makeStyles({
 
 export default function ImgMediaCard(props) {
     const classes = useStyles();
-    const [selected, setSelected] = React.useState(false);
-    const navigate = useNavigate();
-    const handlePlay = () => {
-        console.log('Play now: ', props.card_name, props.state.eventInfo, props.card_image, props.game_id);
-        const eventInfo = props.state.eventInfo;
-        const prizeId = props.state.prize;
-        const audienceId = props.state.audience;
-        console.log('navi', eventInfo, prizeId, audienceId);
-        navigate('/launch/summary/index', { state: { eventInfo, prizeId, audienceId, gameId: props.game_id, gameImg: props.card_image } });
-        //TODO: Play game
-    };
+    const [selected, setSelected] = React.useState(true);
 
     const handleClick = () => {
-        setSelected(!selected);
-        //TODO: Play game
+        setSelected(true);
     };
-
     return (
         <FiCard
             onClick={handleClick}
@@ -115,7 +103,7 @@ export default function ImgMediaCard(props) {
             }}
         >
             <Checkbox
-                checked={selected}
+                checked={props.formikvalue == props.game_id && selected}
                 icon={<PanoramaFishEyeRounded sx={{ color: 'white' }} />}
                 checkedIcon={<CheckCircleRounded sx={{ color: '#02DF6A' }} />}
                 sx={{ zIndex: 10, color: 'white', position: 'absolute', top: '0px', right: '0px' }}
@@ -135,20 +123,6 @@ export default function ImgMediaCard(props) {
                     display: 'inline-block'
                 }}
             />
-            <FiCardActions className={classes.fiCardContent}>
-                <Button
-                    // component={LaunchSummaryView}
-                    // to="/launch/summary/index"
-                    size="small"
-                    color="inherit"
-                    variant="none"
-                    sx={{ fontSize: '20px', padding: '0px' }}
-                    onClick={handlePlay}
-                >
-                    Select Game
-                </Button>
-                <SvgIcon component={East} />
-            </FiCardActions>
         </FiCard>
     );
 }

@@ -8,7 +8,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 import { Edit } from 'tabler-icons-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createEvent, getGame } from 'services/apis/server';
+import { addTrivia, createEvent, getGame } from 'services/apis/server';
 import { GET_GAMES } from 'store/actions';
 import { values } from 'lodash';
 import { store } from 'store';
@@ -25,29 +25,34 @@ const CampaignSummary = () => {
 
     const allEvents = useSelector((state) => state.campaign);
     const PrizeListData = allEvents.rewards;
-    console.log(allEvents);
-    let prizeLabel = '';
+    console.log(state);
+    let prizeLabel = [];
     PrizeListData.forEach((item) => {
-        if (item.id == state.prizeId.prize) {
-            prizeLabel = item.name;
-        }
+        state.navigateState.screen1.prize.prize.forEach((prizeitem) => {
+            if (item.id == prizeitem) {
+                prizeLabel.push(item.name);
+                console.log('prizelabel', prizeLabel);
+            }
+        });
     });
 
     const AudienceListData = allEvents.audiences;
     let audienceLabel = '';
     AudienceListData.forEach((item) => {
-        if (item.id == state.audienceId.audience) {
+        if (item.id == state.navigateState.screen1.eventInfo.audience) {
             audienceLabel = item.name;
+            console.log('audience:', audienceLabel);
         }
     });
 
     const GameListData = allEvents.games;
-    let gameLabel = '';
+    let gameInfo;
     GameListData.forEach((item) => {
-        if (item.id == state.gameId) {
-            gameLabel = item.name;
+        if (item.id == state.navigateState.screen2.gameid) {
+            gameInfo = item;
         }
     });
+    console.log(gameInfo);
 
     const theme = createTheme({
         breakpoints: {
@@ -63,33 +68,51 @@ const CampaignSummary = () => {
     const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
     const navigate = useNavigate();
-
-    const handleClick = () => {
-        const eventInfo = state.eventInfo;
-        const prizeId = state.prizeId;
-        const audienceId = state.audienceId;
-        navigate('/launch/index', { state: { eventInfo, prizeId, audienceId } });
+    let trivia;
+    const getTriviaInfo = async () => {
+        console.log('sdfafdasd');
+        try {
+            // navigate('https://saviour.earth/ZoomIn/trivia/create_trivia.php');
+            trivia = await addTrivia();
+        } catch (e) {
+            console.log(e);
+        }
     };
-    console.log('time:', state.eventInfo.endtime.$d);
-    console.log('state', state);
+    const handleClick = () => {
+        navigate('/launch/index');
+    };
     const [isLoading, setLoading] = React.useState(false);
+    let trivia_id = 0;
+    let trivia_url = '';
+
+    if (trivia != null) {
+        trivia_id = trivia.trivia_id;
+        trivia_url = trivia.url;
+    }
+
     const onCreateEvent = async () => {
         try {
             setLoading(true);
+            console.log('files:', state.navigateState.screen1.sponsor.files);
             const data = await createEvent(
                 {
-                    name: state.eventInfo.selectname,
-                    location: state.eventInfo.location,
-                    start_time: state.eventInfo.launchdate.$d,
-                    end_time: state.eventInfo.endtime.$d,
-                    user_limit: state.eventInfo.userlimit,
-                    event_coins: state.eventInfo.eventcoins,
-                    duration: state.eventInfo.timelimit,
+                    name: state.navigateState.screen1.eventInfo.selectname,
+                    location: state.navigateState.screen1.eventInfo.location,
+                    start_time: state.navigateState.screen1.eventInfo.launchdate.$d,
+                    end_time: state.navigateState.screen1.eventInfo.endtime.$d,
+                    event_coins: state.navigateState.screen2.eventcoins,
+                    duration: state.navigateState.screen2.timelimit,
+                    sponsorname: state.navigateState.screen1.sponsor.sponsorname,
+                    rewardpool: state.navigateState.screen2.rewardpool,
+                    trivia_id: trivia_id,
+                    trivia_url: trivia_url,
                     user: states.auth.user
                 },
-                state.gameId,
-                state.prizeId.prize,
-                state.audienceId.audience
+                state.navigateState.screen1.sponsor.videourl,
+                state.navigateState.screen1.prize.prize,
+                state.navigateState.screen2.gameid,
+                state.navigateState.screen1.eventInfo.audience,
+                state.navigateState.screen1.sponsor.files
             );
             console.log('data:', data);
             navigate('/campaigns/performance');
@@ -162,7 +185,7 @@ const CampaignSummary = () => {
                                             color: '#FF0676'
                                         }}
                                     >
-                                        {state.eventInfo.selectname}
+                                        {state.navigateState.screen1.eventInfo.selectname}
                                     </Typography>
                                 </CardContent>
                             </Grid>
@@ -197,8 +220,9 @@ const CampaignSummary = () => {
                                                 color: '#FFFFFF'
                                             }}
                                         >
-                                            {state.eventInfo.launchdate.$M + 1}.{state.eventInfo.launchdate.$D}.
-                                            {state.eventInfo.launchdate.$y}
+                                            {state.navigateState.screen1.eventInfo.launchdate.$M + 1}.
+                                            {state.navigateState.screen1.eventInfo.launchdate.$D}.
+                                            {state.navigateState.screen1.eventInfo.launchdate.$y}
                                         </Typography>
                                     </CardContent>
                                 </Grid>
@@ -234,7 +258,7 @@ const CampaignSummary = () => {
                                                 color: '#04B4DD'
                                             }}
                                         >
-                                            ${state.eventInfo.eventcoins}
+                                            ${state.navigateState.screen2.eventcoins}
                                         </Typography>
                                     </CardContent>
                                 </Grid>
@@ -309,7 +333,7 @@ const CampaignSummary = () => {
                                                     color: '#43CC83'
                                                 }}
                                             >
-                                                {gameLabel}
+                                                {gameInfo.name}
                                             </Typography>
                                         </CardContent>
                                     </Grid>
@@ -328,9 +352,9 @@ const CampaignSummary = () => {
                             >
                                 <CardMedia
                                     component="img"
-                                    image={state.gameImg}
+                                    image={gameInfo.img_url}
                                     width="100%"
-                                    alt={gameLabel}
+                                    alt={gameInfo.name}
                                     sx={{
                                         borderRadius: '20px',
                                         height: `${matchesMD ? '210px' : '285px'}`
@@ -370,12 +394,32 @@ const CampaignSummary = () => {
                             height: '45px',
                             fontSize: '18px',
                             fontWeight: '600',
-                            color: 'white'
+                            color: 'white',
+                            marginRight: '35px'
                         }}
                         startIcon={<Edit />}
                     >
                         Edit
                     </Button>
+                    {gameInfo.type == 'trivia' && gameInfo.name == 'trivia' && (
+                        <Button
+                            // component={CampaignEdit}
+                            // to="/launch/index"
+                            onClick={() => getTriviaInfo()}
+                            variant="outlined"
+                            sx={{
+                                borderRadius: '9.8px',
+                                border: '1px solid #04B4DD',
+                                width: '130px',
+                                height: '45px',
+                                fontSize: '18px',
+                                fontWeight: '600',
+                                color: 'white'
+                            }}
+                        >
+                            Add Trivia
+                        </Button>
+                    )}
                 </Grid>
             </form>
         </MainCard>

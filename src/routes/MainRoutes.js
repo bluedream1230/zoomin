@@ -13,6 +13,7 @@ const DashbaordSingleReportView = Loadable(lazy(() => import('views/dashboard/Si
 const LaunchMainView = Loadable(lazy(() => import('views/launch')));
 const LaunchGameView = Loadable(lazy(() => import('views/launch/games')));
 const LaunchSummary = Loadable(lazy(() => import('views/launch/summary')));
+const LaunchSubscriptionView = Loadable(lazy(() => import('views/launch/subscription')));
 
 //performaces routing
 const PerformaceView = Loadable(lazy(() => import('views/campaigns/Performance')));
@@ -65,6 +66,10 @@ const MainRoutes = {
                 {
                     path: 'games/index',
                     element: <LaunchGameView />
+                },
+                {
+                    path: 'subscription/index',
+                    element: <LaunchSubscriptionView />
                 },
                 {
                     path: 'summary/index',
