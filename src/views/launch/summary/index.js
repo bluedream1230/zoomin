@@ -73,7 +73,10 @@ const CampaignSummary = () => {
         console.log('sdfafdasd');
         try {
             // navigate('https://saviour.earth/ZoomIn/trivia/create_trivia.php');
-            trivia = await addTrivia();
+            trivia = await addTrivia({
+                name: state.navigateState.screen1.eventInfo.selectname,
+                user_id: states.auth.user
+            });
         } catch (e) {
             console.log(e);
         }

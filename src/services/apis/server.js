@@ -82,6 +82,6 @@ export const updatePass = async (data) => {
     return Api.post(API_UPDATE_PASS, data);
 };
 
-export const addTrivia = async () => {
-    return Api.post(API_ADD_TRIVIA);
+export const addTrivia = async (data) => {
+    return Api.post(API_ADD_TRIVIA, data);
 };
