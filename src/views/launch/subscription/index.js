@@ -24,6 +24,7 @@ const SelectSubscriptionPage = () => {
     const [openModal, setOpenModal] = React.useState(false);
     const handleCloseModal = () => setOpenModal(false);
     const [price, setPrice] = React.useState(20);
+    const [coin, setCoin] = React.useState(1000);
     const stripe = useStripe();
     const elements = useElements();
 
@@ -35,14 +36,21 @@ const SelectSubscriptionPage = () => {
         // Show Loading
         await createSubscription();
         // Hide Loading
-        navigate('/launch/summary/index', { state: { ...navigateState, screen3: price } });
+        navigate('/launch/summary/index', { state: { ...navigateState, screen3: { price: price, coin: coin } } });
     };
 
     const handleOpenSubscribeModal = (type) => {
         console.log('open modal ', type);
-        if (type == 1) setPrice(20);
-        else if (type == 2) setPrice(100);
-        else setPrice(1000);
+        if (type == 1) {
+            setPrice(20);
+            setCoin(1000);
+        } else if (type == 2) {
+            setPrice(100);
+            setCoin(10000);
+        } else {
+            setPrice(1000);
+            setCoin(500000);
+        }
         setOpenModal(true);
     };
 
