@@ -71,7 +71,7 @@ const CampaignSummary = () => {
     const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
     const navigate = useNavigate();
-    const [trivia, setTrivia] = React.useState(null);
+    const [trivia, setTrivia] = React.useState();
     const getTriviaInfo = async () => {
         console.log('sdfafdasd');
         try {
@@ -104,8 +104,8 @@ const CampaignSummary = () => {
                     event_coins: state.screen3.price,
                     duration: state.screen2.timelimit,
                     sponsorname: state.screen1.sponsor.sponsorname,
-                    trivia_id: trivia.trivia_id,
-                    trivia_url: trivia.url,
+                    trivia_id: trivia?.trivia_id,
+                    trivia_url: trivia?.url,
                     user: states.auth.user
                 },
                 state.screen1.sponsor.videourl,
