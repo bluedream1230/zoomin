@@ -32,14 +32,12 @@ const SelectGamePage = () => {
         load();
     }, []);
     const validationSchema1 = Yup.object({
-        eventcoins: Yup.number('Enter Eventcoins').required('Eventcoins is required'),
         timelimit: Yup.number('Enter Time limit').required('Time limit is required'),
         rewardpool: Yup.number('Enter Prize Pool').required('Prize pool is required'),
         gameid: Yup.number('Select Game').min(1, 'Game is required').required('Game is required')
     });
     const formik1 = useFormik({
         initialValues: {
-            eventcoins: '',
             timelimit: '',
             rewardpool: '',
             gameid: 0
@@ -120,23 +118,7 @@ const SelectGamePage = () => {
                             </Typography>
                         </Grid>
                         <Grid container>
-                            <Grid item xs={12} sm={4}>
-                                <Grid container>
-                                    <TextField
-                                        fullWidth
-                                        label="Event Coins"
-                                        margin="normal"
-                                        name="eventcoins"
-                                        type="number"
-                                        value={formik1.values.eventcoins}
-                                        onChange={formik1.handleChange}
-                                        error={formik1.touched.eventcoins && Boolean(formik1.errors.eventcoins)}
-                                        helperText={formik1.touched.eventcoins && formik1.errors.eventcoins}
-                                        sx={{ ...theme.typography.customInput }}
-                                    />
-                                </Grid>
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
+                            <Grid item xs={12} sm={6}>
                                 <Grid container>
                                     <TextField
                                         fullWidth
@@ -152,7 +134,7 @@ const SelectGamePage = () => {
                                     />
                                 </Grid>
                             </Grid>
-                            <Grid item xs={12} sm={4}>
+                            <Grid item xs={12} sm={6}>
                                 <Grid container>
                                     <TextField
                                         fullWidth
