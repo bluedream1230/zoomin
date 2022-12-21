@@ -13,6 +13,7 @@ import { GET_GAMES } from 'store/actions';
 import { values } from 'lodash';
 import jwt_decode from 'jwt-decode';
 import { store } from 'store';
+import { useEffect } from 'react';
 const CampaignPerformances = React.forwardRef((props, ref) => (
     <RouterLink ref={ref} to="/campaigns/performance" {...props} role={undefined} />
 ));
@@ -70,16 +71,17 @@ const CampaignSummary = () => {
     const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
     const navigate = useNavigate();
-    let trivia;
+    const [trivia, setTrivia] = React.useState(null);
     const getTriviaInfo = async () => {
         console.log('sdfafdasd');
         try {
             // navigate('https://saviour.earth/ZoomIn/trivia/create_trivia.php');
-            trivia = await addTrivia({
+            const data = await addTrivia({
                 name: state.navigateState.screen1.eventInfo.selectname,
                 user_id: decoded.id
             });
-            console.log(trivia);
+            console.log(data);
+            setTrivia(data);
         } catch (e) {
             console.log(e);
         }
@@ -88,14 +90,6 @@ const CampaignSummary = () => {
         navigate('/launch/index');
     };
     const [isLoading, setLoading] = React.useState(false);
-    let trivia_id = 0;
-    let trivia_url = '';
-
-    if (trivia != null) {
-        trivia_id = trivia.trivia_id;
-        trivia_url = trivia.url;
-    }
-
     const onCreateEvent = async () => {
         try {
             setLoading(true);
@@ -110,8 +104,8 @@ const CampaignSummary = () => {
                     duration: state.navigateState.screen2.timelimit,
                     sponsorname: state.navigateState.screen1.sponsor.sponsorname,
                     rewardpool: state.navigateState.screen2.rewardpool,
-                    trivia_id: trivia_id,
-                    trivia_url: trivia_url,
+                    trivia_id: trivia.trivia_id,
+                    trivia_url: trivia.url,
                     user: states.auth.user
                 },
                 state.navigateState.screen1.sponsor.videourl,
@@ -120,7 +114,7 @@ const CampaignSummary = () => {
                 state.navigateState.screen1.eventInfo.audience,
                 state.navigateState.screen1.sponsor.files
             );
-            console.log('data:', data, trivia_id, trivia_url);
+            console.log('data:', data);
             navigate('/campaigns/performance');
             setLoading(false);
         } catch (e) {
