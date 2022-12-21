@@ -31,7 +31,7 @@ const CampaignSummary = () => {
     const decoded = jwt_decode(states.auth.token);
     let prizeLabel = [];
     PrizeListData.forEach((item) => {
-        state.navigateState.screen1.prize.prize.forEach((prizeitem) => {
+        state.screen1.prize.prize.forEach((prizeitem) => {
             if (item.id == prizeitem) {
                 prizeLabel.push(item.name);
                 console.log('prizelabel', prizeLabel);
@@ -42,7 +42,7 @@ const CampaignSummary = () => {
     const AudienceListData = allEvents.audiences;
     let audienceLabel = '';
     AudienceListData.forEach((item) => {
-        if (item.id == state.navigateState.screen1.eventInfo.audience) {
+        if (item.id == state.screen1.eventInfo.audience) {
             audienceLabel = item.name;
             console.log('audience:', audienceLabel);
         }
@@ -51,7 +51,7 @@ const CampaignSummary = () => {
     const GameListData = allEvents.games;
     let gameInfo;
     GameListData.forEach((item) => {
-        if (item.id == state.navigateState.screen2.gameid) {
+        if (item.id == state.screen2.gameid) {
             gameInfo = item;
         }
     });
@@ -77,10 +77,10 @@ const CampaignSummary = () => {
         try {
             // navigate('https://saviour.earth/ZoomIn/trivia/create_trivia.php');
             const data = await addTrivia({
-                name: state.navigateState.screen1.eventInfo.selectname,
+                name: state.screen1.eventInfo.selectname,
                 user_id: decoded.id
             });
-            console.log(data);
+            console.log('trivia', data);
             setTrivia(data);
         } catch (e) {
             console.log(e);
@@ -93,26 +93,26 @@ const CampaignSummary = () => {
     const onCreateEvent = async () => {
         try {
             setLoading(true);
-            console.log('files:', state.navigateState.screen1.sponsor.files);
+            console.log('files:', state.screen1.sponsor.files);
             const data = await createEvent(
                 {
-                    name: state.navigateState.screen1.eventInfo.selectname,
-                    location: state.navigateState.screen1.eventInfo.location,
-                    start_time: state.navigateState.screen1.eventInfo.launchdate.$d,
-                    end_time: state.navigateState.screen1.eventInfo.endtime.$d,
-                    event_coins: state.navigateState.screen2.eventcoins,
-                    duration: state.navigateState.screen2.timelimit,
-                    sponsorname: state.navigateState.screen1.sponsor.sponsorname,
-                    rewardpool: state.navigateState.screen2.rewardpool,
+                    name: state.screen1.eventInfo.selectname,
+                    location: state.screen1.eventInfo.location,
+                    start_time: state.screen1.eventInfo.launchdate.$d,
+                    end_time: state.screen1.eventInfo.endtime.$d,
+                    event_coins: state.screen3,
+                    duration: state.screen2.timelimit,
+                    sponsorname: state.screen1.sponsor.sponsorname,
                     trivia_id: trivia.trivia_id,
                     trivia_url: trivia.url,
                     user: states.auth.user
                 },
-                state.navigateState.screen1.sponsor.videourl,
-                state.navigateState.screen1.prize.prize,
-                state.navigateState.screen2.gameid,
-                state.navigateState.screen1.eventInfo.audience,
-                state.navigateState.screen1.sponsor.files
+                state.screen1.sponsor.videourl,
+                state.screen1.prize.prize,
+                state.screen2.gameid,
+                state.screen2.rewardpool,
+                state.screen1.eventInfo.audience,
+                state.screen1.sponsor.files
             );
             console.log('data:', data);
             navigate('/campaigns/performance');
@@ -185,7 +185,7 @@ const CampaignSummary = () => {
                                             color: '#FF0676'
                                         }}
                                     >
-                                        {state.navigateState.screen1.eventInfo.selectname}
+                                        {state.screen1.eventInfo.selectname}
                                     </Typography>
                                 </CardContent>
                             </Grid>
@@ -220,9 +220,8 @@ const CampaignSummary = () => {
                                                 color: '#FFFFFF'
                                             }}
                                         >
-                                            {state.navigateState.screen1.eventInfo.launchdate.$M + 1}.
-                                            {state.navigateState.screen1.eventInfo.launchdate.$D}.
-                                            {state.navigateState.screen1.eventInfo.launchdate.$y}
+                                            {state.screen1.eventInfo.launchdate.$M + 1}.{state.screen1.eventInfo.launchdate.$D}.
+                                            {state.screen1.eventInfo.launchdate.$y}
                                         </Typography>
                                     </CardContent>
                                 </Grid>
@@ -258,7 +257,7 @@ const CampaignSummary = () => {
                                                 color: '#04B4DD'
                                             }}
                                         >
-                                            ${state.navigateState.screen2.eventcoins}
+                                            ${state.screen3}
                                         </Typography>
                                     </CardContent>
                                 </Grid>

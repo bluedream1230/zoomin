@@ -35,7 +35,7 @@ const SelectSubscriptionPage = () => {
         // Show Loading
         await createSubscription();
         // Hide Loading
-        navigate('/launch/summary/index', { state: { navigateState } });
+        navigate('/launch/summary/index', { state: { ...navigateState, screen3: price } });
     };
 
     const handleOpenSubscribeModal = (type) => {

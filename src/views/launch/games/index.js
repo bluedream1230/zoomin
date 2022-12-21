@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 // material-ui
 import React, { useCallback } from 'react';
-import { Grid, Typography, TextField, Button, Modal, Box } from '@mui/material';
+import { Grid, Typography, TextField, Button, Modal, Box, Autocomplete } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
@@ -74,6 +74,9 @@ const SelectGamePage = () => {
         onSubmit: (values) => {}
     });
     const allEvents = useSelector((state) => state.campaign);
+    const prizepoolListDataTemp = allEvents.prizepool;
+    const prizepoolListData = prizepoolListDataTemp.map((item) => ({ ...item, label: item.name, prizepool: JSON.parse(item.prizepool) }));
+    console.log('prizepoolListData', prizepoolListData);
     const gameListData = allEvents.games;
     console.log('allEvents:', gameListData);
     const { state: navigateState } = useLocation();
@@ -169,7 +172,7 @@ const SelectGamePage = () => {
     return (
         <>
             <Grid container spacing={5}>
-                <Grid iteam xs={12}>
+                <Grid item xs={12}>
                     <Grid item xs={12}>
                         <Grid item sx={{ marginBottom: '45px' }}>
                             <Typography
@@ -188,7 +191,7 @@ const SelectGamePage = () => {
                         <Grid container>
                             {gameListData &&
                                 gameListData.length != 0 &&
-                                gameListData.map((item, index) => {
+                                gameListData.map((item, key) => {
                                     return (
                                         <Grid
                                             onClick={() => {
@@ -201,11 +204,12 @@ const SelectGamePage = () => {
                                             sm={12}
                                             xs={12}
                                             sx={{ paddingX: '10px', marginBottom: '25px' }}
+                                            item
                                         >
                                             <ImgMediaCard
                                                 card_name={item.name}
                                                 card_image={item.img_url}
-                                                key={index}
+                                                key={key}
                                                 game_id={item.id}
                                                 formikvalue={formik1.values.gameid}
                                             ></ImgMediaCard>
@@ -266,17 +270,35 @@ const SelectGamePage = () => {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <Grid container>
-                                    <TextField
-                                        fullWidth
-                                        label="Prize Pool"
-                                        margin="normal"
+                                    <Autocomplete
+                                        disablePortal
+                                        id="prize_pool_list"
                                         name="rewardpool"
-                                        type="number"
-                                        value={formik1.values.rewardpool}
-                                        onChange={formik1.handleChange}
-                                        error={formik1.touched.rewardpool && Boolean(formik1.errors.rewardpool)}
-                                        helperText={formik1.touched.rewardpool && formik1.errors.rewardpool}
-                                        sx={{ ...theme.typography.customInput }}
+                                        options={prizepoolListData}
+                                        sx={{
+                                            ...theme.typography.customInput
+                                        }}
+                                        onChange={(e, v) => {
+                                            console.log(v);
+                                            formik1.setFieldValue('rewardpool', v.id);
+                                        }}
+                                        renderOption={(props, option) => {
+                                            console.log('props', props);
+                                            console.log('props', props);
+                                            return (
+                                                <li {...props} key={option.id}>
+                                                    {option.name}
+                                                </li>
+                                            );
+                                        }}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                error={formik1.touched.rewardpool && Boolean(formik1.errors.rewardpool)}
+                                                helperText={formik1.touched.rewardpool && formik1.errors.rewardpool}
+                                                label="Select Prize pool"
+                                            />
+                                        )}
                                     />
                                 </Grid>
                             </Grid>
