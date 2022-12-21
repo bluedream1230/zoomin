@@ -5,6 +5,7 @@
 /dist
 /.pnp
 .pnp.js
+/build
 
 # testing
 /coverage
@@ -26,4 +27,3 @@ yarn-error.log*
 #env
 
 .env
-/build
