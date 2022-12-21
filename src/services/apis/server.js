@@ -15,7 +15,8 @@ import {
     API_UPDATE_RESET_PASS,
     API_UPDATE_PASS,
     API_ADD_TRIVIA,
-    API_PAYMENT
+    API_PAYMENT,
+    API_ADD_PRIZE_POOL
 } from 'store/api';
 
 export const getCampaign = async () => {
@@ -36,6 +37,14 @@ export const getRewardInfo = async () => {
 
 export const createPrize = async (data) => {
     return Api.post(API_REWARD_DATA, data);
+};
+
+export const createPrizepool = async (data) => {
+    return Api.post(API_ADD_PRIZE_POOL, data);
+};
+
+export const getPrizepool = async () => {
+    return Api.get(API_ADD_PRIZE_POOL);
 };
 
 export const createAudience = async (data) => {

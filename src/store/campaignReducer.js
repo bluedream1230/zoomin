@@ -13,6 +13,7 @@ export const campaignState = {
     games: [],
     eventInfo: [],
     audiences: [],
+    prizepool: [],
     users: []
 };
 
@@ -58,6 +59,11 @@ const campaignReducer = (state = campaignState, action) => {
         case actionTypes.LOG_OUT:
             return {
                 ...campaignState
+            };
+        case actionTypes.GET_PRIZEPOOL:
+            return {
+                ...state,
+                prizepool: action.prizepool
             };
         default:
             return state;

@@ -16,6 +16,7 @@ export const LOADING = 'LOADING';
 export const GET_EVENTS = '@campaign/GET_EVENTS';
 export const GET_GAMES = '@campaign/GET_GAMES';
 export const GET_REWARDS = '@campaign/GET_REWARDS';
+export const GET_PRIZEPOOL = '@campaign/GET_PRIZE';
 export const GET_EVENT_INFO_ITEM = '@campaign/GET_EVENT_INFO_ITEM';
 export const GET_AUDIENCES = '@campaign/GET_AUDIENCES';
 export const GET_USERS = '@campaign/GET_USERS';

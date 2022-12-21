@@ -15,3 +15,4 @@ export const API_UPDATE_BILL_INFO = '/api/users/bill';
 export const API_UPDATE_PASS = '/api/auth/updatePass';
 export const API_PAYMENT = '/api/payments';
 export const API_ADD_TRIVIA = '/api/addtrivia';
+export const API_ADD_PRIZE_POOL = '/api/prizepools';

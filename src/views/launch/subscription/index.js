@@ -341,13 +341,12 @@ const SelectSubscriptionPage = () => {
                                             color: '#FFFFFF',
                                             fontWeight: 500,
                                             fontFamily: 'Inter',
-                                            fontSize: '20px',
-                                            border: '1px solid #f00',
+                                            fontSize: '30px',
                                             fontSmoothing: 'antialiased',
-                                            margin: '10px',
                                             '::placeholder': {
                                                 color: '#CFD7DF'
-                                            }
+                                            },
+                                            lineHeight: '60px'
                                         },
                                         invalid: {
                                             color: '#E25950'
