@@ -425,11 +425,64 @@ const LaunchPage = () => {
                                         />
                                     )}
                                 />
-                                <Dialog open={open} onClose={handleClose}>
-                                    <DialogTitle sx={{ color: '#FFFFFF' }}>Add a new audience</DialogTitle>
-                                    <DialogContent>
+                                {/* <Dialog
+                                    open={open}
+                                    onClose={handleClose}
+                                    sx={{
+                                        top: '50%',
+                                        left: '50%',
+                                        transform: 'translate(-50%, -50%)',
+                                        width: 1000,
+                                        bgcolor: '#360068',
+                                        opacity: '0.88',
+
+                                        border: '2px solid #000',
+                                        boxShadow: '39.9357px 7.35657px 132.418px rgba(0, 0, 0, 0.4)',
+                                        p: 8,
+                                        '& .MuiDialog-container': {
+                                            '& .MuiDialog-paper': {
+                                                minWidth: '100%',
+                                                minHeight: '100%'
+                                            }
+                                        }
+                                    }}
+                                > */}
+                                <Modal
+                                    open={open}
+                                    onClose={handleClose}
+                                    aria-labelledby="modal-modal-title"
+                                    aria-describedby="modal-modal-description"
+                                >
+                                    <Box
+                                        sx={{
+                                            position: 'absolute',
+                                            top: '50%',
+                                            left: '50%',
+                                            transform: 'translate(-50%, -50%)',
+                                            width: 1400,
+                                            bgcolor: '#360068',
+                                            opacity: '0.88',
+
+                                            border: '2px solid #000',
+                                            boxShadow: '39.9357px 7.35657px 132.418px rgba(0, 0, 0, 0.4)',
+                                            p: 8
+                                        }}
+                                    >
+                                        <Typography
+                                            sx={{
+                                                fontFamily: 'Inter',
+                                                fontStyle: 'normal',
+                                                fontWeight: '400',
+                                                fontSize: '26px',
+                                                lineHeight: '180%',
+                                                color: '#FFFFFF',
+                                                marginBottom: '30px'
+                                            }}
+                                        >
+                                            Add Audience
+                                        </Typography>
                                         <TextField
-                                            margin="dense"
+                                            margin="normal"
                                             id="name"
                                             name="label"
                                             value={dialogValue.label}
@@ -439,21 +492,31 @@ const LaunchPage = () => {
                                                     label: event.target.value
                                                 })
                                             }
-                                            // label="label"
+                                            label="Name"
                                             type="text"
-                                            variant="standard"
+                                            required
                                             sx={{ ...theme.typography.customInput }}
                                         />
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button sx={{ color: '#FFFFFF' }} onClick={handleClose}>
-                                            Cancel
+                                        <Button
+                                            disableElevation
+                                            onClick={handleCreateAudience}
+                                            variant="contained"
+                                            sx={{
+                                                borderRadius: '8.8',
+                                                backgroundColor: '#FF0676',
+                                                width: '120px',
+                                                height: '40px',
+                                                fontSize: '16px',
+                                                fontWeight: '700',
+                                                lineHeight: '19px',
+                                                marginTop: '20px'
+                                            }}
+                                        >
+                                            Create
                                         </Button>
-                                        <Button sx={{ color: '#FFFFFF' }} onClick={handleCreateAudience}>
-                                            Add
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
+                                        {/* </Dialog> */}
+                                    </Box>
+                                </Modal>
                             </Grid>
                         </Grid>
                     </Grid>
