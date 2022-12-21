@@ -79,6 +79,7 @@ const CampaignSummary = () => {
                 name: state.navigateState.screen1.eventInfo.selectname,
                 user_id: decoded.id
             });
+            console.log(trivia);
         } catch (e) {
             console.log(e);
         }
@@ -119,7 +120,7 @@ const CampaignSummary = () => {
                 state.navigateState.screen1.eventInfo.audience,
                 state.navigateState.screen1.sponsor.files
             );
-            console.log('data:', data);
+            console.log('data:', data, trivia_id, trivia_url);
             navigate('/campaigns/performance');
             setLoading(false);
         } catch (e) {
