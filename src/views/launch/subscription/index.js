@@ -365,13 +365,14 @@ const SelectSubscriptionPage = () => {
                                 borderRadius: '12px',
                                 backgroundColor: '#FF0676',
                                 width: '100%',
-                                height: '30px',
+                                height: '50px',
                                 fontSize: '16px',
                                 fontWeight: '700',
                                 fontFamily: 'Inter',
                                 fontStyle: 'normal',
                                 lineHeight: '19px',
-                                color: '#FFFFFF'
+                                color: '#FFFFFF',
+                                marginTop: '10px'
                             }}
                         >
                             Pay
