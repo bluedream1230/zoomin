@@ -16,66 +16,9 @@ import Pagination from '@mui/material/Pagination';
 import { TablePagination } from '@mui/material';
 import usePagination from 'ui-component/Pagination';
 // assets
-import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import { Link } from 'react-router-dom';
 import { GET_EVENTS } from 'store/actions';
 import { getCampaign } from 'services/apis/server';
-
-// ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
-const CampaignsList = [
-    {
-        Status: 'Live',
-        Name: 'Ogra Megi',
-        Game: 'Shock & Awe',
-        Link: 'dummylink.com',
-        Prize: '$100'
-    },
-    {
-        Status: 'No Live',
-        Name: 'Grim Stroke',
-        Game: 'Long Winter',
-        Link: 'dummylink.com',
-        Prize: '$150'
-    },
-    {
-        Status: 'Live',
-        Name: 'Jessica',
-        Game: 'Master Thief',
-        Link: 'dummylink.com',
-        Prize: '$200'
-    },
-    {
-        Status: 'Live',
-        Name: 'Ogra Megi',
-        Game: 'Shock & Awe',
-        Link: 'dummylink.com',
-        Prize: '$300'
-    },
-    {
-        Status: 'No Live',
-        Name: 'Grim Stroke',
-        Game: 'Long Winter',
-        Link: 'dummylink.com',
-        Prize: '$150'
-    },
-    {
-        Status: 'Live',
-        Name: 'Jessica',
-        Game: 'Master Thief',
-        Link: 'dummylink.com',
-        Prize: '$200'
-    },
-    {
-        Status: 'No Live',
-        Name: 'Ogra Megi',
-        Game: 'Shock & Awe',
-        Link: 'dummylink.com',
-        Prize: '$300'
-    }
-];
 
 const CampaignPerformances = ({ isLoading }) => {
     const theme = useTheme();

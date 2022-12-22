@@ -16,7 +16,8 @@ import {
     API_UPDATE_PASS,
     API_ADD_TRIVIA,
     API_PAYMENT,
-    API_ADD_PRIZE_POOL
+    API_ADD_PRIZE_POOL,
+    API_REWARD_BYID
 } from 'store/api';
 
 export const getCampaign = async () => {
@@ -35,8 +36,17 @@ export const getRewardInfo = async () => {
     return Api.get(API_GET_REWARD_DATA);
 };
 
+export const getRewardById = async (id) => {
+    return Api.get(API_REWARD_BYID, {}, { id });
+};
+
 export const createPrize = async (data) => {
     return Api.post(API_REWARD_DATA, data);
+};
+
+export const updateReward = async (data, id) => {
+    console.log('dataid', data, id);
+    return Api.put(API_REWARD_BYID, data, { id });
 };
 
 export const createPrizepool = async (data) => {
@@ -64,7 +74,6 @@ export const getUsers = async (id) => {
 };
 
 export const createEvent = async (data, videourl, rewardIds, gameId, rewardpool, audienceId, files) => {
-    console.log(rewardpool);
     return Api.uploadFile(
         API_CAMPAIGN_DATA,
         { data: JSON.stringify(data), rewardIds: JSON.stringify(rewardIds), videourl: videourl },

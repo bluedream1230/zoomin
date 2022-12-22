@@ -15,6 +15,8 @@ import { TablePagination } from '@mui/material';
 import usePagination from 'ui-component/Pagination';
 import { getRewardInfo } from 'services/apis/server';
 import { GET_REWARDS_INFO } from 'store/actions';
+import { Link } from 'react-router-dom';
+
 import { store } from 'store';
 
 const AddPrize = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/prizes/manage" {...props} role={undefined} />);
@@ -23,6 +25,7 @@ const PrizeList = ({ isLoading }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const state = store.getState();
+
     const matchesLG = useMediaQuery(theme.breakpoints.down('lg'));
     const [rewardsInfo, setRewardsInfo] = useState([]);
 
@@ -62,136 +65,27 @@ const PrizeList = ({ isLoading }) => {
 
     const listTable = _DATA.currentData().map((item, index) => {
         return (
-            <Grid item xs={12} key={index} sx={{ borderBottom: '0.5px solid #821EF088' }}>
-                <Grid container direction="column" sx={{ marginTop: '40px', marginBottom: '40px' }}>
-                    <Grid item>
-                        <Grid container alignItems="center" justifyContent="space-between">
-                            <Grid item xs={3}>
-                                <Typography
-                                    sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: `${matchesLG ? '300' : '500'}`,
-                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
-                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
-                                        color: '#B9B9B9',
-                                        marginBottom: '15px'
-                                    }}
-                                >
-                                    Name
-                                </Typography>
-                                <Typography
-                                    color="#FFFFFF"
-                                    sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: `${matchesLG ? '300' : '600'}`,
-                                        fontSize: `${matchesLG ? '12px' : '18px'}`,
-                                        lineHeight: `${matchesLG ? '15px' : '23px'}`
-                                    }}
-                                    alignItems="left"
-                                >
-                                    {item.reward.name}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <Typography
-                                    sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: `${matchesLG ? '300' : '500'}`,
-                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
-                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
-                                        color: '#B9B9B9',
-                                        marginBottom: '15px'
-                                    }}
-                                >
-                                    Created Date
-                                </Typography>
-                                <Typography
-                                    color="#FF4C9D"
-                                    sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: `${matchesLG ? '300' : '600'}`,
-                                        fontSize: `${matchesLG ? '12px' : '18px'}`,
-                                        lineHeight: `${matchesLG ? '15px' : '23px'}`
-                                    }}
-                                >
-                                    {item.reward.createdAt}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Typography
-                                    sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: `${matchesLG ? '300' : '500'}`,
-                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
-                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
-                                        color: '#B9B9B9',
-                                        marginBottom: '15px'
-                                    }}
-                                >
-                                    Campaign
-                                </Typography>
-                                <Typography
-                                    color="#04B4DD"
-                                    sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: `${matchesLG ? '300' : '600'}`,
-                                        fontSize: `${matchesLG ? '12px' : '18px'}`,
-                                        lineHeight: `${matchesLG ? '15px' : '23px'}`
-                                    }}
-                                >
-                                    {item.event ? item.event.name : 'Not Launch'}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <Typography
-                                    sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: `${matchesLG ? '300' : '500'}`,
-                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
-                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
-                                        color: '#B9B9B9',
-                                        marginBottom: '15px'
-                                    }}
-                                >
-                                    Winners
-                                </Typography>
-                                <Typography
-                                    color="#FFFFFF"
-                                    sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: `${matchesLG ? '300' : '600'}`,
-                                        fontSize: `${matchesLG ? '12px' : '18px'}`,
-                                        lineHeight: `${matchesLG ? '15px' : '23px'}`
-                                    }}
-                                >
-                                    {item.users_num}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={1}>
-                                <Typography
-                                    sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: `${matchesLG ? '300' : '500'}`,
-                                        fontSize: `${matchesLG ? '10px' : '15px'}`,
-                                        lineHeight: `${matchesLG ? '9px' : '17px'}`,
-                                        color: '#B9B9B9',
-                                        marginBottom: '15px'
-                                    }}
-                                >
-                                    Status
-                                </Typography>
-                                {item.event ? (
+            <Link to={`/prizes/manage/${item.reward.id}`} style={{ textDecoration: 'none' }}>
+                <Grid item xs={12} key={index} sx={{ borderBottom: '0.5px solid #821EF088' }}>
+                    <Grid container direction="column" sx={{ marginTop: '40px', marginBottom: '40px' }}>
+                        <Grid item>
+                            <Grid container alignItems="center" justifyContent="space-between">
+                                <Grid item xs={3}>
                                     <Typography
-                                        color={new Date(item.event.end_time).getTime() >= today.getTime() ? '#43CC83' : '#FF0000'}
+                                        sx={{
+                                            fontFamily: 'Inter',
+                                            fontStyle: 'normal',
+                                            fontWeight: `${matchesLG ? '300' : '500'}`,
+                                            fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                            lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                            color: '#B9B9B9',
+                                            marginBottom: '15px'
+                                        }}
+                                    >
+                                        Name
+                                    </Typography>
+                                    <Typography
+                                        color="#FFFFFF"
                                         sx={{
                                             fontFamily: 'Inter',
                                             fontStyle: 'normal',
@@ -201,11 +95,25 @@ const PrizeList = ({ isLoading }) => {
                                         }}
                                         alignItems="left"
                                     >
-                                        {new Date(item.event.end_time).getTime() >= today.getTime() ? 'Live' : 'No Live'}
+                                        {item.reward.name}
                                     </Typography>
-                                ) : (
+                                </Grid>
+                                <Grid item xs={3}>
                                     <Typography
-                                        color="#FF0000"
+                                        sx={{
+                                            fontFamily: 'Inter',
+                                            fontStyle: 'normal',
+                                            fontWeight: `${matchesLG ? '300' : '500'}`,
+                                            fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                            lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                            color: '#B9B9B9',
+                                            marginBottom: '15px'
+                                        }}
+                                    >
+                                        Created Date
+                                    </Typography>
+                                    <Typography
+                                        color="#FF4C9D"
                                         sx={{
                                             fontFamily: 'Inter',
                                             fontStyle: 'normal',
@@ -213,16 +121,113 @@ const PrizeList = ({ isLoading }) => {
                                             fontSize: `${matchesLG ? '12px' : '18px'}`,
                                             lineHeight: `${matchesLG ? '15px' : '23px'}`
                                         }}
-                                        alignItems="left"
                                     >
-                                        No Live
+                                        {item.reward.createdAt}
                                     </Typography>
-                                )}
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <Typography
+                                        sx={{
+                                            fontFamily: 'Inter',
+                                            fontStyle: 'normal',
+                                            fontWeight: `${matchesLG ? '300' : '500'}`,
+                                            fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                            lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                            color: '#B9B9B9',
+                                            marginBottom: '15px'
+                                        }}
+                                    >
+                                        Campaign
+                                    </Typography>
+                                    <Typography
+                                        color="#04B4DD"
+                                        sx={{
+                                            fontFamily: 'Inter',
+                                            fontStyle: 'normal',
+                                            fontWeight: `${matchesLG ? '300' : '600'}`,
+                                            fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                            lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                        }}
+                                    >
+                                        {item.event ? item.event.name : 'Not Launch'}
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <Typography
+                                        sx={{
+                                            fontFamily: 'Inter',
+                                            fontStyle: 'normal',
+                                            fontWeight: `${matchesLG ? '300' : '500'}`,
+                                            fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                            lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                            color: '#B9B9B9',
+                                            marginBottom: '15px'
+                                        }}
+                                    >
+                                        Winners
+                                    </Typography>
+                                    <Typography
+                                        color="#FFFFFF"
+                                        sx={{
+                                            fontFamily: 'Inter',
+                                            fontStyle: 'normal',
+                                            fontWeight: `${matchesLG ? '300' : '600'}`,
+                                            fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                            lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                        }}
+                                    >
+                                        {item.users_num}
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <Typography
+                                        sx={{
+                                            fontFamily: 'Inter',
+                                            fontStyle: 'normal',
+                                            fontWeight: `${matchesLG ? '300' : '500'}`,
+                                            fontSize: `${matchesLG ? '10px' : '15px'}`,
+                                            lineHeight: `${matchesLG ? '9px' : '17px'}`,
+                                            color: '#B9B9B9',
+                                            marginBottom: '15px'
+                                        }}
+                                    >
+                                        Status
+                                    </Typography>
+                                    {item.event ? (
+                                        <Typography
+                                            color={new Date(item.event.end_time).getTime() >= today.getTime() ? '#43CC83' : '#FF0000'}
+                                            sx={{
+                                                fontFamily: 'Inter',
+                                                fontStyle: 'normal',
+                                                fontWeight: `${matchesLG ? '300' : '600'}`,
+                                                fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                                lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                            }}
+                                            alignItems="left"
+                                        >
+                                            {new Date(item.event.end_time).getTime() >= today.getTime() ? 'Live' : 'No Live'}
+                                        </Typography>
+                                    ) : (
+                                        <Typography
+                                            color="#FF0000"
+                                            sx={{
+                                                fontFamily: 'Inter',
+                                                fontStyle: 'normal',
+                                                fontWeight: `${matchesLG ? '300' : '600'}`,
+                                                fontSize: `${matchesLG ? '12px' : '18px'}`,
+                                                lineHeight: `${matchesLG ? '15px' : '23px'}`
+                                            }}
+                                            alignItems="left"
+                                        >
+                                            No Live
+                                        </Typography>
+                                    )}
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
+            </Link>
         );
     });
 

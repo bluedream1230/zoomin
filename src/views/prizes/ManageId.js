@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
 import * as Yup from 'yup';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Backdrop, Button, CardContent, CircularProgress, Grid, TextField, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -11,7 +11,7 @@ import { gridSpacing } from 'store/constant';
 import PrizeSelect from 'ui-component/PrizeSelect';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useFormik } from 'formik';
-import { createPrize, getCampaign, getReward } from 'services/apis/server';
+import { createPrize, getCampaign, getReward, getRewardById, updateReward } from 'services/apis/server';
 import { store } from 'store';
 import { GET_EVENTS, GET_REWARDS } from 'store/actions';
 
@@ -21,6 +21,8 @@ const state = store.getState();
 const UpdatePrize = () => {
     const theme = useTheme();
     const allEvents = useSelector((state) => state.campaign);
+    const { id } = useParams();
+
     const PrizeListData = allEvents.rewards;
     const PrizeLabelList = [];
     PrizeListData.map((item, index) => {
@@ -56,6 +58,18 @@ const UpdatePrize = () => {
         }
     });
 
+    console.log('formik', formik);
+
+    React.useEffect(() => {
+        load();
+    }, []);
+
+    console.log(id);
+    const load = async () => {
+        const reward = await getRewardById(id);
+        formik.setValues(reward, false);
+    };
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [isLoading, setLoading] = React.useState(false);
@@ -63,17 +77,20 @@ const UpdatePrize = () => {
     const onCreatePrize = async (values) => {
         try {
             setLoading(true);
-            const data = await createPrize({
-                name: values.name,
-                type: values.type,
-                category: values.category,
-                image_url: values.image_url,
-                description: values.description,
-                coinvalue: values.coinvalue,
-                timelimit: values.timelimit,
-                ratelimit: values.ratelimit,
-                user: state.auth
-            });
+            const data = await updateReward(
+                {
+                    name: values.name,
+                    type: values.type,
+                    category: values.category,
+                    image_url: values.image_url,
+                    description: values.description,
+                    coinvalue: values.coinvalue,
+                    timelimit: values.timelimit,
+                    ratelimit: values.ratelimit
+                },
+                id
+            );
+            console.log('reward data', data);
             const rewards = await getReward();
             dispatch({ type: GET_REWARDS, rewards: rewards });
             setLoading(false);
@@ -214,7 +231,7 @@ const UpdatePrize = () => {
                                         ...theme.typography.customInput
                                     }}
                                     onChange={(e, v) => {
-                                        formik2.setFieldValue('type', v.label);
+                                        formik.setFieldValue('type', v.label);
                                     }}
                                     renderOption={(props, option) => {
                                         return <li {...props}>{option.label}</li>;
@@ -222,8 +239,8 @@ const UpdatePrize = () => {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            error={formik2.touched.type && Boolean(formik2.errors.type)}
-                                            helperText={formik2.touched.type && formik2.errors.type}
+                                            error={formik.touched.type && Boolean(formik.errors.type)}
+                                            helperText={formik.touched.type && formik.errors.type}
                                             label="Type"
                                         />
                                     )}
@@ -352,7 +369,7 @@ const UpdatePrize = () => {
                                 lineHeight: '19px'
                             }}
                         >
-                            Create
+                            Update
                         </Button>
                     </Grid>
                 </form>

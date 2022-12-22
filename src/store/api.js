@@ -4,6 +4,7 @@ export const API_CAMPAIGN_DATA = '/api/events/:gameId/:rewardpool/:audienceId';
 export const API_GET_CAMPAIGN_DATA = '/api/events';
 export const API_GET_REWARD_DATA = 'api/rewards/rewardsinfo';
 export const API_REWARD_DATA = '/api/rewards';
+export const API_REWARD_BYID = '/api/rewards/:id';
 export const API_GAME_DATA = '/api/games';
 export const API_EVENT_INFO_ITEM = '/api/fan/event/:id';
 export const API_AUDIENCE_DATA = '/api/audiences';

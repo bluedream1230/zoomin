@@ -22,6 +22,7 @@ const InformationView = Loadable(lazy(() => import('views/campaigns/Information'
 //Prizes routing
 const PrizesList = Loadable(lazy(() => import('views/prizes')));
 const ManagePrize = Loadable(lazy(() => import('views/prizes/Manage')));
+const ManagePrizeId = Loadable(lazy(() => import('views/prizes/ManageId')));
 
 //Games routing
 const ManageGame = Loadable(lazy(() => import('views/games')));
@@ -100,6 +101,10 @@ const MainRoutes = {
                 {
                     path: 'manage',
                     element: <ManagePrize />
+                },
+                {
+                    path: 'manage/:id',
+                    element: <ManagePrizeId />
                 }
             ]
         },
