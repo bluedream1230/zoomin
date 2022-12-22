@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 // material-ui
 import React, { useCallback } from 'react';
-import { Grid, Typography, TextField, Button, Modal, Box, Autocomplete } from '@mui/material';
+import { Grid, Typography, TextField, Button, Modal, Box, Autocomplete, InputAdornment } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
@@ -90,8 +90,11 @@ const SelectGamePage = () => {
 
     const onCreatePrizepool1 = useCallback(
         async (values) => {
-            if (prizepool.reduce((sum, item) => (sum += Number(item.place)), 0) !== 100) {
-                alert('The sum of the place percent should be 100.');
+            if (
+                prizepool.reduce((sum, item) => (sum += Number(item.place)), 0) !== 100 &&
+                prizepool.reduce((sum, item) => (sum += Number(item.coin)), 0) !== 100
+            ) {
+                alert('The sum of the place or coin percent should be 100.');
                 return;
             } else {
                 const postData = JSON.stringify(prizepool);
@@ -103,6 +106,7 @@ const SelectGamePage = () => {
                     });
                     const prizepool = await getPrizepool();
                     dispatch({ type: GET_PRIZEPOOL, prizepool: prizepool });
+                    setPrizepool([]);
                     handleCloseModal();
                     setLoading(false);
                 } catch (e) {
@@ -138,11 +142,25 @@ const SelectGamePage = () => {
     };
 
     const handleCoinChange = (event, index) => {
-        setPrizepool((prev) =>
-            prev.map((item, idx) =>
-                idx === index ? { ...item, coin: event.target.value, errorCoinText: '' } : { ...item, errorCoinText: '' }
-            )
-        );
+        const currentSum = prizepool.reduce((sum, item, idx) => {
+            if (idx !== index) {
+                sum += Number(item.coin);
+            }
+            return sum;
+        }, 0);
+        if (currentSum + Number(event.target.value) > 100) {
+            setPrizepool((prev) =>
+                prev.map((item, idx) =>
+                    idx === index ? { ...item, coin: event.target.value, errorCoinText: 'Invalid input' } : { ...item, errorCoinText: '' }
+                )
+            );
+        } else {
+            setPrizepool((prev) =>
+                prev.map((item, idx) =>
+                    idx === index ? { coin: event.target.value, place: item.place, errorCoinText: '' } : { ...item, errorCoinText: '' }
+                )
+            );
+        }
     };
     const handlePlaceChange = (event, index) => {
         const currentSum = prizepool.reduce((sum, item, idx) => {
@@ -163,7 +181,7 @@ const SelectGamePage = () => {
         } else {
             setPrizepool((prev) =>
                 prev.map((item, idx) =>
-                    idx === index ? { place: event.target.value, coin: item.coin, errorText: '' } : { ...item, errorText: '' }
+                    idx === index ? { place: event.target.value, coin: item.coin, errorPlaceText: '' } : { ...item, errorPlaceText: '' }
                 )
             );
         }
@@ -379,6 +397,9 @@ const SelectGamePage = () => {
                                                     error={!!item.errorPlaceText}
                                                     helperText={item.errorPlaceText}
                                                     sx={{ ...theme.typography.customInput }}
+                                                    InputProps={{
+                                                        startAdornment: <InputAdornment position="end">%</InputAdornment>
+                                                    }}
                                                 />
                                             </Grid>
                                         </Grid>
@@ -396,6 +417,9 @@ const SelectGamePage = () => {
                                                     helperText={item.errorCoinText}
                                                     onChange={(e) => handleCoinChange(e, index)}
                                                     sx={{ ...theme.typography.customInput }}
+                                                    InputProps={{
+                                                        startAdornment: <InputAdornment position="end">%</InputAdornment>
+                                                    }}
                                                 />
                                             </Grid>
                                         </Grid>
