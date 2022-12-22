@@ -53,8 +53,8 @@ const Setting = () => {
         billcountry: Yup.string('Enter Country').required('Country is required'),
         billccn: Yup.string('Enter Credit card number').required('Credit Card Number is required'),
         billCVV: Yup.string('Enter CVV').required('CVV is required'),
-        billexpirationdateM: Yup.number('').required('Enter correct').min(1).max(12),
-        billexpirationdateY: Yup.number('').required('Enter correct').min(1900).max(2500)
+        billexpirationdateM: Yup.string('Enter expiration Date').required('Enter correct').min(1).max(12),
+        billexpirationdateY: Yup.string('Enter expiration Date').required('Enter correct').min(1900).max(2500)
     });
 
     const validationSchema1 = Yup.object({
@@ -249,7 +249,6 @@ const Setting = () => {
                                         multiple
                                         type="file"
                                         name="logo"
-                                        value={formik.values.logo?.filename}
                                         onChange={(event) => {
                                             formik.setFieldValue('logo', event.currentTarget.files[0]);
                                         }}
