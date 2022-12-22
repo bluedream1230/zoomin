@@ -53,8 +53,8 @@ const Setting = () => {
         billcountry: Yup.string('Enter Country').required('Country is required'),
         billccn: Yup.string('Enter Credit card number').required('Credit Card Number is required'),
         billCVV: Yup.string('Enter CVV').required('CVV is required'),
-        billexpirationdateM: Yup.string('Enter expiration Date').required('Enter correct').min(1).max(12),
-        billexpirationdateY: Yup.string('Enter expiration Date').required('Enter correct').min(1900).max(2500)
+        billexpirationdateM: Yup.string('Enter expiration Date').required('Enter correct'),
+        billexpirationdateY: Yup.string('Enter expiration Date').required('Enter correct')
     });
 
     const validationSchema1 = Yup.object({
@@ -246,7 +246,6 @@ const Setting = () => {
                                     <input
                                         hidden
                                         accept="image/*"
-                                        multiple
                                         type="file"
                                         name="logo"
                                         onChange={(event) => {
