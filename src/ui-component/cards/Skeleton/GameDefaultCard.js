@@ -1,7 +1,11 @@
 import * as React from 'react';
-import { CardActionArea, Box, Grid, Card, CardActions, CardContent, CardMedia, Button, Typography, SvgIcon, Checkbox } from '@mui/material';
+import { CardActionArea, Modal, Box, Grid, Card, CardActions, CardContent, CardMedia, Button, SvgIcon } from '@mui/material';
 import { East, CheckCircleRounded, PanoramaFishEyeRounded } from '@mui/icons-material';
 import { withStyles, makeStyles } from '@material-ui/core';
+import ModalVideo from 'react-modal-video';
+import ReactPlayer from 'react-player';
+import Container from '@mui/material/Container';
+import Iframe from 'react-iframe';
 
 export const FiCard = withStyles({
     root: {
@@ -78,48 +82,62 @@ const useStyles = makeStyles({
 
 export default function GameDefaultCard(props) {
     const classes = useStyles();
-
+    const [openModal, setOpenModal] = React.useState(false);
+    const handleOpenModal = () => setOpenModal(true);
+    const handleCloseModal = () => setOpenModal(false);
     const handlePlay = () => {
-        console.log('Play now: ', props.href, props.card_name);
+        setOpenModal(!openModal);
+        console.log('Play now: ', props.card_name, props.card_video);
         //TODO: Play game
     };
-
     return (
-        <FiCard
-            className={classes.card}
-            sx={{
-                height: '280px',
-                cursor: 'pointer',
-                borderRadius: '20px',
-                '& .MuiCardMedia-root': {
-                    border: '1px solid transparent'
-                },
-                '& .MuiCardMedia-root:hover': {
-                    border: '1px solid #FF0676'
-                }
-            }}
-        >
-            <FiCardMedia
-                media="picture"
-                alt="Contemplative Reptile"
-                image={props.card_image}
-                title="Contemplative Reptile"
+        <>
+            <FiCard
+                className={classes.card}
                 sx={{
-                    backgroundPosition: 'center',
-                    backgroundSize: 'cover',
+                    height: '280px',
+                    cursor: 'pointer',
                     borderRadius: '20px',
-                    position: 'relative',
-                    objectFit: 'cover',
-                    transition: '0.3s',
-                    display: 'inline-block'
+                    '& .MuiCardMedia-root': {
+                        border: '1px solid transparent'
+                    },
+                    '& .MuiCardMedia-root:hover': {
+                        border: '1px solid #FF0676'
+                    }
                 }}
-            />
-            <FiCardActions className={classes.fiCardContent}>
-                <Button size="small" color="inherit" variant="none" sx={{ fontSize: '20px', padding: '0px' }} onClick={handlePlay}>
-                    Play Now
-                </Button>
-                <SvgIcon component={East} />
-            </FiCardActions>
-        </FiCard>
+            >
+                <FiCardMedia
+                    media="picture"
+                    alt={props.card_name}
+                    image={props.card_image}
+                    title={props.card_name}
+                    sx={{
+                        backgroundPosition: 'center',
+                        backgroundSize: 'cover',
+                        borderRadius: '20px',
+                        position: 'relative',
+                        objectFit: 'cover',
+                        transition: '0.3s',
+                        display: 'inline-block'
+                    }}
+                />
+                <FiCardActions className={classes.fiCardContent}>
+                    <Button size="small" color="inherit" variant="none" sx={{ fontSize: '20px', padding: '0px' }} onClick={handlePlay}>
+                        Play Now
+                    </Button>
+                    <SvgIcon component={East} />
+                </FiCardActions>
+            </FiCard>
+
+            <Modal
+                open={openModal}
+                onClose={handleCloseModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+                <Iframe url={props.card_video} width="640px" height="800vh" id="" className="" />
+            </Modal>
+        </>
     );
 }

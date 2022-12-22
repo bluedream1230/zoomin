@@ -21,10 +21,12 @@ import {
 } from '@mui/material';
 import { withStyles, makeStyles } from '@material-ui/core';
 import { East } from '@mui/icons-material';
+import { store } from 'store';
 
 import GameDefaultCard from 'ui-component/cards/Skeleton/GameDefaultCard';
 import { gridSpacing } from 'store/constant';
 import MainCard from 'ui-component/cards/MainCard';
+import { useSelector } from 'react-redux';
 
 const ImportGame = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/games/import" {...props} role={undefined} />);
 
@@ -100,73 +102,10 @@ const useStyles = makeStyles({
 
 const ManageGame = () => {
     const classes = useStyles();
-    const tempcard = [
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../assets/images/game-img1.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../assets/images/game-img2.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../assets/images/game-img3.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../assets/images/game-img4.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../assets/images/game-img5.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../assets/images/game-img6.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../assets/images/game-img7.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../assets/images/game-img8.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../assets/images/game-img9.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../assets/images/game-img10.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../assets/images/game-img11.jpg`)
-        },
-        {
-            name: 'Home',
-            href: 'home',
-            icon: require(`../../assets/images/game-img12.jpg`)
-        }
-    ];
-
-    const [modalOpen, setModalOpen] = useState(false);
-    const handlePreview = () => {
-        setModalOpen(!modalOpen);
-    };
+    const state = store.getState();
+    const allEvents = useSelector((state) => state.campaign);
+    const gameList = allEvents.games;
+    console.log(allEvents);
 
     return (
         <>
@@ -189,7 +128,7 @@ const ManageGame = () => {
                                         Our Games
                                     </Typography>
                                 </Grid>
-                                <Grid item sx={{ paddingRight: '0px !important' }}>
+                                {/* <Grid item sx={{ paddingRight: '0px !important' }}>
                                     <Button
                                         // component={AddPrize}
                                         // to="/games/import"
@@ -223,14 +162,14 @@ const ManageGame = () => {
                                     >
                                         Import
                                     </Button>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </Grid>
                     </Grid>
                 </CardContent>
             </MainCard>
 
-            <Grid item lg={12} md={12} sm={12} xs={12} sx={{ marginBottom: '50px' }}>
+            {/* <Grid item lg={12} md={12} sm={12} xs={12} sx={{ marginBottom: '50px' }}>
                 <TCard
                     className={classes.card}
                     sx={{
@@ -272,19 +211,20 @@ const ManageGame = () => {
                         <SvgIcon component={East} />
                     </TCardActions>
                 </TCard>
-            </Grid>
+            </Grid> */}
 
             <Grid container spacing={5}>
                 <Grid item xs={12}>
                     <Grid item xs={12}>
                         <Grid container spacing={5}>
-                            {tempcard.map((item, index) => {
+                            {gameList.map((item, key) => {
                                 return (
                                     <Grid item xl={4} lg={6} md={12} sm={12} xs={12} sx={{ paddingX: '10px', marginBottom: '25px' }}>
                                         <GameDefaultCard
                                             card_name={item.name}
-                                            card_image={item.icon}
-                                            key={index}
+                                            card_image={item.img_url}
+                                            card_video={item.video_url}
+                                            key={key}
                                             href={item.href}
                                         ></GameDefaultCard>
                                     </Grid>
@@ -294,10 +234,6 @@ const ManageGame = () => {
                     </Grid>
                 </Grid>
             </Grid>
-
-            <React.Fragment>
-                <ModalVideo channel="" isOpen={modalOpen} videoId="" onClose={handlePreview} />
-            </React.Fragment>
         </>
     );
 };
