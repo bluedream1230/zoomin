@@ -23,6 +23,8 @@ import { store } from 'store';
 import { getUserInfo, sendMail, updateBillInfo, updateUserInfo } from 'services/apis/server';
 import { useSelector } from 'react-redux';
 import jwt_decode from 'jwt-decode';
+import { Input } from '@material-ui/core';
+import { RestaurantMenu } from '@mui/icons-material';
 
 const state = store.getState();
 
@@ -109,10 +111,12 @@ const Setting = () => {
             billccn: '',
             billCVV: '',
             billexpirationdateM: '',
-            billexpirationdateY: ''
+            billexpirationdateY: '',
+            logo: []
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
+            console.log(values.logo);
             onUpdateBillInfo(values);
             onUpdateUserInfo(values);
         }
@@ -151,18 +155,20 @@ const Setting = () => {
     const onUpdateUserInfo = async (values) => {
         try {
             setLoading(true);
-            const data = await updateUserInfo({
-                name: values.username,
-                email: values.useremail,
-                phone: values.userphone,
-                subscription: values.usersubscription,
-                street: values.userstreet,
-                suite: values.usersuite,
-                city: values.usercity,
-                state: values.userstate,
-                zip: values.userzip
-                // user: state.auth
-            });
+            const data = await updateUserInfo(
+                {
+                    name: values.username,
+                    email: values.useremail,
+                    phone: values.userphone,
+                    subscription: values.usersubscription,
+                    street: values.userstreet,
+                    suite: values.usersuite,
+                    city: values.usercity,
+                    state: values.userstate,
+                    zip: values.userzip
+                },
+                values.logo
+            );
             console.log('user:', data);
             setLoading(false);
         } catch (e) {
@@ -222,8 +228,10 @@ const Setting = () => {
                                 >
                                     Profile Information
                                 </Typography>
+
                                 <Button
                                     variant="outlined"
+                                    component="label"
                                     sx={{
                                         borderRadius: '8.8px',
                                         border: '1px solid #04B4DD',
@@ -237,6 +245,17 @@ const Setting = () => {
                                     }}
                                 >
                                     Upload a Photo
+                                    <input
+                                        hidden
+                                        accept="image/*"
+                                        multiple
+                                        type="file"
+                                        name="logo"
+                                        value={formik.values.logo.filename}
+                                        onChange={(event) => {
+                                            formik.setFieldValue('logo', event.currentTarget.files[0]);
+                                        }}
+                                    />
                                 </Button>
                             </Grid>
                         </Grid>

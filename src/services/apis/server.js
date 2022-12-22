@@ -99,8 +99,8 @@ export const getUserInfo = async () => {
     return Api.get(API_GET_USER_INFO);
 };
 
-export const updateUserInfo = async (data) => {
-    return Api.put(API_UPDATE_USER_INFO, data);
+export const updateUserInfo = async (data, files) => {
+    return Api.uploadFile(API_UPDATE_USER_INFO, { data: JSON.stringify(data) }, {}, files);
 };
 
 export const updateBillInfo = async (data) => {
