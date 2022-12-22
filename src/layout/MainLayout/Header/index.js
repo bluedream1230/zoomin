@@ -63,7 +63,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
                     alignItems: 'center'
                 }}
             >
-                <NotificationSection />
+                {/* <NotificationSection /> */}
                 <ProfileSection />
             </Box>
         </>

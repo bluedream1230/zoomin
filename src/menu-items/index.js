@@ -33,20 +33,6 @@ const menuItem = {
                     type: 'item',
                     url: '/dashboard/single-report',
                     breadcrumbs: false
-                },
-                {
-                    id: 'export-view',
-                    title: 'Export Report',
-                    type: 'item',
-                    url: '/dashboard/export-report',
-                    breadcrumbs: false
-                },
-                {
-                    id: 'generate-custom-report',
-                    title: 'Generate Custom Report',
-                    type: 'item',
-                    url: '/dashboard/generate-report',
-                    breadcrumbs: false
                 }
             ]
         },
@@ -60,27 +46,11 @@ const menuItem = {
         },
         {
             id: 'campaigns',
-            title: 'Campaigns',
-            type: 'collapse',
-            url: '',
+            title: 'Campaigns Performance',
+            type: 'item',
+            url: '/campaigns/performance',
             icon: CampaignIcon,
-            breadcrumbs: false,
-            children: [
-                {
-                    id: 'single-campaign',
-                    title: 'Single Campaign',
-                    type: 'item',
-                    url: '/campaigns/information/1',
-                    breadcrumbs: false
-                },
-                {
-                    id: 'performance',
-                    title: 'View Performance',
-                    type: 'item',
-                    url: '/campaigns/performance',
-                    breadcrumbs: false
-                }
-            ]
+            breadcrumbs: false
         },
         {
             id: 'prizes',

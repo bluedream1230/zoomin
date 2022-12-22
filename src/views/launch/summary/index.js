@@ -102,6 +102,7 @@ const CampaignSummary = () => {
                     end_time: state.screen1.eventInfo.endtime.$d,
                     subscribe: state.screen3.coin,
                     event_coins: state.screen3.price,
+                    subscribe_name: state.screen3.subscribe_name,
                     duration: state.screen2.timelimit,
                     sponsorname: state.screen1.sponsor.sponsorname,
                     trivia_id: trivia?.trivia_id,
@@ -258,7 +259,7 @@ const CampaignSummary = () => {
                                                 color: '#04B4DD'
                                             }}
                                         >
-                                            ${state.screen3}
+                                            ${state.screen3.subscribe_name}
                                         </Typography>
                                     </CardContent>
                                 </Grid>
