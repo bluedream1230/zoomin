@@ -26,7 +26,9 @@ import { store } from 'store';
 import GameDefaultCard from 'ui-component/cards/Skeleton/GameDefaultCard';
 import { gridSpacing } from 'store/constant';
 import MainCard from 'ui-component/cards/MainCard';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getGame } from 'services/apis/server';
+import { GET_GAMES } from 'store/actions';
 
 const ImportGame = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/games/import" {...props} role={undefined} />);
 
@@ -103,9 +105,18 @@ const useStyles = makeStyles({
 const ManageGame = () => {
     const classes = useStyles();
     const state = store.getState();
-    const allEvents = useSelector((state) => state.campaign);
-    const gameList = allEvents.games;
-    console.log(allEvents);
+    const [gameList, setGameList] = React.useState([]);
+    const dispatch = useDispatch();
+    const load = async () => {
+        const games = await getGame();
+        console.log('games', games);
+        dispatch({ type: GET_GAMES, games: games });
+        setGameList(games);
+    };
+    console.log(gameList);
+    React.useEffect(() => {
+        load();
+    }, []);
 
     return (
         <>
