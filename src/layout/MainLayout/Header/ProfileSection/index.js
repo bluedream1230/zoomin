@@ -4,6 +4,7 @@ import { FaUserAlt } from 'react-icons/fa';
 import { MdSettingsSuggest } from 'react-icons/md';
 import { FaList } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
+import { getUserInfo } from 'services/apis/server';
 
 export default function ProfileMenu() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -14,19 +15,28 @@ export default function ProfileMenu() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const [userinfo, setUserinfo] = React.useState({});
+    const load = async () => {
+        const userInfo = await getUserInfo();
+        console.log('userInfoheader', userInfo);
+        setUserinfo(userInfo);
+    };
+
+    React.useEffect(() => {
+        load();
+    }, []);
 
     return (
         <div>
             <Avatar
-                alt="Richard"
+                alt={userinfo.name}
                 onClick={handleClick}
                 sx={{
                     width: '46px',
                     height: '46px'
                 }}
-            >
-                R
-            </Avatar>
+                src={userinfo.logo}
+            ></Avatar>
 
             {/* <Popover
                 id="basic-menu"
