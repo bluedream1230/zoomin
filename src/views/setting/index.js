@@ -123,7 +123,7 @@ const Setting = () => {
     });
     const load = async () => {
         const userInfo = await getUserInfo();
-        console.log(userInfo);
+        console.log('userInfo', userInfo);
         const userInfoFormikIn = {
             username: userInfo.name,
             useremail: userInfo.email,
@@ -141,9 +141,7 @@ const Setting = () => {
             billaddress: userInfo.bill?.billingaddress,
             billcountry: userInfo.bill?.country,
             billccn: userInfo.bill?.ccn,
-            billCVV: userInfo.bill?.CVV,
-            billexpirationdateM: userInfo.bill?.expirationdate.getMonth(),
-            billexpirationdateY: userInfo.bill?.expirationdate.getFullYear()
+            billCVV: userInfo.bill?.CVV
         };
         formik.setValues(userInfoFormikIn, false);
     };
@@ -251,7 +249,7 @@ const Setting = () => {
                                         multiple
                                         type="file"
                                         name="logo"
-                                        value={formik.values.logo.filename}
+                                        value={formik.values.logo?.filename}
                                         onChange={(event) => {
                                             formik.setFieldValue('logo', event.currentTarget.files[0]);
                                         }}
