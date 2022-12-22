@@ -383,7 +383,7 @@ const CampaignInformation = ({ isLoading }) => {
     return (
         <>
             {isLoading || eventInfo.length == 0 ? (
-                <SkeletonPopularCard />
+                <></>
             ) : (
                 <>
                     <MainCard content={false} sx={{ marginBottom: '50px' }}>
@@ -477,7 +477,7 @@ const CampaignInformation = ({ isLoading }) => {
                                                                 marginBottom: '16px'
                                                             }}
                                                         >
-                                                            Target Sudiance
+                                                            Target Audience
                                                         </Typography>
                                                         <Typography
                                                             variant="subtitle1"
@@ -490,7 +490,7 @@ const CampaignInformation = ({ isLoading }) => {
                                                                 lineHeight: `${matchesLG ? '22px' : '42px'}`
                                                             }}
                                                         >
-                                                            Dummy
+                                                            {eventInfo.event[0] && eventInfo.event[0].audience.name}
                                                         </Typography>
                                                     </Grid>
                                                     <Grid item xs={6} lg={2} sm={6} md={6}>

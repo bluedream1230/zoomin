@@ -142,7 +142,7 @@ const CampaignPerformances = ({ isLoading }) => {
                                             marginBottom: '16px'
                                         }}
                                     >
-                                        Prize
+                                        Subscribe
                                     </Typography>
                                     <Typography
                                         variant="subtitle1"
@@ -155,7 +155,7 @@ const CampaignPerformances = ({ isLoading }) => {
                                             lineHeight: `${matchesMD ? '18px' : '24px'}`
                                         }}
                                     >
-                                        {item.event_coins}
+                                        {item.subscribe_name}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={3}>

@@ -17,7 +17,8 @@ import {
     API_ADD_TRIVIA,
     API_PAYMENT,
     API_ADD_PRIZE_POOL,
-    API_REWARD_BYID
+    API_REWARD_BYID,
+    API_GET_USER_INFO
 } from 'store/api';
 
 export const getCampaign = async () => {
@@ -92,6 +93,10 @@ export const sendMail = async (data) => {
 
 export const resetPassword = async (data) => {
     return Api.post(API_RESETPASSWORD, data);
+};
+
+export const getUserInfo = async () => {
+    return Api.get(API_GET_USER_INFO);
 };
 
 export const updateUserInfo = async (data) => {

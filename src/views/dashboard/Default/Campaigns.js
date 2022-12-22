@@ -18,121 +18,6 @@ import { List } from 'tabler-icons-react';
 import { store } from 'store';
 import { GET_EVENTS, GET_REWARDS_INFO } from 'store/actions';
 
-const CampaignsList = [
-    {
-        Status: 'Active',
-        Name: 'Ogra Megi',
-        Game: 'Shock & Awe',
-        Users: '900,00',
-        Winner: '$3000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Grim Stroke',
-        Game: 'Long Winter',
-        Users: '900,00',
-        Winner: '$5000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Jessica',
-        Game: 'Master Thief',
-        Users: '900,00',
-        Winner: '$2000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Ogra Megi',
-        Game: 'Shock & Awe',
-        Users: '900,00',
-        Winner: '$3000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Ogra Megi',
-        Game: 'Shock & Awe',
-        Users: '900,00',
-        Winner: '$3000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Grim Stroke',
-        Game: 'Long Winter',
-        Users: '900,00',
-        Winner: '$5000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Jessica',
-        Game: 'Master Thief',
-        Users: '900,00',
-        Winner: '$2000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Ogra Megi',
-        Game: 'Shock & Awe',
-        Users: '900,00',
-        Winner: '$3000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Ogra Megi',
-        Game: 'Shock & Awe',
-        Users: '900,00',
-        Winner: '$3000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Grim Stroke',
-        Game: 'Long Winter',
-        Users: '900,00',
-        Winner: '$5000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Jessica',
-        Game: 'Master Thief',
-        Users: '900,00',
-        Winner: '$2000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Ogra Megi',
-        Game: 'Shock & Awe',
-        Users: '900,00',
-        Winner: '$3000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Ogra Megi',
-        Game: 'Shock & Awe',
-        Users: '900,00',
-        Winner: '$3000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Grim Stroke',
-        Game: 'Long Winter',
-        Users: '900,00',
-        Winner: '$5000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Jessica',
-        Game: 'Master Thief',
-        Users: '900,00',
-        Winner: '$2000,00'
-    },
-    {
-        Status: 'Active',
-        Name: 'Ogra Megi',
-        Game: 'Shock & Awe',
-        Users: '900,00',
-        Winner: '$3000,00'
-    }
-];
-
 const Campaigns = ({ isLoading }) => {
     const theme = useTheme();
     const state = store.getState();
@@ -361,7 +246,7 @@ const Campaigns = ({ isLoading }) => {
                                                                 lineHeight: `${matchesSM ? '18px' : '24px'}`
                                                             }}
                                                         >
-                                                            {v.event_coins}$
+                                                            {v.event_coins}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>

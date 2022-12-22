@@ -20,13 +20,19 @@ import { gridSpacing } from 'store/constant';
 import CountrySelect from 'ui-component/CountrySelect';
 import { useFormik } from 'formik';
 import { store } from 'store';
-import { sendMail, updateBillInfo, updateUserInfo } from 'services/apis/server';
+import { getUserInfo, sendMail, updateBillInfo, updateUserInfo } from 'services/apis/server';
+import { useSelector } from 'react-redux';
+import jwt_decode from 'jwt-decode';
+
 const state = store.getState();
 
 const Setting = () => {
     const theme = useTheme();
     const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
     const [isLoading, setLoading] = React.useState(false);
+    const decoded = jwt_decode(state.auth.token);
+
+    console.log(decoded);
     const validationSchema = Yup.object({
         username: Yup.string('Enter name').required('Name is required'),
         useremail: Yup.string('Enter Email').email('Invalid email format').required('Email is required'),
@@ -111,6 +117,36 @@ const Setting = () => {
             onUpdateUserInfo(values);
         }
     });
+    const load = async () => {
+        const userInfo = await getUserInfo();
+        console.log(userInfo);
+        const userInfoFormikIn = {
+            username: userInfo.name,
+            useremail: userInfo.email,
+            userphone: userInfo.phone,
+            userstreet: userInfo.street,
+            usersuite: userInfo.suite,
+            usercity: userInfo.city,
+            userstate: userInfo.state,
+            userzip: userInfo.zip,
+            usersubscription: userInfo.subscription,
+            billfirstname: userInfo.bill?.firstname,
+            billlastname: userInfo.bill?.lastname,
+            billemail: userInfo.bill?.email,
+            billphone: userInfo.bill?.phone,
+            billaddress: userInfo.bill?.billingaddress,
+            billcountry: userInfo.bill?.country,
+            billccn: userInfo.bill?.ccn,
+            billCVV: userInfo.bill?.CVV,
+            billexpirationdateM: userInfo.bill?.expirationdate.getMonth(),
+            billexpirationdateY: userInfo.bill?.expirationdate.getFullYear()
+        };
+        formik.setValues(userInfoFormikIn, false);
+    };
+
+    React.useEffect(() => {
+        load();
+    }, []);
 
     const onUpdateUserInfo = async (values) => {
         try {

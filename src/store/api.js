@@ -17,3 +17,4 @@ export const API_UPDATE_PASS = '/api/auth/updatePass';
 export const API_PAYMENT = '/api/payments';
 export const API_ADD_TRIVIA = '/api/addtrivia';
 export const API_ADD_PRIZE_POOL = '/api/prizepools';
+export const API_GET_USER_INFO = '/api/users';
