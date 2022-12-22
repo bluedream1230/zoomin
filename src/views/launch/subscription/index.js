@@ -332,10 +332,6 @@ const SelectSubscriptionPage = () => {
                             transform: 'translate(-50%, -50%)',
                             width: 1000,
                             bgcolor: '#360068',
-                            // bgcolor: '#f00',
-
-                            // border: '2px solid #000',
-                            // boxShadow: '39.9357px 7.35657px 132.418px rgba(0, 0, 0, 0.4)'
                             p: 8
                         }}
                     >

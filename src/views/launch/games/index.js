@@ -319,7 +319,6 @@ const SelectGamePage = () => {
                             transform: 'translate(-50%, -50%)',
                             width: 1400,
                             bgcolor: '#360068',
-                            opacity: '0.88',
 
                             border: '2px solid #000',
                             boxShadow: '39.9357px 7.35657px 132.418px rgba(0, 0, 0, 0.4)',
