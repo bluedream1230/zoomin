@@ -65,7 +65,7 @@ const Campaigns = ({ isLoading }) => {
     return (
         <>
             {isLoading ? (
-                <SkeletonPopularCard />
+                <></>
             ) : (
                 <MainCard content={false}>
                     <CardContent>

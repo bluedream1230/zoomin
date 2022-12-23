@@ -226,7 +226,7 @@ const CampaignPerformances = ({ isLoading }) => {
     return (
         <>
             {isLoading ? (
-                <SkeletonPopularCard />
+                <></>
             ) : (
                 <>
                     <Grid item sx={{ paddingBottom: '50px' }}>

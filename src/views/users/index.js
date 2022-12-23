@@ -38,7 +38,8 @@ const UserList = ({ isLoading }) => {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const load = async () => {
-        const users = await getUsers(decoded.id);
+        const users = await getUsers();
+        console.log('users', users);
         dispatch({ type: GET_USERS, users: users });
         setUsers(users);
     };
@@ -226,7 +227,7 @@ const UserList = ({ isLoading }) => {
     return (
         <>
             {isLoading ? (
-                <SkeletonPopularCard />
+                <></>
             ) : (
                 <>
                     <MainCard content={false} sx={{ marginBottom: '50px' }}>

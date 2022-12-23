@@ -226,7 +226,7 @@ const Users = ({ isLoading }) => {
     return (
         <>
             {isLoading ? (
-                <SkeletonPopularCard />
+                <></>
             ) : (
                 <PerfectScrollbar
                     component="div"

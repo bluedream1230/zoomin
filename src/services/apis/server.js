@@ -70,8 +70,8 @@ export const getAudience = async () => {
     return Api.get(API_AUDIENCE_DATA);
 };
 
-export const getUsers = async (id) => {
-    return Api.get(API_USERS_DATA, {}, { id });
+export const getUsers = async () => {
+    return Api.get(API_USERS_DATA);
 };
 
 export const createEvent = async (data, videourl, rewardIds, gameId, rewardpool, audienceId, files) => {

@@ -234,7 +234,7 @@ const PrizeList = ({ isLoading }) => {
     return (
         <>
             {isLoading ? (
-                <SkeletonPopularCard />
+                <></>
             ) : (
                 <>
                     <MainCard content={false} sx={{ marginBottom: '50px' }}>
