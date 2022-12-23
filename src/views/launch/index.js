@@ -254,7 +254,6 @@ const LaunchPage = () => {
         formik1.setFieldValue('audience', navigateState.state.screen1.eventInfo.audience);
         formik4.setValues(formik4Edit, false);
     };
-    console.log('AudienceLabelList', AudienceLabelList.find((e) => (e.id = navigateState.state.screen1.eventInfo.audience)).label);
     React.useEffect(() => {
         load();
     }, []);
