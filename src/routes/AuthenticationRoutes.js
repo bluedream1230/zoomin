@@ -15,34 +15,34 @@ const SignUp = Loadable(lazy(() => import('views/pages/authentication/authentica
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
 const AuthenticationRoutes = {
-    path: '/',
+    path: 'auth',
     children: [
+        // {
+        //     path: '/',
+        //     element: <AuthLogin />
+        // },
         {
-            path: '/',
+            path: 'login',
             element: <AuthLogin />
         },
         {
-            path: '/auth/login',
-            element: <AuthLogin />
-        },
-        {
-            path: '/auth/forgotpassword',
+            path: 'forgotpassword',
             element: <ForgotPassword />
         },
         {
-            path: '/auth/resetpassword',
+            path: 'resetpassword',
             element: <ResetPassword />
         },
         {
-            path: '/auth/createpassword/:token',
+            path: 'createpassword/:token',
             element: <CreatePassword />
         },
         {
-            path: '/auth/signup',
+            path: 'signup',
             element: <SignUp />
         },
         {
-            path: '/auth/logout',
+            path: 'logout',
             element: <AuthLogout />
         }
     ]

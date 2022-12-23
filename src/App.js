@@ -32,6 +32,7 @@ const App = () => {
     const auth = useSelector((state) => state.auth);
 
     const appPage = useCallback(() => {
+        console.log('token: ', auth.token);
         if (!auth.token) {
             return (
                 <StyledEngineProvider injectFirst>
