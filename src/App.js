@@ -29,40 +29,19 @@ const state = store.getState();
 
 const App = () => {
     const customization = useSelector((state) => state.customization);
-    const auth = useSelector((state) => state.auth);
 
-    const appPage = useCallback(() => {
-        console.log('token: ', auth.token);
-        if (!auth.token) {
-            return (
-                <StyledEngineProvider injectFirst>
-                    <ThemeProvider theme={themes(customization)}>
-                        <CssBaseline />
-                        <NavigationScroll>
-                            <Elements stripe={stripePromise}>
-                                <Login />
-                            </Elements>
-                        </NavigationScroll>
-                    </ThemeProvider>
-                </StyledEngineProvider>
-            );
-        }
-
-        return (
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={themes(customization)}>
-                    <CssBaseline />
-                    <NavigationScroll>
-                        <Elements stripe={stripePromise}>
-                            <Routes />
-                        </Elements>
-                    </NavigationScroll>
-                </ThemeProvider>
-            </StyledEngineProvider>
-        );
-    }, [auth]);
-
-    return appPage();
+    return (
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={themes(customization)}>
+                <CssBaseline />
+                <NavigationScroll>
+                    <Elements stripe={stripePromise}>
+                        <Routes />
+                    </Elements>
+                </NavigationScroll>
+            </ThemeProvider>
+        </StyledEngineProvider>
+    );
 };
 
 export default App;

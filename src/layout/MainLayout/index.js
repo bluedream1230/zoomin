@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -10,6 +10,7 @@ import { AppBar, Box, CssBaseline, Divider, Toolbar, useMediaQuery } from '@mui/
 // project imports
 import Header from './Header';
 import Sidebar from './Sidebar';
+import { store } from 'store';
 import { appDrawerWidth } from 'store/constant';
 import { SET_MENU, SET_SELETED } from 'store/actions';
 
@@ -59,6 +60,9 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 // ==============================|| MAIN LAYOUT ||============================== //
 
 const MainLayout = () => {
+    const state = store.getState();
+    const { token } = state.auth;
+    const navigate = useNavigate();
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('lg'));
     const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -77,6 +81,12 @@ const MainLayout = () => {
         let arr = new Array(7).fill(false);
         dispatch({ type: SET_SELETED, selected: arr });
     }, []);
+
+    useEffect(() => {
+        if (!token) {
+            navigate('/auth/login');
+        }
+    }, [token, navigate]);
 
     return (
         <Box sx={{ display: 'flex' }}>
