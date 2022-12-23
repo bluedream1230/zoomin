@@ -70,24 +70,14 @@ const LaunchPage = () => {
     const [openModal, setOpenModal] = React.useState(false);
 
     const { state: navigateState } = useLocation();
+    console.log(navigateState);
 
     const navigate = useNavigate();
     const allEvents = useSelector((state) => state.campaign);
 
-    const load = async () => {
-        const rewards = await getReward();
-        dispatch({ type: GET_REWARDS, rewards: rewards });
-        const audiences = await getAudience();
-        dispatch({ type: GET_AUDIENCES, audiences: audiences });
-        setReward(rewards);
-        setAudience(audiences);
-    };
-
-    React.useEffect(() => {
-        load();
-    }, []);
     const PrizeListData = allEvents.rewards;
     const AudienceListData = allEvents.audiences;
+
     const TypeLabelList = [{ label: 'Reward' }, { label: 'Coupon' }];
     const PrizeLabelList = React.useMemo(() => {
         if (!PrizeListData) return [];
@@ -194,7 +184,7 @@ const LaunchPage = () => {
     };
 
     const handleNext = (eventInfo, prize, sponsor) => {
-        navigate('/launch/games/index', { state: { eventInfo, prize, sponsor } });
+        navigate('/launch/games/index', { state: { eventInfo, prize, sponsor, navigateState } });
     };
 
     // React.useEffect(() => {
@@ -242,7 +232,32 @@ const LaunchPage = () => {
         if (!AudienceListData) return [];
         return AudienceListData.map((item, index) => ({ label: item.name, id: item.id, key: index }));
     }, [allEvents]);
-
+    const load = async () => {
+        const rewards = await getReward();
+        dispatch({ type: GET_REWARDS, rewards: rewards });
+        const audiences = await getAudience();
+        dispatch({ type: GET_AUDIENCES, audiences: audiences });
+        setReward(rewards);
+        setAudience(audiences);
+        const formik1Edit = {
+            selectname: navigateState.state.screen1.eventInfo.selectname,
+            location: navigateState.state.screen1.eventInfo.location
+            // audience: AudienceLabelList.find((e) => (e.id = navigateState.state.screen1.eventInfo.audience)).label
+        };
+        const formik4Edit = {
+            sponsorname: navigateState.state.screen1.sponsor.sponsorname,
+            videourl: navigateState.state.screen1.sponsor.videourl,
+            logoUrl: '',
+            files: []
+        };
+        formik1.setValues(formik1Edit, false);
+        formik1.setFieldValue('audience', navigateState.state.screen1.eventInfo.audience);
+        formik4.setValues(formik4Edit, false);
+    };
+    console.log('AudienceLabelList', AudienceLabelList.find((e) => (e.id = navigateState.state.screen1.eventInfo.audience)).label);
+    React.useEffect(() => {
+        load();
+    }, []);
     return (
         <>
             {isLoading && (
@@ -592,11 +607,7 @@ const LaunchPage = () => {
                                             <input {...getInputProps()} />
 
                                             <img
-                                                src={
-                                                    formik4.values.logoUrl.length !== 0
-                                                        ? baseServerUrl + '/companies/' + formik4.values.logoUrl
-                                                        : ''
-                                                }
+                                                src={formik4.values.logoUrl.length !== 0 ? '/companies/' + formik4.values.logoUrl : ''}
                                                 alt=""
                                             />
                                             <p

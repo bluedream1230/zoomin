@@ -26,12 +26,22 @@ const SelectGamePage = () => {
     const [openModal, setOpenModal] = React.useState(false);
     const [prizepool, setPrizepool] = React.useState([]);
     const [isLoading, setLoading] = React.useState(false);
+    const { state: navigateState } = useLocation();
 
     const load = async () => {
         const games = await getGame();
         dispatch({ type: GET_GAMES, games: games });
+        const prizepool = await getPrizepool();
+        dispatch({ type: GET_PRIZEPOOL, prizepool: prizepool });
         console.log(games);
         setGames(games);
+        setPrizepool(prizepool);
+        if (navigateState.navigateState) {
+            const formik1Edit = {
+                timelimit: navigateState.navigateState.state.screen2.timelimit
+            };
+            formik1.setValues(formik1Edit, false);
+        }
     };
 
     React.useEffect(() => {
@@ -79,7 +89,7 @@ const SelectGamePage = () => {
     console.log('prizepoolListData', prizepoolListData);
     const gameListData = allEvents.games;
     console.log('allEvents:', gameListData);
-    const { state: navigateState } = useLocation();
+
     console.log(navigateState);
     const handleNext = (screen2) => {
         navigate('/launch/subscription/index', { state: { screen2, screen1: navigateState } });

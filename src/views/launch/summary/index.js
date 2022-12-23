@@ -87,7 +87,7 @@ const CampaignSummary = () => {
         }
     };
     const handleClick = () => {
-        navigate('/launch/index');
+        navigate('/launch/index', { state: { state } });
     };
     const [isLoading, setLoading] = React.useState(false);
     const onCreateEvent = async () => {
