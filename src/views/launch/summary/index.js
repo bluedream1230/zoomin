@@ -117,7 +117,7 @@ const CampaignSummary = () => {
                 state.screen1.sponsor.files
             );
             console.log('data:', data);
-            navigate('/campaigns/performance');
+            navigate('/campaigns/information/');
             setLoading(false);
         } catch (e) {
             console.log(e);
