@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
-import { Button, CardContent, Grid, Typography, Card, CardMedia, useMediaQuery } from '@mui/material';
+import { Button, CardContent, Grid, Typography, Card, CardMedia, useMediaQuery, Modal } from '@mui/material';
 import { createTheme } from '@material-ui/core';
 
 import MainCard from 'ui-component/cards/MainCard';
@@ -14,6 +14,7 @@ import { values } from 'lodash';
 import jwt_decode from 'jwt-decode';
 import { store } from 'store';
 import { useEffect } from 'react';
+import Iframe from 'react-iframe';
 const CampaignPerformances = React.forwardRef((props, ref) => (
     <RouterLink ref={ref} to="/campaigns/performance" {...props} role={undefined} />
 ));
@@ -26,6 +27,9 @@ const CampaignSummary = () => {
     const { state } = useLocation();
     console.log(state);
     const allEvents = useSelector((state) => state.campaign);
+    const [openModal, setOpenModal] = React.useState(false);
+    const handleCloseModal = () => setOpenModal(false);
+
     const PrizeListData = allEvents.rewards;
     const temp = new Date(state.screen1.eventInfo.launchdate);
     const y = temp.getFullYear();
@@ -72,6 +76,7 @@ const CampaignSummary = () => {
                 user_id: decoded.id
             });
             setTrivia(data);
+            setOpenModal(!openModal);
         } catch (e) {
             console.log(e);
         }
@@ -411,6 +416,15 @@ const CampaignSummary = () => {
                     )}
                 </Grid>
             </form>
+            <Modal
+                open={openModal}
+                onClose={handleCloseModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+                <Iframe url={trivia?.url} width="640px" height="800vh" id="" className="" />
+            </Modal>
         </MainCard>
     );
 };
