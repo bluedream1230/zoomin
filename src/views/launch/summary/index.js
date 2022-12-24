@@ -24,28 +24,21 @@ const CampaignSummary = () => {
     const dispatch = useDispatch();
     const states = store.getState();
     const { state } = useLocation();
-
+    console.log(state);
     const allEvents = useSelector((state) => state.campaign);
     const PrizeListData = allEvents.rewards;
-    console.log(state);
+    const temp = new Date(state.screen1.eventInfo.launchdate);
+    const y = temp.getFullYear();
+    const m = temp.getMonth() + 1;
+    const d = temp.getDate();
     const decoded = jwt_decode(states.auth.token);
     let prizeLabel = [];
     PrizeListData.forEach((item) => {
         state.screen1.prize.prize.forEach((prizeitem) => {
             if (item.id == prizeitem) {
                 prizeLabel.push(item.name);
-                console.log('prizelabel', prizeLabel);
             }
         });
-    });
-
-    const AudienceListData = allEvents.audiences;
-    let audienceLabel = '';
-    AudienceListData.forEach((item) => {
-        if (item.id == state.screen1.eventInfo.audience) {
-            audienceLabel = item.name;
-            console.log('audience:', audienceLabel);
-        }
     });
 
     const GameListData = allEvents.games;
@@ -55,7 +48,6 @@ const CampaignSummary = () => {
             gameInfo = item;
         }
     });
-    console.log(gameInfo);
 
     const theme = createTheme({
         breakpoints: {
@@ -73,14 +65,12 @@ const CampaignSummary = () => {
     const navigate = useNavigate();
     const [trivia, setTrivia] = React.useState();
     const getTriviaInfo = async () => {
-        console.log('sdfafdasd');
         try {
             // navigate('https://saviour.earth/ZoomIn/trivia/create_trivia.php');
             const data = await addTrivia({
                 name: state.screen1.eventInfo.selectname,
                 user_id: decoded.id
             });
-            console.log('trivia', data);
             setTrivia(data);
         } catch (e) {
             console.log(e);
@@ -90,16 +80,16 @@ const CampaignSummary = () => {
         navigate('/launch/index', { state: { state } });
     };
     const [isLoading, setLoading] = React.useState(false);
+    const prizeIds = state.screen1.prize.prize.map((item) => item.id);
     const onCreateEvent = async () => {
         try {
             setLoading(true);
-            console.log('files:', state.screen1.sponsor.files);
             const data = await createEvent(
                 {
                     name: state.screen1.eventInfo.selectname,
                     location: state.screen1.eventInfo.location,
-                    start_time: state.screen1.eventInfo.launchdate.$d,
-                    end_time: state.screen1.eventInfo.endtime.$d,
+                    start_time: state.screen1.eventInfo.launchdate,
+                    end_time: state.screen1.eventInfo.endtime,
                     subscribe: state.screen3.price,
                     event_coins: state.screen3.coin,
                     subscribe_name: state.screen3.subscribename,
@@ -110,13 +100,12 @@ const CampaignSummary = () => {
                     user: states.auth.user
                 },
                 state.screen1.sponsor.videourl,
-                state.screen1.prize.prize,
+                prizeIds,
                 state.screen2.gameid,
-                state.screen2.rewardpool,
-                state.screen1.eventInfo.audience,
+                state.screen2.rewardpool.id,
+                state.screen1.eventInfo.audience.id,
                 state.screen1.sponsor.files
             );
-            console.log('data:', data);
             navigate('/campaigns/information/');
             setLoading(false);
         } catch (e) {
@@ -222,8 +211,7 @@ const CampaignSummary = () => {
                                                 color: '#FFFFFF'
                                             }}
                                         >
-                                            {state.screen1.eventInfo.launchdate.$M + 1}.{state.screen1.eventInfo.launchdate.$D}.
-                                            {state.screen1.eventInfo.launchdate.$y}
+                                            {m}.{d}.{y}
                                         </Typography>
                                     </CardContent>
                                 </Grid>
@@ -300,7 +288,7 @@ const CampaignSummary = () => {
                                                     color: '#FFC857'
                                                 }}
                                             >
-                                                {audienceLabel}
+                                                {state.screen1.eventInfo.audience.label}
                                             </Typography>
                                         </CardContent>
                                     </Grid>
