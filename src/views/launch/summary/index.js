@@ -423,7 +423,7 @@ const CampaignSummary = () => {
                 aria-describedby="modal-modal-description"
                 sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
-                <Iframe url={trivia?.url} width="640px" height="800vh" id="" className="" />
+                <Iframe url={trivia?.url} width="1000px" height="1200vh" id="" className="" />
             </Modal>
         </MainCard>
     );
