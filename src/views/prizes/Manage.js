@@ -214,7 +214,7 @@ const UpdatePrize = () => {
                                         ...theme.typography.customInput
                                     }}
                                     onChange={(e, v) => {
-                                        formik2.setFieldValue('type', v.label);
+                                        formik.setFieldValue('type', v.label);
                                     }}
                                     renderOption={(props, option) => {
                                         return <li {...props}>{option.label}</li>;
@@ -222,8 +222,8 @@ const UpdatePrize = () => {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            error={formik2.touched.type && Boolean(formik2.errors.type)}
-                                            helperText={formik2.touched.type && formik2.errors.type}
+                                            error={formik.touched.type && Boolean(formik.errors.type)}
+                                            helperText={formik.touched.type && formik.errors.type}
                                             label="Type"
                                         />
                                     )}
