@@ -84,7 +84,7 @@ const SelectGamePage = () => {
     });
     const allEvents = useSelector((state) => state.campaign);
     const prizepoolListDataTemp = allEvents.prizepool;
-    const prizepoolListData = prizepoolListDataTemp.map((item) => ({ ...item, label: item.name, prizepool: JSON.parse(item.prizepool) }));
+    const prizepoolListData = prizepoolListDataTemp.map((item) => ({ ...item, label: item.name, prizepool: item.prizepool }));
     const gameListData = allEvents.games;
 
     const handleNext = (screen2) => {
@@ -113,6 +113,7 @@ const SelectGamePage = () => {
                     const prizepool = await getPrizepool();
                     dispatch({ type: GET_PRIZEPOOL, prizepool: prizepool });
                     setPrizepool([]);
+                    console.log('prizepool', prizepool);
                     handleCloseModal();
                     setLoading(false);
                 } catch (e) {
@@ -357,7 +358,7 @@ const SelectGamePage = () => {
                                             margin="normal"
                                             name="name"
                                             type="text"
-                                            value={formik2.values.name}
+                                            // value={formik2.values.name}
                                             onChange={formik2.handleChange}
                                             error={formik2.touched.name && Boolean(formik2.errors.name)}
                                             helperText={formik2.touched.name && formik2.errors.name}

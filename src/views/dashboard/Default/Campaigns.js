@@ -234,7 +234,7 @@ const Campaigns = ({ isLoading }) => {
                                                                 marginBottom: '16px'
                                                             }}
                                                         >
-                                                            Winner
+                                                            Coins
                                                         </Typography>
                                                         <Typography
                                                             color="#04B4DD"
