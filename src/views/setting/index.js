@@ -117,8 +117,12 @@ const Setting = () => {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             console.log(values.logo);
-            onUpdateBillInfo(values);
-            onUpdateUserInfo(values);
+            if (!values.logo) {
+                alert("Don't forget upload a photo");
+            } else {
+                onUpdateBillInfo(values);
+                onUpdateUserInfo(values);
+            }
         }
     });
     const load = async () => {
