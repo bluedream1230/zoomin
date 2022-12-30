@@ -178,9 +178,9 @@ const CampaignPerformances = ({ isLoading }) => {
                                         sx={{
                                             fontFamily: 'Inter',
                                             fontStyle: 'normal',
-                                            fontWeight: `${matchesMD ? '400' : '600'}`,
-                                            fontSize: `${matchesMD ? '10px' : '20px'}`,
-                                            lineHeight: `${matchesMD ? '18px' : '24px'}`
+                                            fontWeight: `${matchesMD ? '200' : '400'}`,
+                                            fontSize: `${matchesMD ? '7px' : '14px'}`,
+                                            lineHeight: `${matchesMD ? '9px' : '12px'}`
                                         }}
                                     >
                                         {item.game.video_url}
