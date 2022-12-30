@@ -111,7 +111,10 @@ const CampaignSummary = () => {
                 state.screen1.eventInfo.audience.id,
                 state.screen1.sponsor.files
             );
-            navigate('/campaigns/information/');
+            console.log('data', data);
+            const tempUrl = '/campaigns/information/' + `${data.id}`;
+            console.log(tempUrl);
+            navigate(tempUrl);
             setLoading(false);
         } catch (e) {
             console.log(e);
