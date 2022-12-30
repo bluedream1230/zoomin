@@ -547,7 +547,7 @@ const CampaignInformation = ({ isLoading }) => {
                                                     padding: '9px 12px',
                                                     display: 'flex',
                                                     alignItems: 'center',
-                                                    width: '150px',
+                                                    // width: '150px',
                                                     justifyContent: 'center'
                                                 }}
                                             >
@@ -573,7 +573,12 @@ const CampaignInformation = ({ isLoading }) => {
                             ></InfoCard>
                         </Grid>
                         <Grid item xs={12} lg={4} md={12} sm={12} sx={{ marginBottom: '40px' }}>
-                            <InfoCard lineColor="#FFC857" label="Completion" value="60%" chartData={CompletionData}></InfoCard>
+                            <InfoCard
+                                lineColor="#FFC857"
+                                label="Completion"
+                                value={eventInfo.total_completion}
+                                chartData={CompletionData}
+                            ></InfoCard>
                         </Grid>
                     </Grid>
                     <MainCard content={false} sx={{ padding: `${matchesSM ? '10px' : '30px 40px'}` }}>
