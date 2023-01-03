@@ -159,7 +159,7 @@ const SelectSubscriptionPage = () => {
                                         fontFamily: 'Inter',
                                         fontStyle: 'normal',
                                         fontWeight: '700',
-                                        fontSize: '30px',
+                                        fontSize: '20px',
                                         lineHeight: '120px',
                                         color: '#FFFFFF',
                                         textAlign: 'center',
@@ -171,7 +171,7 @@ const SelectSubscriptionPage = () => {
                             </CardContent>
                             <CardActions sx={{ justifyContent: 'center' }}>
                                 <Button
-                                    sx={{ fontSize: '40px', textAlign: 'center', lineHeight: '70px', width: '100%' }}
+                                    sx={{ fontSize: '30px', textAlign: 'center', lineHeight: '70px', width: '100%' }}
                                     onClick={(e) => handleOpenSubscribeModal(1)}
                                 >
                                     Subscribe
@@ -227,7 +227,7 @@ const SelectSubscriptionPage = () => {
                                         fontFamily: 'Inter',
                                         fontStyle: 'normal',
                                         fontWeight: '700',
-                                        fontSize: '30px',
+                                        fontSize: '20px',
                                         lineHeight: '120px',
                                         color: '#FFFFFF',
                                         textAlign: 'center',
@@ -239,7 +239,7 @@ const SelectSubscriptionPage = () => {
                             </CardContent>
                             <CardActions sx={{ justifyContent: 'center' }}>
                                 <Button
-                                    sx={{ fontSize: '40px', textAlign: 'center', lineHeight: '70px', width: '100%' }}
+                                    sx={{ fontSize: '30px', textAlign: 'center', lineHeight: '70px', width: '100%' }}
                                     onClick={(e) => handleOpenSubscribeModal(2)}
                                 >
                                     Subscribe
@@ -295,7 +295,7 @@ const SelectSubscriptionPage = () => {
                                         fontFamily: 'Inter',
                                         fontStyle: 'normal',
                                         fontWeight: '700',
-                                        fontSize: '30px',
+                                        fontSize: '20px',
                                         lineHeight: '120px',
                                         color: '#FFFFFF',
                                         textAlign: 'center',
@@ -307,7 +307,7 @@ const SelectSubscriptionPage = () => {
                             </CardContent>
                             <CardActions sx={{ justifyContent: 'center' }}>
                                 <Button
-                                    sx={{ fontSize: '40px', textAlign: 'center', lineHeight: '70px', width: '100%' }}
+                                    sx={{ fontSize: '30px', textAlign: 'center', lineHeight: '70px', width: '100%' }}
                                     onClick={(e) => handleOpenSubscribeModal(3)}
                                 >
                                     Subscribe

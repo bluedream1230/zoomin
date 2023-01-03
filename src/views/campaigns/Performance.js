@@ -12,6 +12,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
 //pagination
+import PerfectScrollbar from 'react-perfect-scrollbar';
 import Pagination from '@mui/material/Pagination';
 import { TablePagination } from '@mui/material';
 import usePagination from 'ui-component/Pagination';
@@ -256,9 +257,16 @@ const CampaignPerformances = ({ isLoading }) => {
                                 onRowsPerPageChange={handleChangeRowsPerPage}
                                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
                             />
-                            <Grid container spacing={gridSpacing} sx={{ width: '100% !important' }}>
-                                {campaignTable}
-                            </Grid>
+                            <PerfectScrollbar
+                                component="div"
+                                style={{
+                                    width: '100%'
+                                }}
+                            >
+                                <Grid container spacing={gridSpacing} sx={{ minWidth: '980px' }}>
+                                    {campaignTable}
+                                </Grid>
+                            </PerfectScrollbar>
                             <Pagination
                                 count={count}
                                 size="large"
