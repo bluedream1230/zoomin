@@ -31,10 +31,10 @@ const SelectGamePage = () => {
     const load = async () => {
         const games = await getGame();
         dispatch({ type: GET_GAMES, games: games });
-        const prizepool = await getPrizepool();
-        dispatch({ type: GET_PRIZEPOOL, prizepool: prizepool });
+        const prizepools = await getPrizepool();
+        dispatch({ type: GET_PRIZEPOOL, prizepool: prizepools });
         setGames(games);
-        setPrizepool(prizepool);
+        // setPrizepool(prizepools);
         if (navigateState.navigateState) {
             const formik1Edit = {
                 timelimit: navigateState.navigateState.state.screen2.timelimit,
@@ -47,7 +47,7 @@ const SelectGamePage = () => {
     React.useEffect(() => {
         load();
     }, []);
-
+    console.log(prizepool);
     const addPrizePool = (place, coin) => {
         const newPool = { place: '', coin: '', errorCoinText: '', errorPlaceText: '' };
         const newData = cloneDeep(prizepool);
