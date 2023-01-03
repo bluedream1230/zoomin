@@ -505,7 +505,7 @@ const CampaignInformation = ({ isLoading }) => {
                                                                 marginBottom: '16px'
                                                             }}
                                                         >
-                                                            Prize
+                                                            Coins
                                                         </Typography>
                                                         <Typography
                                                             variant="subtitle1"
@@ -533,7 +533,7 @@ const CampaignInformation = ({ isLoading }) => {
                                         </Grid>
                                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
                                             <Link
-                                                href="#"
+                                                href={eventInfo.event[0].qr_code}
                                                 underline="none"
                                                 sx={{
                                                     backgroundColor: '#310241',

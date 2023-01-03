@@ -65,6 +65,7 @@ const CampaignPerformances = ({ isLoading }) => {
         setPage(p);
         _DATA.jump(p);
     };
+    console.log(allEvents);
 
     const campaignTable = _DATA.currentData().map((item, index) => {
         return (
@@ -183,7 +184,7 @@ const CampaignPerformances = ({ isLoading }) => {
                                             lineHeight: `${matchesMD ? '9px' : '12px'}`
                                         }}
                                     >
-                                        {item.game.video_url}
+                                        {item.url}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={1}>
