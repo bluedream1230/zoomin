@@ -34,6 +34,7 @@ const Campaigns = ({ isLoading }) => {
         load();
     }, []);
     const allEvents = useSelector((state) => state.campaign);
+    console.log(allEvents);
     const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
     const [anchorEl, setAnchorEl] = useState(null);
     const [page, setPage] = useState(0);
@@ -246,7 +247,7 @@ const Campaigns = ({ isLoading }) => {
                                                                 lineHeight: `${matchesSM ? '18px' : '24px'}`
                                                             }}
                                                         >
-                                                            {v.event_coins}
+                                                            {v.subscription.coins}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
