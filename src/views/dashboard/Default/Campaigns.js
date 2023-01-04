@@ -247,7 +247,7 @@ const Campaigns = ({ isLoading }) => {
                                                                 lineHeight: `${matchesSM ? '18px' : '24px'}`
                                                             }}
                                                         >
-                                                            {v.subscription.coins}
+                                                            {v.subscription?.coins}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
