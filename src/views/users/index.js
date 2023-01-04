@@ -252,23 +252,6 @@ const UserList = ({ isLoading }) => {
                                         <Grid item sx={{ paddingRight: '0px !important' }}>
                                             <Button
                                                 // component={AddPrize}
-                                                // to="/prizes/manage"
-                                                variant="contained"
-                                                sx={{
-                                                    borderRadius: '8.8px',
-                                                    backgroundColor: '#FF0676',
-                                                    width: '100px',
-                                                    height: '40px',
-                                                    fontSize: '16px',
-                                                    fontWeight: '700',
-                                                    marginRight: '22px'
-                                                }}
-                                            >
-                                                Imports
-                                            </Button>
-
-                                            <Button
-                                                // component={AddPrize}
                                                 // to="/launch/index"
                                                 variant="outlined"
                                                 sx={{
