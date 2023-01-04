@@ -145,7 +145,9 @@ const Setting = () => {
             billaddress: userInfo.bill?.billingaddress,
             billcountry: userInfo.bill?.country,
             billccn: userInfo.bill?.ccn,
-            billCVV: userInfo.bill?.CVV
+            billCVV: userInfo.bill?.CVV,
+            billexpirationdateM: userInfo.bill?.billexpirationdateM,
+            billexpirationdateY: userInfo.bill?.billexpirationdateY
         };
         formik.setValues(userInfoFormikIn, false);
     };
