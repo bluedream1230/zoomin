@@ -116,7 +116,7 @@ const NavCollapse = ({ index, menu, level }) => {
                                 sx={{ my: 'auto' }}
                                 fontFamily="inter"
                             >
-                                {!customization.isCollapse && menu.title}
+                                {!customization.isCollapse || level != 1 ? menu.title : ''}
                             </Typography>
                         }
                         secondary={

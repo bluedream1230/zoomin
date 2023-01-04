@@ -85,7 +85,7 @@ const NavItem = ({ item, level }) => {
                         fontFamily="inter"
                         color="inherit"
                     >
-                        {!customization.isCollapse && item.title}
+                        {!customization.isCollapse || level != 1 ? item.title : ''}
                     </Typography>
                 </ListItemText>
             )}
