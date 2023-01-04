@@ -25,7 +25,7 @@ const CampaignSummary = () => {
     const dispatch = useDispatch();
     const states = store.getState();
     const { state } = useLocation();
-    console.log(state);
+    console.log(states);
     const allEvents = useSelector((state) => state.campaign);
     const [openModal, setOpenModal] = React.useState(false);
     const handleCloseModal = () => setOpenModal(false);
@@ -95,9 +95,6 @@ const CampaignSummary = () => {
                     location: state.screen1.eventInfo.location,
                     start_time: state.screen1.eventInfo.launchdate,
                     end_time: state.screen1.eventInfo.endtime,
-                    subscribe: state.screen3.price,
-                    event_coins: state.screen3.coin,
-                    subscribe_name: state.screen3.subscribename,
                     duration: state.screen2.timelimit,
                     sponsorname: state.screen1.sponsor.sponsorname,
                     trivia_id: trivia?.trivia_id,
@@ -109,6 +106,7 @@ const CampaignSummary = () => {
                 state.screen2.gameid,
                 state.screen2.rewardpool.id,
                 state.screen1.eventInfo.audience.id,
+                state.screen3.subscribeId,
                 state.screen1.sponsor.files
             );
             console.log('data', data);
@@ -255,7 +253,7 @@ const CampaignSummary = () => {
                                                 color: '#04B4DD'
                                             }}
                                         >
-                                            {state.screen3.subscribename}
+                                            {state.screen3.subscribeName}
                                         </Typography>
                                     </CardContent>
                                 </Grid>

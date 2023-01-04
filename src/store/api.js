@@ -1,6 +1,6 @@
 export const API_USER_SIGN_IN = '/api/auth/login';
 export const API_USER_SIGN_UP = '/api/auth/create';
-export const API_CAMPAIGN_DATA = '/api/events/:gameId/:rewardpool/:audienceId';
+export const API_CAMPAIGN_DATA = '/api/events/:gameId/:rewardpool/:audienceId/:subscribeId';
 export const API_GET_CAMPAIGN_DATA = '/api/events';
 export const API_GET_REWARD_DATA = 'api/rewards/rewardsinfo';
 export const API_REWARD_DATA = '/api/rewards';
@@ -18,3 +18,4 @@ export const API_PAYMENT = '/api/payments';
 export const API_ADD_TRIVIA = '/api/addtrivia';
 export const API_ADD_PRIZE_POOL = '/api/prizepools';
 export const API_GET_USER_INFO = '/api/users';
+export const API_GET_SUBSCRIPTIONS = '/api/subscriptions';

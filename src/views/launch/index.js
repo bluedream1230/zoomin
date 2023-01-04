@@ -33,8 +33,8 @@ import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 import PrizeSelect from 'ui-component/PrizeSelect';
 import { FormikProvider, useFormik } from 'formik';
-import { getReward, getCampaign, createPrize, getAudience, createAudience } from 'services/apis/server';
-import { GET_AUDIENCES, GET_REWARDS } from 'store/actions';
+import { getReward, getCampaign, createPrize, getAudience, createAudience, getSubscription } from 'services/apis/server';
+import { GET_AUDIENCES, GET_REWARDS, GET_SUBSCRIPTIONS } from 'store/actions';
 import { store } from 'store';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
@@ -227,6 +227,8 @@ const LaunchPage = () => {
         dispatch({ type: GET_REWARDS, rewards: rewards });
         const audiences = await getAudience();
         dispatch({ type: GET_AUDIENCES, audiences: audiences });
+        const subscriptions = await getSubscription();
+        dispatch({ type: GET_SUBSCRIPTIONS, subscriptions: subscriptions });
         setReward(rewards);
 
         const formik1Edit = {

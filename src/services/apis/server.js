@@ -18,7 +18,8 @@ import {
     API_PAYMENT,
     API_ADD_PRIZE_POOL,
     API_REWARD_BYID,
-    API_GET_USER_INFO
+    API_GET_USER_INFO,
+    API_GET_SUBSCRIPTIONS
 } from 'store/api';
 
 export const getCampaign = async () => {
@@ -39,6 +40,10 @@ export const getRewardInfo = async () => {
 
 export const getRewardById = async (id) => {
     return Api.get(API_REWARD_BYID, {}, { id });
+};
+
+export const getSubscription = async () => {
+    return Api.get(API_GET_SUBSCRIPTIONS);
 };
 
 export const createPrize = async (data) => {
@@ -74,11 +79,11 @@ export const getUsers = async () => {
     return Api.get(API_USERS_DATA);
 };
 
-export const createEvent = async (data, videourl, rewardIds, gameId, rewardpool, audienceId, files) => {
+export const createEvent = async (data, videourl, rewardIds, gameId, rewardpool, audienceId, subscribeId, files) => {
     return Api.uploadFiles(
         API_CAMPAIGN_DATA,
         { data: JSON.stringify(data), rewardIds: JSON.stringify(rewardIds), videourl: videourl },
-        { gameId, rewardpool, audienceId },
+        { gameId, rewardpool, audienceId, subscribeId },
         files
     );
 };

@@ -21,3 +21,4 @@ export const GET_EVENT_INFO_ITEM = '@campaign/GET_EVENT_INFO_ITEM';
 export const GET_AUDIENCES = '@campaign/GET_AUDIENCES';
 export const GET_USERS = '@campaign/GET_USERS';
 export const GET_REWARDS_INFO = '@campaign/GET_REWARDS_INFO';
+export const GET_SUBSCRIPTIONS = '@campaign/GET_SUBSCRIPTIONS';

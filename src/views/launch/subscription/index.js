@@ -23,9 +23,9 @@ const SelectSubscriptionPage = () => {
     const state = store.getState();
     const [openModal, setOpenModal] = React.useState(false);
     const handleCloseModal = () => setOpenModal(false);
-    const [price, setPrice] = React.useState(20);
-    const [coin, setCoin] = React.useState(1000);
-    const [subscribename, setSubscribeName] = React.useState('');
+    const [price, setPrice] = React.useState(500);
+    const [subscribe, setSubscribe] = React.useState('');
+    const [subscribeId, setSubscribeId] = React.useState(1);
     const stripe = useStripe();
     const elements = useElements();
 
@@ -38,24 +38,31 @@ const SelectSubscriptionPage = () => {
         await createSubscription();
         // Hide Loading
         navigate('/launch/summary/index', {
-            state: { ...navigateState, screen3: { price: price, coin: coin, subscribename: subscribename } }
+            state: { ...navigateState, screen3: { subscribeId: subscribeId, subscribeName: subscribe } }
         });
     };
 
-    const handleOpenSubscribeModal = (type) => {
-        console.log('open modal ', type);
-        if (type == 1) {
-            setPrice(20);
-            setCoin(1000);
-            setSubscribeName('Subscribe1');
-        } else if (type == 2) {
-            setPrice(100);
-            setCoin(10000);
-            setSubscribeName('Subscribe2');
+    const subscriptions = state.campaign.subscriptions;
+    console.log('subscriptions', subscriptions);
+
+    const handleOpenSubscribeModal = (id, name) => {
+        console.log('open modal ', id, name);
+        if (id == 1) {
+            setPrice(500);
+            setSubscribeId(id);
+            setSubscribe(name);
+        } else if (id == 2) {
+            setSubscribeId(id);
+            setPrice(2000);
+            setSubscribe(name);
+        } else if (id == 3) {
+            setSubscribeId(id);
+            setPrice(3500);
+            setSubscribe(name);
         } else {
-            setPrice(1000);
-            setCoin(500000);
-            setSubscribeName('Subscribe3');
+            setSubscribeId(id);
+            setPrice(5000);
+            setSubscribe(name);
         }
         setOpenModal(true);
     };
@@ -111,75 +118,99 @@ const SelectSubscriptionPage = () => {
                     </Grid>
                 </Grid>
                 <Grid container>
-                    <Grid
-                        item
-                        xs={4}
-                        sx={{
-                            '& .MuiPaper-root': {
-                                border: '1px solid transparent'
-                            },
-                            '& .MuiPaper-root:hover': {
-                                border: '1px solid #FF0676'
-                            }
-                        }}
-                    >
-                        <Card
-                            sx={{
-                                background: '#FFFFFF11  !important',
-                                cursor: 'pointer',
-                                borderRadius: '20px'
-                            }}
-                        >
-                            <CardContent
-                                sx={{
-                                    borderRadius: '20px',
-                                    position: 'relative',
-                                    objectFit: 'cover',
-                                    transition: '0.3s',
-                                    display: 'inline-block',
-                                    width: '100%'
-                                }}
-                            >
-                                <Typography
+                    {subscriptions &&
+                        subscriptions.length != 0 &&
+                        subscriptions.map((item, key) => {
+                            return (
+                                <Grid
+                                    item
+                                    xl={3}
+                                    lg={3}
+                                    md={6}
+                                    sm={6}
+                                    xs={6}
                                     sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: '700',
-                                        fontSize: '50px',
-                                        lineHeight: '125px',
-                                        color: '#FFFFFF',
-                                        borderBottom: '1px dashed #FFF',
-                                        textAlign: 'center'
+                                        '& .MuiPaper-root': {
+                                            border: '1px solid transparent'
+                                        },
+                                        '& .MuiPaper-root:hover': {
+                                            border: '1px solid #FF0676'
+                                        }
                                     }}
                                 >
-                                    $20
-                                </Typography>
-                                <Typography
-                                    sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: '700',
-                                        fontSize: '20px',
-                                        lineHeight: '120px',
-                                        color: '#FFFFFF',
-                                        textAlign: 'center',
-                                        borderBottom: '1px dashed #FFF'
-                                    }}
-                                >
-                                    1000 coins
-                                </Typography>
-                            </CardContent>
-                            <CardActions sx={{ justifyContent: 'center' }}>
-                                <Button
-                                    sx={{ fontSize: '30px', textAlign: 'center', lineHeight: '70px', width: '100%' }}
-                                    onClick={(e) => handleOpenSubscribeModal(1)}
-                                >
-                                    Subscribe
-                                </Button>
-                            </CardActions>
-                        </Card>
-                    </Grid>
-                    <Grid
+                                    <Card
+                                        sx={{
+                                            background: '#FFFFFF11  !important',
+                                            cursor: 'pointer',
+                                            borderRadius: '20px'
+                                        }}
+                                    >
+                                        <CardContent
+                                            sx={{
+                                                borderRadius: '20px',
+                                                position: 'relative',
+                                                objectFit: 'cover',
+                                                transition: '0.3s',
+                                                display: 'inline-block',
+                                                width: '100%'
+                                            }}
+                                        >
+                                            <Typography
+                                                sx={{
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '500',
+                                                    fontSize: '40px',
+                                                    lineHeight: '105px',
+                                                    color: '#FFFFFF',
+                                                    borderBottom: '1px dashed #FFF',
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                {item.name}
+                                            </Typography>
+                                            <Typography
+                                                sx={{
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '500',
+                                                    fontSize: '40px',
+                                                    lineHeight: '105px',
+                                                    color: '#FFFFFF',
+                                                    borderBottom: '1px dashed #FFF',
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                ${item.price}
+                                            </Typography>
+                                            <Typography
+                                                sx={{
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '700',
+                                                    fontSize: '20px',
+                                                    lineHeight: '120px',
+                                                    color: '#FFFFFF',
+                                                    textAlign: 'center',
+                                                    borderBottom: '1px dashed #FFF'
+                                                }}
+                                            >
+                                                {item.coins} coins
+                                            </Typography>
+                                        </CardContent>
+                                        <CardActions sx={{ justifyContent: 'center' }}>
+                                            <Button
+                                                sx={{ fontSize: '30px', textAlign: 'center', lineHeight: '40px', width: '100%' }}
+                                                onClick={(e) => handleOpenSubscribeModal(item.id, item.name)}
+                                            >
+                                                Subscribe
+                                            </Button>
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                            );
+                        })}
+                    {/* <Grid
                         item
                         xs={4}
                         sx={{
@@ -314,7 +345,7 @@ const SelectSubscriptionPage = () => {
                                 </Button>
                             </CardActions>
                         </Card>
-                    </Grid>
+                    </Grid> */}
                 </Grid>
                 {/* <StripePayment /> */}
 

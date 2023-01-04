@@ -9,6 +9,7 @@ import * as actionTypes from './actions';
 export const campaignState = {
     events: [],
     rewards: [],
+    subscriptions: [],
     rewardsInfo: [],
     games: [],
     eventInfo: [],
@@ -64,6 +65,11 @@ const campaignReducer = (state = campaignState, action) => {
             return {
                 ...state,
                 prizepool: action.prizepool
+            };
+        case actionTypes.GET_SUBSCRIPTIONS:
+            return {
+                ...state,
+                subscriptions: action.subscriptions
             };
         default:
             return state;

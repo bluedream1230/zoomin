@@ -518,7 +518,7 @@ const CampaignInformation = ({ isLoading }) => {
                                                                 lineHeight: `${matchesLG ? '22px' : '42px'}`
                                                             }}
                                                         >
-                                                            {eventInfo && eventInfo.event[0] && eventInfo.event[0].event_coins}
+                                                            {eventInfo && eventInfo.event[0] && eventInfo.event[0].subscription.coins}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
