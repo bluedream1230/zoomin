@@ -189,13 +189,26 @@ const SelectSubscriptionPage = () => {
                                                     fontStyle: 'normal',
                                                     fontWeight: '700',
                                                     fontSize: '20px',
-                                                    lineHeight: '120px',
+                                                    lineHeight: '40px',
+                                                    color: '#FFFFFF',
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                {item.coins} coins
+                                            </Typography>
+                                            <Typography
+                                                sx={{
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '700',
+                                                    fontSize: '20px',
+                                                    lineHeight: '40px',
                                                     color: '#FFFFFF',
                                                     textAlign: 'center',
                                                     borderBottom: '1px dashed #FFF'
                                                 }}
                                             >
-                                                {item.coins} coins
+                                                Up to {item.user_limit > 5000 ? '---' : item.user_limit} fans
                                             </Typography>
                                         </CardContent>
                                         <CardActions sx={{ justifyContent: 'center' }}>

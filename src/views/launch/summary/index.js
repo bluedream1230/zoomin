@@ -241,7 +241,7 @@ const CampaignSummary = () => {
                                                 color: '#B9B9B9'
                                             }}
                                         >
-                                            Winning Prize
+                                            Subscription
                                         </Typography>
                                         <Typography
                                             sx={{
@@ -282,7 +282,7 @@ const CampaignSummary = () => {
                                                     color: '#B9B9B9'
                                                 }}
                                             >
-                                                TargetAudience
+                                                Target Audience
                                             </Typography>
                                             <Typography
                                                 sx={{
