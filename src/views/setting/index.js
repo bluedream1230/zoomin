@@ -181,9 +181,6 @@ const Setting = () => {
             setLoading(false);
         }
     };
-    const month = formik.values.billexpirationdateM - 1;
-    const year = formik.values.billexpirationdateY;
-    const d = new Date(year, month, 0);
 
     const onUpdateBillInfo = async (values) => {
         try {
@@ -197,7 +194,8 @@ const Setting = () => {
                 country: values.billcountry,
                 ccn: values.billccn,
                 CVV: values.billCVV,
-                expirationdate: d
+                billexpirationdateM: billexpirationdateM,
+                billexpirationdateY: billexpirationdateY
                 // user: state.auth
             });
             console.log('update bill', data);
