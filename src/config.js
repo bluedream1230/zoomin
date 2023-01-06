@@ -8,6 +8,6 @@ const config = {
 };
 
 export const stripePublicKey =
-    'pk_test_51MH4PLHWzArqsHgyKQcUQckv4GXgGNFBsDszodt1GXho4if2AjraWqAVZOqXH5HOhSzkjBNiBXc7FUFZojO8BqB500z5bk58sn';
+    'pk_live_51MMCd1DWQIpDGYV3Ev3B2nqIFbrRgZm151dWikj4zP4BRfgcuc4BIZelOEf6n2ZdsmIYE3J6s5aMHFmwYPNRMH3700D5DTdIsf';
 
 export default config;

@@ -15,12 +15,18 @@ const Dashboard = () => {
         <>
             <Grid container marginBottom="35px" minHeight="300px">
                 <Grid item xs={4}>
+                    <BarChart />
+                </Grid>
+                <Grid item xs={4}>
+                    <BarChart />
+                </Grid>
+                <Grid item xs={4}>
                     <CircleChart />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                     <LineChart />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                     <BarChart />
                 </Grid>
             </Grid>

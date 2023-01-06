@@ -16,6 +16,7 @@ import ImgMediaCard from 'ui-component/cards/Skeleton/GameCard';
 import { useTheme } from '@emotion/react';
 
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const SelectSubscriptionPage = () => {
     const theme = useTheme();
@@ -134,13 +135,14 @@ const SelectSubscriptionPage = () => {
                                             border: '1px solid transparent'
                                         },
                                         '& .MuiPaper-root:hover': {
-                                            border: '1px solid #FF0676'
+                                            // border: '1px solid #FF0676',
+                                            background: '#FFFFFF11  !important'
                                         }
                                     }}
                                 >
                                     <Card
                                         sx={{
-                                            background: '#FFFFFF11  !important',
+                                            background: '#FFFFFF00',
                                             cursor: 'pointer',
                                             borderRadius: '20px'
                                         }}
@@ -160,11 +162,26 @@ const SelectSubscriptionPage = () => {
                                                     fontFamily: 'Inter',
                                                     fontStyle: 'normal',
                                                     fontWeight: '500',
-                                                    fontSize: '40px',
-                                                    lineHeight: '105px',
+                                                    fontSize: '13px',
                                                     color: '#FFFFFF',
-                                                    borderBottom: '1px dashed #FFF',
-                                                    textAlign: 'center'
+                                                    background: `${item.id == 2 ? '#371244' : '#FFFFFF00'}`,
+                                                    display: 'inherit'
+                                                    // borderBottom: '1px dashed #FFF',
+                                                    // textAlign: 'center'
+                                                }}
+                                            >
+                                                &nbsp;&nbsp;{item.id == 2 && 'Most popular'}&nbsp;&nbsp;
+                                            </Typography>
+                                            <Typography
+                                                sx={{
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '500',
+                                                    fontSize: '20px',
+                                                    lineHeight: '30px',
+                                                    color: '#FFFFFF'
+                                                    // borderBottom: '1px dashed #FFF',
+                                                    // textAlign: 'center'
                                                 }}
                                             >
                                                 {item.name}
@@ -173,52 +190,74 @@ const SelectSubscriptionPage = () => {
                                                 sx={{
                                                     fontFamily: 'Inter',
                                                     fontStyle: 'normal',
-                                                    fontWeight: '500',
+                                                    fontWeight: '100',
+                                                    fontSize: '15px',
+                                                    lineHeight: '20px',
+                                                    color: '#FFFFFF',
+                                                    marginBottom: '20px'
+                                                    // textAlign: 'center'
+                                                }}
+                                            >
+                                                {item.id == 1 ? 'Best for local weeknight crowds' : ''}
+                                                {item.id == 2 ? 'Best for primetime evening crowds' : ''}
+                                                {item.id == 3 ? 'Best for college stadiums and events' : ''}
+                                                {item.id == 4 ? 'Best for semi-pro and pro sports' : ''}
+                                            </Typography>
+                                            <Typography
+                                                sx={{
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '1000',
                                                     fontSize: '40px',
                                                     lineHeight: '105px',
-                                                    color: '#FFFFFF',
-                                                    borderBottom: '1px dashed #FFF',
-                                                    textAlign: 'center'
+                                                    color: '#FFFFFF'
+                                                    // borderBottom: '1px dashed #FFF'
+                                                    // textAlign: 'center'
                                                 }}
                                             >
                                                 ${item.price}
                                             </Typography>
-                                            <Typography
-                                                sx={{
-                                                    fontFamily: 'Inter',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: '700',
-                                                    fontSize: '20px',
-                                                    lineHeight: '40px',
-                                                    color: '#FFFFFF',
-                                                    textAlign: 'center'
-                                                }}
-                                            >
-                                                {item.coins} coins
-                                            </Typography>
-                                            <Typography
-                                                sx={{
-                                                    fontFamily: 'Inter',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: '700',
-                                                    fontSize: '20px',
-                                                    lineHeight: '40px',
-                                                    color: '#FFFFFF',
-                                                    textAlign: 'center',
-                                                    borderBottom: '1px dashed #FFF'
-                                                }}
-                                            >
-                                                Up to {item.user_limit > 5000 ? '---' : item.user_limit} fans
-                                            </Typography>
-                                        </CardContent>
-                                        <CardActions sx={{ justifyContent: 'center' }}>
                                             <Button
-                                                sx={{ fontSize: '30px', textAlign: 'center', lineHeight: '40px', width: '100%' }}
+                                                variant="contained"
+                                                sx={{
+                                                    borderRadius: '8.8',
+                                                    backgroundColor: '#FF0676',
+                                                    height: '40px',
+                                                    width: '100%',
+                                                    fontSize: '16px',
+                                                    fontWeight: '700'
+                                                }}
                                                 onClick={(e) => handleOpenSubscribeModal(item.id, item.name)}
                                             >
-                                                Subscribe
+                                                Pay
                                             </Button>
-                                        </CardActions>
+                                            <Typography
+                                                sx={{
+                                                    fontFamily: 'Inter',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: '100',
+                                                    fontSize: '20px',
+                                                    lineHeight: '40px',
+                                                    color: '#FFFFFF'
+                                                    // textAlign: 'center'
+                                                }}
+                                            >
+                                                This includes:
+                                                <br />
+                                                <CheckCircleIcon fontSize="small" />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                                {item.coins} coins
+                                                <br />
+                                                <CheckCircleIcon fontSize="small" />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                                {item.user_limit > 5000 ? 'Unlimited Players' : `Up to ${item.user_limit} Players`}
+                                                <br />
+                                                <CheckCircleIcon fontSize="small" />
+                                                &nbsp;&nbsp;&nbsp;&nbsp; Use Data Analytics
+                                            </Typography>
+                                        </CardContent>
+                                        {/* <CardActions sx={{ justifyContent: 'center' }}> */}
+                                        {/* </CardActions> */}
                                     </Card>
                                 </Grid>
                             );
