@@ -78,7 +78,8 @@ const CampaignSummary = () => {
                 user_id: decoded.id
             });
             setTrivia(data);
-            setOpenModal(!openModal);
+            return window.open(data?.url);
+            // setOpenModal(!openModal);
         } catch (e) {
             console.log(e);
         }
