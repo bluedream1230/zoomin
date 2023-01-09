@@ -179,8 +179,10 @@ const CampaignInformation = ({ isLoading }) => {
     const load = async () => {
         const eventInfo = await getEventInfo(id);
         console.log(eventInfo);
-        const session = await checkOutSession({ session_id });
-        console.log(session);
+        if (session_id) {
+            const session = await checkOutSession({ session_id });
+            console.log(session);
+        }
         dispatch({ type: GET_EVENT_INFO_ITEM, eventInfo: eventInfo });
         setEventInfo(eventInfo);
     };
