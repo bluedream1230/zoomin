@@ -26,7 +26,6 @@ import {
 } from '@stripe/react-stripe-js';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Iframe from 'react-iframe';
-import { reverseMd5 } from 'reverse-md5';
 
 const SelectSubscriptionPage = () => {
     const theme = useTheme();
