@@ -235,7 +235,7 @@ const SelectSubscriptionPage = () => {
                                                 }}
                                                 onClick={(e) => handleOpenSubscribeModal(item.id, item.name)}
                                             >
-                                                Pay
+                                                Select
                                             </Button>
                                             <Typography
                                                 sx={{
