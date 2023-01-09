@@ -19,7 +19,9 @@ import {
     API_ADD_PRIZE_POOL,
     API_REWARD_BYID,
     API_GET_USER_INFO,
-    API_GET_SUBSCRIPTIONS
+    API_GET_SUBSCRIPTIONS,
+    API_CREATE_CHECKOUT_SESSION,
+    API_CHECKOUT_SESSION
 } from 'store/api';
 
 export const getCampaign = async () => {
@@ -90,6 +92,16 @@ export const createEvent = async (data, videourl, rewardIds, gameId, rewardpool,
 
 export const payment = async (data) => {
     return Api.post(API_PAYMENT, data);
+};
+
+export const createCheckOutSession = async (data) => {
+    console.log('data', data);
+
+    return Api.post(API_CREATE_CHECKOUT_SESSION, data);
+};
+
+export const checkOutSession = async (data) => {
+    return Api.post(API_CHECKOUT_SESSION, data);
 };
 
 export const sendMail = async (data) => {

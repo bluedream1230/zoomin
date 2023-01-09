@@ -4,8 +4,8 @@ import React from 'react';
 import { Grid, Typography, TextField, Button, CardContent, Card, CardActions, CardHeader, Modal, Box } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router';
-import { getGame, payment } from 'services/apis/server';
+import { useLocation, useNavigate, useParams } from 'react-router';
+import { getGame, payment, createCheckOutSession } from 'services/apis/server';
 import { GET_GAMES } from 'store/actions';
 import { store } from 'store';
 import * as Yup from 'yup';
@@ -15,59 +15,66 @@ import jwt_decode from 'jwt-decode';
 import ImgMediaCard from 'ui-component/cards/Skeleton/GameCard';
 import { useTheme } from '@emotion/react';
 
-import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import {
+    CardElement,
+    useElements,
+    useStripe,
+    CardNumberElement,
+    PaymentElement,
+    CardCvcElement,
+    CardExpiryElement
+} from '@stripe/react-stripe-js';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Iframe from 'react-iframe';
+import { reverseMd5 } from 'reverse-md5';
 
 const SelectSubscriptionPage = () => {
     const theme = useTheme();
     const navigate = useNavigate();
-    const state = store.getState();
-    const [openModal, setOpenModal] = React.useState(false);
-    const handleCloseModal = () => setOpenModal(false);
-    const [price, setPrice] = React.useState(500);
-    const [subscribe, setSubscribe] = React.useState('');
-    const [subscribeId, setSubscribeId] = React.useState(1);
     const stripe = useStripe();
     const elements = useElements();
+    const handleCloseModal = () => setOpenModal(false);
+
+    const state = store.getState();
+    const [openModal, setOpenModal] = React.useState(false);
+    const [price, setPrice] = React.useState(500);
+    const [sub, setSub] = useState([{}]);
+    const [subscribeId, setSubscribeId] = React.useState(1);
+    const [sessionUrl, setSessionUrl] = React.useState('');
 
     const decoded = jwt_decode(state.auth.token);
     console.log('state:', state, decoded);
+    // const subscribeFlag = window.location.search;
     const { state: navigateState } = useLocation();
-    console.log(navigateState);
-    const handleNext = async () => {
-        // Show Loading
-        await createSubscription();
-        // Hide Loading
-        navigate('/launch/summary/index', {
-            state: { ...navigateState, screen3: { subscribeId: subscribeId, subscribeName: subscribe } }
-        });
-    };
+    // const handleNext = async () => {
+    //     // Show Loading
+    //     // await createSubscription();
+    //     // Hide Loading
+    //     navigate('/launch/summary/index', {
+    //         state: { ...navigateState, screen3: { subscribeId: subscribeId, subscribeName: subscribe } }
+    //     });
+    // };
 
     const subscriptions = state.campaign.subscriptions;
     console.log('subscriptions', subscriptions);
 
     const handleOpenSubscribeModal = (id, name) => {
         console.log('open modal ', id, name);
-        if (id == 1) {
-            setPrice(500);
-            setSubscribeId(id);
-            setSubscribe(name);
-        } else if (id == 2) {
-            setSubscribeId(id);
-            setPrice(2000);
-            setSubscribe(name);
-        } else if (id == 3) {
-            setSubscribeId(id);
-            setPrice(3500);
-            setSubscribe(name);
-        } else {
-            setSubscribeId(id);
-            setPrice(5000);
-            setSubscribe(name);
-        }
-        setOpenModal(true);
-    };
 
+        navigate('/launch/summary/index', {
+            state: { ...navigateState, screen3: { subscribeName: subscriptions[id - 1].name, subscribeId: subscriptions[id - 1].id } }
+        });
+        // try {
+        //     const response = await createCheckOutSession({
+        //         priceId: 'price_1MMXNGHWzArqsHgy7dXd6yxj',
+        //         email: decoded.email
+        //     });
+        //     return window.location.assign(response.url); //(response.url);
+        // } catch (e) {
+        //     console.log(e);
+        //     alert('Something went wrong');
+        // }
+    };
     const createSubscription = async () => {
         // create a payment method
         const paymentMethod = await stripe?.createPaymentMethod({
@@ -407,7 +414,8 @@ const SelectSubscriptionPage = () => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <Box
+                    <Iframe url={sessionUrl} width="640px" height="800vh" id="" className="" />
+                    {/* <Box
                         sx={{
                             position: 'absolute',
                             top: '50%',
@@ -426,8 +434,10 @@ const SelectSubscriptionPage = () => {
                                 p: 1
                             }}
                         >
-                            <CardElement
+                            <CardNumberElement
                                 options={{
+                                    iconStyle: 'solid',
+                                    hidePostalCode: true,
                                     style: {
                                         base: {
                                             // height: '30px !important',
@@ -439,6 +449,9 @@ const SelectSubscriptionPage = () => {
                                             '::placeholder': {
                                                 color: '#CFD7DF'
                                             },
+                                            ':-webkit-autofill': {
+                                                color: '#fce883'
+                                            },
                                             lineHeight: '60px'
                                         },
                                         invalid: {
@@ -447,6 +460,8 @@ const SelectSubscriptionPage = () => {
                                     }
                                 }}
                             />
+                            <CardElement />
+                            
                         </Box>
                         <Button
                             type="submit"
@@ -470,7 +485,7 @@ const SelectSubscriptionPage = () => {
                         >
                             Pay
                         </Button>
-                    </Box>
+                    </Box> */}
                 </Modal>
             </Grid>
         </>

@@ -33,7 +33,7 @@ import QRCode from './qr-code';
 //Icon imports
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { useParams } from 'react-router';
-import { getEventInfo } from 'services/apis/server';
+import { checkOutSession, getEventInfo } from 'services/apis/server';
 import { GET_EVENT_INFO_ITEM } from 'store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -166,11 +166,21 @@ const CampaignInformation = ({ isLoading }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { id } = useParams();
+
+    console.log(id);
+    const windowUrl = window.location.search;
+    console.log(windowUrl);
+    const params = new URLSearchParams(windowUrl);
+    const session_id = params.get('session_id');
+    console.log(session_id);
+
     const [eventInfo, setEventInfo] = useState([]);
 
     const load = async () => {
         const eventInfo = await getEventInfo(id);
         console.log(eventInfo);
+        const session = await checkOutSession({ session_id });
+        console.log(session);
         dispatch({ type: GET_EVENT_INFO_ITEM, eventInfo: eventInfo });
         setEventInfo(eventInfo);
     };

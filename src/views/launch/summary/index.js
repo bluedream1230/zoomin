@@ -1,20 +1,21 @@
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
+import Iframe from 'react-iframe';
+import { useEffect } from 'react';
+import jwt_decode from 'jwt-decode';
+import { Edit } from 'tabler-icons-react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { Button, CardContent, Grid, Typography, Card, CardMedia, useMediaQuery, Modal } from '@mui/material';
 import { createTheme } from '@material-ui/core';
-
-import MainCard from 'ui-component/cards/MainCard';
-import { gridSpacing } from 'store/constant';
-import { Edit } from 'tabler-icons-react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addTrivia, createEvent, getGame } from 'services/apis/server';
-import { GET_GAMES } from 'store/actions';
-import { values } from 'lodash';
-import jwt_decode from 'jwt-decode';
 import { store } from 'store';
-import { useEffect } from 'react';
-import Iframe from 'react-iframe';
+import { values } from 'lodash';
+
+import { GET_GAMES } from 'store/actions';
+import { gridSpacing } from 'store/constant';
+import MainCard from 'ui-component/cards/MainCard';
+import { addTrivia, createEvent, getGame, createCheckOutSession } from 'services/apis/server';
+
 const CampaignPerformances = React.forwardRef((props, ref) => (
     <RouterLink ref={ref} to="/campaigns/performance" {...props} role={undefined} />
 ));
@@ -25,9 +26,9 @@ const CampaignSummary = () => {
     const dispatch = useDispatch();
     const states = store.getState();
     const { state } = useLocation();
-    console.log(states);
     const allEvents = useSelector((state) => state.campaign);
     const [openModal, setOpenModal] = React.useState(false);
+    const subscriptions = states.campaign.subscriptions;
     const handleCloseModal = () => setOpenModal(false);
 
     const PrizeListData = allEvents.rewards;
@@ -36,6 +37,7 @@ const CampaignSummary = () => {
     const m = temp.getMonth() + 1;
     const d = temp.getDate();
     const decoded = jwt_decode(states.auth.token);
+    console.log(decoded);
     let prizeLabel = [];
     PrizeListData.forEach((item) => {
         state.screen1.prize.prize.forEach((prizeitem) => {
@@ -86,9 +88,11 @@ const CampaignSummary = () => {
     };
     const [isLoading, setLoading] = React.useState(false);
     const prizeIds = state.screen1.prize.prize.map((item) => item.id);
+
     const onCreateEvent = async () => {
         try {
             setLoading(true);
+
             const data = await createEvent(
                 {
                     name: state.screen1.eventInfo.selectname,
@@ -110,9 +114,15 @@ const CampaignSummary = () => {
                 state.screen1.sponsor.files
             );
             console.log('data', data);
-            const tempUrl = '/campaigns/information/' + `${data.id}`;
-            console.log(tempUrl);
-            navigate(tempUrl);
+            const response = await createCheckOutSession({
+                priceId: subscriptions[state.screen3.subscribeId - 1].price_id,
+                userData: decoded,
+                dataId: data.id
+            });
+            return window.location.assign(response.url); //(response.url);
+            // const tempUrl = '/campaigns/information/' + `${data.id}`;
+            // console.log(tempUrl);
+            // navigate(tempUrl);
             setLoading(false);
         } catch (e) {
             console.log(e);
