@@ -120,7 +120,7 @@ const CampaignSummary = () => {
                 userData: decoded,
                 dataId: data.id
             });
-            return window.location.assign(response.url); //(response.url);
+            return window.open(response.url); //(response.url);
             // const tempUrl = '/campaigns/information/' + `${data.id}`;
             // console.log(tempUrl);
             // navigate(tempUrl);
