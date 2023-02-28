@@ -33,8 +33,8 @@ import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 import PrizeSelect from 'ui-component/PrizeSelect';
 import { FormikProvider, useFormik } from 'formik';
-import { getReward, getCampaign, createPrize, getAudience, createAudience, getSubscription } from 'services/apis/server';
-import { GET_AUDIENCES, GET_REWARDS, GET_SUBSCRIPTIONS } from 'store/actions';
+import { getReward, getCampaign, createPrize, getAudience, createAudience } from 'services/apis/server';
+import { GET_AUDIENCES, GET_REWARDS } from 'store/actions';
 import { store } from 'store';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
@@ -42,12 +42,13 @@ import Container from '@mui/material/Container';
 import Iframe from 'react-iframe';
 
 import { useForm } from 'react-hook-form';
-import { fromPairs, values } from 'lodash';
+import { values } from 'lodash';
 import Dropzone from 'react-dropzone';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 const LaunchGameView = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/launch/games/index" {...props} role={undefined} />);
 const CreatePrize = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/prizes/manage" {...props} role={undefined} />);
+
 const styles = {
     root: {
         'flex-direction': 'row-reverse'
@@ -60,20 +61,36 @@ const LaunchPage = () => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const state = store.getState();
-    const navigate = useNavigate();
-    const { state: navigateState } = useLocation();
-    const allEvents = useSelector((state) => state.campaign);
 
     const [videoUrl, setVideoUrl] = useState('simple');
+    const [value, setValue] = React.useState(null);
     const [open, toggleOpen] = React.useState(false);
     const [reward, setReward] = useState([]);
+    const [audience, setAudience] = useState([]);
     const [isLoading, setLoading] = React.useState(false);
     const [openModal, setOpenModal] = React.useState(false);
 
+    const { state: navigateState } = useLocation();
+
+    const navigate = useNavigate();
+    const allEvents = useSelector((state) => state.campaign);
+
+    const load = async () => {
+        const rewards = await getReward();
+        dispatch({ type: GET_REWARDS, rewards: rewards });
+        const audiences = await getAudience();
+        dispatch({ type: GET_AUDIENCES, audiences: audiences });
+        setReward(rewards);
+        setAudience(audiences);
+    };
+
+    React.useEffect(() => {
+        load();
+    }, []);
     const PrizeListData = allEvents.rewards;
     const AudienceListData = allEvents.audiences;
     const TypeLabelList = [{ label: 'Reward' }, { label: 'Coupon' }];
-
+    const TypeList = [{ label: 'Sponsored' }, { label: 'Playground' }];
     const PrizeLabelList = React.useMemo(() => {
         if (!PrizeListData) return [];
         return PrizeListData.map((item, index) => ({ label: item.name, id: item.id, key: index }));
@@ -84,7 +101,8 @@ const LaunchPage = () => {
         launchdate: Yup.date('Enter Launch Date').required('Launch Date is required'),
         location: Yup.string('Enter Location').required('Location is required'),
         endtime: Yup.date('Enter end time').required('End time is required'),
-        audience: Yup.object().required('Audience is required')
+        audience: Yup.string('Enter Audience').required('Audience is required'),
+        type: Yup.string('').required('Type is required')
     });
 
     const validationSchema2 = Yup.object({
@@ -97,11 +115,9 @@ const LaunchPage = () => {
         timelimit: Yup.number('Time Limit must be number').required('Time Limit is required'),
         ratelimit: Yup.number('Rate Limit must be number').required('Rate Limit is required')
     });
-
     const validationSchema3 = Yup.object({
         prize: Yup.array().min(1).required('Prize is required')
     });
-
     const validationSchema4 = Yup.object({
         videourl: Yup.string('Enter Video Url').required('Video Url is required'),
         sponsorname: Yup.string('Enter Sponsor Name').required('Sponsor Name is required'),
@@ -114,7 +130,8 @@ const LaunchPage = () => {
             launchdate: '',
             location: '',
             endtime: '',
-            audience: ''
+            audience: '',
+            type: ''
         },
         validationSchema: validationSchema1,
         onSubmit: (values) => {}
@@ -143,7 +160,6 @@ const LaunchPage = () => {
         validationSchema: validationSchema3,
         onSubmit: (values) => {}
     });
-
     const formik4 = useFormik({
         initialValues: {
             videourl: '',
@@ -182,12 +198,22 @@ const LaunchPage = () => {
     };
 
     const handleNext = (eventInfo, prize, sponsor) => {
-        navigate('/launch/games/index', { state: { eventInfo, prize, sponsor, navigateState } });
+        navigate('/launch/games/index', { state: { eventInfo, prize, sponsor } });
     };
+
+    // React.useEffect(() => {
+    //     async function setInitialValues() {
+    //         if (!navigateState) return;
+    //         else {
+    //             await formik1.setValues(navigateState.eventInfo, false);
+    //             // await formik3.setValues(navigateState.prizeId, false);
+    //         }
+    //     }
+    //     setInitialValues();
+    // }, [navigateState]);
 
     const handleOpenModal = () => setOpenModal(true);
     const handleCloseModal = () => setOpenModal(false);
-
     const handleClose = () => {
         setDialogValue({
             label: ''
@@ -216,47 +242,10 @@ const LaunchPage = () => {
         dispatch({ type: GET_AUDIENCES, audiences: audiences });
         handleClose();
     };
-
     const AudienceLabelList = React.useMemo(() => {
         if (!AudienceListData) return [];
         return AudienceListData.map((item, index) => ({ label: item.name, id: item.id, key: index }));
     }, [allEvents]);
-
-    const load = async () => {
-        const rewards = await getReward();
-        dispatch({ type: GET_REWARDS, rewards: rewards });
-        const audiences = await getAudience();
-        dispatch({ type: GET_AUDIENCES, audiences: audiences });
-        const subscriptions = await getSubscription();
-        dispatch({ type: GET_SUBSCRIPTIONS, subscriptions: subscriptions });
-        setReward(rewards);
-
-        const formik1Edit = {
-            selectname: navigateState?.state.screen1.eventInfo.selectname,
-            launchdate: navigateState?.state.screen1.eventInfo.launchdate,
-            location: navigateState?.state.screen1.eventInfo.location,
-            endtime: navigateState?.state.screen1.eventInfo.endtime,
-            audience: navigateState?.state.screen1.eventInfo.audience
-        };
-        const formik3Edit = {
-            prize: navigateState.state.screen1.prize.prize
-        };
-        console.log(333, formik3Edit);
-        const formik4Edit = {
-            sponsorname: navigateState?.state.screen1.sponsor.sponsorname,
-            videourl: navigateState?.state.screen1.sponsor.videourl,
-            logoUrl: '',
-            files: []
-        };
-
-        formik1.setValues(formik1Edit, false);
-        formik3.setValues(formik3Edit, false);
-        formik4.setValues(formik4Edit, false);
-    };
-
-    React.useEffect(() => {
-        load();
-    }, []);
 
     return (
         <>
@@ -312,7 +301,7 @@ const LaunchPage = () => {
                                         }}
                                         value={formik1.values.launchdate}
                                         onChange={(newValue) => {
-                                            formik1.setFieldValue('launchdate', newValue.toString());
+                                            formik1.setFieldValue('launchdate', newValue);
                                         }}
                                         renderInput={(params) => (
                                             <TextField
@@ -337,7 +326,8 @@ const LaunchPage = () => {
                                         }}
                                         value={formik1.values.endtime}
                                         onChange={(newValue) => {
-                                            formik1.setFieldValue('endtime', newValue.toString());
+                                            // formik1.values.endtime = newValue;
+                                            formik1.setFieldValue('endtime', newValue);
                                         }}
                                         renderInput={(params) => (
                                             <TextField
@@ -368,7 +358,7 @@ const LaunchPage = () => {
                                 />
                             </Grid>
                         </Grid>
-                        <Grid item xs={6} sx={{ marginBottom: '50px', width: '100%' }}>
+                        <Grid item xs={3} sx={{ marginBottom: '50px', width: '100%' }}>
                             <Grid
                                 container
                                 sx={{
@@ -387,9 +377,8 @@ const LaunchPage = () => {
                                     sx={{
                                         ...theme.typography.customInput
                                     }}
-                                    value={formik1.values.audience}
                                     onChange={(e, v) => {
-                                        formik1.setFieldValue('audience', v);
+                                        formik1.setFieldValue('audience', v.id);
                                         if (typeof v === 'string') {
                                             // timeout to avoid instant validation of the dialog's form.
                                             setTimeout(() => {
@@ -403,6 +392,8 @@ const LaunchPage = () => {
                                             setDialogValue({
                                                 label: v.inputValue
                                             });
+                                        } else {
+                                            setValue(v);
                                         }
                                     }}
                                     getOptionLabel={(option) => {
@@ -438,6 +429,28 @@ const LaunchPage = () => {
                                         />
                                     )}
                                 />
+                                {/* <Dialog
+                                    open={open}
+                                    onClose={handleClose}
+                                    sx={{
+                                        top: '50%',
+                                        left: '50%',
+                                        transform: 'translate(-50%, -50%)',
+                                        width: 1000,
+                                        bgcolor: '#360068',
+                                        opacity: '0.88',
+
+                                        border: '2px solid #000',
+                                        boxShadow: '39.9357px 7.35657px 132.418px rgba(0, 0, 0, 0.4)',
+                                        p: 8,
+                                        '& .MuiDialog-container': {
+                                            '& .MuiDialog-paper': {
+                                                minWidth: '100%',
+                                                minHeight: '100%'
+                                            }
+                                        }
+                                    }}
+                                > */}
                                 <Modal
                                     open={open}
                                     onClose={handleClose}
@@ -452,6 +465,7 @@ const LaunchPage = () => {
                                             transform: 'translate(-50%, -50%)',
                                             width: 1400,
                                             bgcolor: '#360068',
+                                            opacity: '0.88',
 
                                             border: '2px solid #000',
                                             boxShadow: '39.9357px 7.35657px 132.418px rgba(0, 0, 0, 0.4)',
@@ -507,6 +521,42 @@ const LaunchPage = () => {
                                         {/* </Dialog> */}
                                     </Box>
                                 </Modal>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={3} sx={{ marginBottom: '50px', width: '100%' }}>
+                            <Grid
+                                container
+                                sx={{
+                                    '& .MuiAutocomplete-popper': {
+                                        '& .MuiPaper-root': {
+                                            backgroundColor: '#360068'
+                                        }
+                                    }
+                                }}
+                            >
+                                <Autocomplete
+                                    disablePortal
+                                    id="type_label_list"
+                                    name="type"
+                                    options={TypeList}
+                                    sx={{
+                                        ...theme.typography.customInput
+                                    }}
+                                    onChange={(e, v) => {
+                                        formik1.setFieldValue('type', v.label);
+                                    }}
+                                    renderOption={(props, option) => {
+                                        return <li {...props}>{option.label}</li>;
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            error={formik1.touched.type && Boolean(formik1.errors.type)}
+                                            helperText={formik1.touched.type && formik1.errors.type}
+                                            label="Type"
+                                        />
+                                    )}
+                                />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -583,7 +633,11 @@ const LaunchPage = () => {
                                             <input {...getInputProps()} />
 
                                             <img
-                                                src={formik4.values.logoUrl.length !== 0 ? '/companies/' + formik4.values.logoUrl : ''}
+                                                src={
+                                                    formik4.values.logoUrl.length !== 0
+                                                        ? baseServerUrl + '/companies/' + formik4.values.logoUrl
+                                                        : ''
+                                                }
                                                 alt=""
                                             />
                                             <p
@@ -685,11 +739,15 @@ const LaunchPage = () => {
                                     sx={{
                                         ...theme.typography.customInput
                                     }}
-                                    value={formik3.values.prize}
                                     onChange={(e, v) => {
-                                        formik3.setFieldValue('prize', v);
+                                        console.log(v);
+                                        formik3.values.prize = [];
+                                        v.forEach((item, index) => {
+                                            console.log(item);
+                                            formik3.values.prize.push(item.id);
+                                        });
+                                        console.log(formik3.values.prize);
                                     }}
-                                    getOptionLabel={(option) => option.label}
                                     renderOption={(props, option) => {
                                         return (
                                             <li {...props} key={option.id}>
@@ -697,16 +755,14 @@ const LaunchPage = () => {
                                             </li>
                                         );
                                     }}
-                                    renderInput={(params) => {
-                                        return (
-                                            <TextField
-                                                {...params}
-                                                error={formik3.touched.prize && Boolean(formik3.errors.prize)}
-                                                helperText={formik3.touched.prize && formik3.errors.prize}
-                                                label="Select Prizes"
-                                            />
-                                        );
-                                    }}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            error={formik3.touched.prize && Boolean(formik3.errors.prize)}
+                                            helperText={formik3.touched.prize && formik3.errors.prize}
+                                            label="Select Prizes"
+                                        />
+                                    )}
                                 />
                             </Grid>
                         </Grid>
@@ -726,6 +782,7 @@ const LaunchPage = () => {
                             transform: 'translate(-50%, -50%)',
                             width: 1400,
                             bgcolor: '#360068',
+                            opacity: '0.88',
 
                             border: '2px solid #000',
                             boxShadow: '39.9357px 7.35657px 132.418px rgba(0, 0, 0, 0.4)',
@@ -945,6 +1002,7 @@ const LaunchPage = () => {
                             const errors = await formik1.validateForm();
                             const errors3 = await formik3.validateForm();
                             const errors4 = await formik4.validateForm();
+                            console.log(errors4, errors, errors3);
                             await formik1.submitForm();
                             await formik3.submitForm();
                             await formik4.submitForm();
