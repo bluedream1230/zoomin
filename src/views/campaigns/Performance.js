@@ -157,7 +157,7 @@ const CampaignPerformances = ({ isLoading }) => {
                                             lineHeight: `${matchesMD ? '18px' : '24px'}`
                                         }}
                                     >
-                                        {item.subscribe_name}
+                                        {item.subscription.name}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={3}>

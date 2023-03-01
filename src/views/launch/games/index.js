@@ -5,8 +5,8 @@ import { Grid, Typography, TextField, Button, Modal, Box, Autocomplete, InputAdo
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
-import { createPrizepool, getGame, getPrizepool } from 'services/apis/server';
-import { GET_GAMES, GET_PRIZEPOOL } from 'store/actions';
+import { createPrizepool, getAudience, getGame, getPrizepool, getSubscription } from 'services/apis/server';
+import { GET_AUDIENCES, GET_GAMES, GET_PRIZEPOOL, GET_SUBSCRIPTIONS } from 'store/actions';
 import { store } from 'store';
 import * as Yup from 'yup';
 import { FormikProvider, useFormik } from 'formik';
@@ -33,6 +33,10 @@ const SelectGamePage = () => {
         dispatch({ type: GET_GAMES, games: games });
         const prizepools = await getPrizepool();
         dispatch({ type: GET_PRIZEPOOL, prizepool: prizepools });
+        const subscriptions = await getSubscription();
+        dispatch({ type: GET_SUBSCRIPTIONS, subscriptions: subscriptions });
+        const audiences = await getAudience();
+        dispatch({ type: GET_AUDIENCES, audiences: audiences });
         setGames(games);
         // setPrizepool(prizepools);
         if (navigateState.navigateState) {
@@ -43,7 +47,7 @@ const SelectGamePage = () => {
             formik1.setValues(formik1Edit, false);
         }
     };
-    console.log(navigateState);
+    console.log('navigateState', navigateState);
     React.useEffect(() => {
         load();
     }, []);
@@ -84,6 +88,7 @@ const SelectGamePage = () => {
     });
     const allEvents = useSelector((state) => state.campaign);
     const prizepoolListDataTemp = allEvents.prizepool;
+    console.log('prizepoolistdatatemp', allEvents);
     const prizepoolListData = prizepoolListDataTemp.map((item) => ({ ...item, label: item.name, prizepool: item.prizepool }));
     const gameListData = allEvents.games;
 

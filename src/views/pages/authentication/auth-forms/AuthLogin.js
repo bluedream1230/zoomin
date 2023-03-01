@@ -29,10 +29,10 @@ import { Formik, Form, useFormik } from 'formik';
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { login, logout } from 'services/apis/user';
-import { GET_EVENTS, GET_GAMES, GET_REWARDS, SET_TOKEN, LOG_OUT } from 'store/actions';
+import { GET_EVENTS, GET_GAMES, GET_REWARDS, SET_TOKEN, LOG_OUT, GET_AUDIENCES } from 'store/actions';
 
 import { store } from 'store';
-import { getCampaign, getGame, getReward } from 'services/apis/server';
+import { getAudience, getCampaign, getGame, getReward } from 'services/apis/server';
 
 const DashboardPage = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/dashbaord" {...props} role={undefined} />);
 const ForgotPasswordPage = React.forwardRef((props, ref) => <RouterLink ref={ref} to="/auth/forgotpassword" {...props} role={undefined} />);
@@ -77,6 +77,10 @@ const FirebaseLogin = ({ ...others }) => {
         });
         const { access_token } = data;
         dispatch({ type: SET_TOKEN, token: access_token });
+        const rewards = await getReward();
+        dispatch({ type: GET_REWARDS, rewards: rewards });
+        const audiences = await getAudience();
+        dispatch({ type: GET_AUDIENCES, audiences: audiences });
         navigate('/dashboard');
     };
 
@@ -95,7 +99,6 @@ const FirebaseLogin = ({ ...others }) => {
             logout();
         }
     }, []);
-    console.log(state);
     const handleNext = (values) => {
         if (!values.email) {
             return alert('Please Enter Your Email!');

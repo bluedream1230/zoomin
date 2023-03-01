@@ -32,12 +32,17 @@ const CampaignSummary = () => {
     const handleCloseModal = () => setOpenModal(false);
 
     const PrizeListData = allEvents.rewards;
+    console.log('locationstate:', state);
     const temp = new Date(state.screen1.eventInfo.launchdate);
     const y = temp.getFullYear();
     const m = temp.getMonth() + 1;
     const d = temp.getDate();
+    // const temp = state.screen1.eventInfo.launchdate;
+    // const y = temp.$y;
+    // const m = temp.$M + 1;
+    // const d = temp.$D;
     const decoded = jwt_decode(states.auth.token);
-    console.log(decoded);
+    console.log(states);
     let prizeLabel = [];
     PrizeListData.forEach((item) => {
         state.screen1.prize.prize.forEach((prizeitem) => {
@@ -305,7 +310,7 @@ const CampaignSummary = () => {
                                                     color: '#FFC857'
                                                 }}
                                             >
-                                                {state.screen1.eventInfo.audience.label}
+                                                {state.screen1?.eventInfo.audience.label}
                                             </Typography>
                                         </CardContent>
                                     </Grid>
