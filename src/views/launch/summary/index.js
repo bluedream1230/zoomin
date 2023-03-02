@@ -33,7 +33,8 @@ const CampaignSummary = () => {
 
     const PrizeListData = allEvents.rewards;
     console.log('locationstate:', state);
-    const temp = new Date(state.screen1.eventInfo.launchdate);
+    const temp = new Date(state.screen1.launchdate);
+    // console.log(state.screen1.eventInfo.launchdate);
     const y = temp.getFullYear();
     const m = temp.getMonth() + 1;
     const d = temp.getDate();

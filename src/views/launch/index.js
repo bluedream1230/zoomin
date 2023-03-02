@@ -71,7 +71,6 @@ const LaunchPage = () => {
     const [openModal, setOpenModal] = React.useState(false);
 
     const { state: navigateState } = useLocation();
-    console.log(navigateState);
 
     const navigate = useNavigate();
     const allEvents = useSelector((state) => state.campaign);
@@ -135,29 +134,30 @@ const LaunchPage = () => {
     // Edit values
     let targetAudience;
     AudienceLabelList.forEach((item) => {
-        if (item.id == navigateState.state?.screen1?.eventInfo.audience.id) {
+        if (item.id == navigateState?.state?.screen1?.eventInfo.audience.id) {
             targetAudience = item;
         }
     });
     let targetType;
     TypeList.forEach((item) => {
-        if (item.label == navigateState.state?.screen1?.eventInfo.type.label) {
+        if (item.label == navigateState?.state?.screen1?.eventInfo.type.label) {
             targetType = item;
         }
     });
     let targetPrize = [];
     PrizeLabelList.forEach((item) => {
-        navigateState.state?.screen1?.prize.prize.forEach((j) => {
+        navigateState?.state?.screen1?.prize.prize.forEach((j) => {
             if (item.id == j.id) targetPrize.push(item);
         });
     });
     console.log('targetAudience', targetAudience);
+    console.log(navigateState);
     const formik1 = useFormik({
         initialValues: {
-            selectname: navigateState.state?.screen1?.eventInfo.selectname,
-            launchdate: navigateState.state?.screen1?.eventInfo.launchdate,
-            location: navigateState.state?.screen1?.eventInfo.location,
-            endtime: navigateState.state?.screen1?.eventInfo.endtime,
+            selectname: navigateState?.state?.screen1?.eventInfo.selectname,
+            launchdate: navigateState?.state?.screen1?.eventInfo.launchdate.$d,
+            location: navigateState?.state?.screen1?.eventInfo.location,
+            endtime: navigateState?.state?.screen1?.eventInfo.endtime.$d,
             audience: targetAudience,
             type: targetType
         },
@@ -190,8 +190,8 @@ const LaunchPage = () => {
     });
     const formik4 = useFormik({
         initialValues: {
-            videourl: navigateState.state?.screen1?.sponsor.videourl,
-            sponsorname: navigateState.state?.screen1?.sponsor.sponsorname,
+            videourl: navigateState?.state?.screen1?.sponsor.videourl,
+            sponsorname: navigateState?.state?.screen1?.sponsor.sponsorname,
             logoUrl: '',
             files: []
         },
@@ -226,7 +226,18 @@ const LaunchPage = () => {
     };
 
     const handleNext = (eventInfo, prize, sponsor) => {
-        navigate('/launch/games/index', { state: { eventInfo, prize, sponsor, navigateState } });
+        navigate('/launch/games/index', {
+            state: {
+                eventInfo,
+                prize,
+                sponsor,
+                navigateState,
+                launchdate: formik1.values?.launchdate
+                    ? new Date(formik1.values?.launchdate.$d)
+                    : new Date(formik1.initialValues?.launchdate.$d),
+                endtime: formik1.values?.endtime ? new Date(formik1.values?.endtime.$d) : new Date(formik1.initialValues?.endtime.$d)
+            }
+        });
     };
 
     // React.useEffect(() => {
@@ -579,7 +590,7 @@ const LaunchPage = () => {
                                         ...theme.typography.customInput
                                     }}
                                     onChange={(e, v) => {
-                                        formik1.setFieldValue('type', v.label);
+                                        formik1.setFieldValue('type', v);
                                     }}
                                     renderOption={(props, option) => {
                                         return <li {...props}>{option.label}</li>;
