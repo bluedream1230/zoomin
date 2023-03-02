@@ -20,7 +20,10 @@ const ResetPassword = ({ ...others }) => {
     const sendForMail = async (values) => {
         try {
             console.log(values, email);
-            const data = await resetPassword({ email: values, userid: email });
+            if (values == email) {
+                const data = await resetPassword({ email: values, userid: email });
+            }
+            console.log('You must enter your registered email.');
             console.log(data);
         } catch (e) {
             console.log(e);
@@ -90,6 +93,7 @@ const ResetPassword = ({ ...others }) => {
                                 onChange={handleChange}
                                 label="Email Address"
                                 inputProps={{}}
+                                readOnly
                             />
                             {touched.email && errors.email && (
                                 <FormHelperText error id="standard-weight-helper-text-email-login">
