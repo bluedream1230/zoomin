@@ -104,8 +104,8 @@ const CampaignSummary = () => {
                 {
                     name: state.screen1.eventInfo.selectname,
                     location: state.screen1.eventInfo.location,
-                    start_time: state.screen1.eventInfo.launchdate,
-                    end_time: state.screen1.eventInfo.endtime,
+                    start_time: state.screen1.eventInfo.launchdate.$d,
+                    end_time: state.screen1.eventInfo.endtime.$d,
                     duration: state.screen2.timelimit,
                     sponsorname: state.screen1.sponsor.sponsorname,
                     trivia_id: trivia?.trivia_id,
