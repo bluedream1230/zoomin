@@ -127,147 +127,149 @@ const SelectSubscriptionPage = () => {
                 <Grid container>
                     {subscriptions &&
                         subscriptions.length != 0 &&
-                        subscriptions.map((item, key) => {
-                            return (
-                                <Grid
-                                    item
-                                    xl={3}
-                                    lg={3}
-                                    md={6}
-                                    sm={6}
-                                    xs={6}
-                                    sx={{
-                                        '& .MuiPaper-root': {
-                                            border: '1px solid transparent'
-                                        },
-                                        '& .MuiPaper-root:hover': {
-                                            // border: '1px solid #FF0676',
-                                            background: '#FFFFFF11  !important'
-                                        }
-                                    }}
-                                >
-                                    <Card
+                        subscriptions
+                            .sort((p1, p2) => (p1.coins > p2.coins ? 1 : p1.coins < p2.coins ? -1 : 0))
+                            .map((item, key) => {
+                                return (
+                                    <Grid
+                                        item
+                                        xl={3}
+                                        lg={3}
+                                        md={6}
+                                        sm={6}
+                                        xs={6}
                                         sx={{
-                                            background: '#FFFFFF00',
-                                            cursor: 'pointer',
-                                            borderRadius: '20px'
+                                            '& .MuiPaper-root': {
+                                                border: '1px solid transparent'
+                                            },
+                                            '& .MuiPaper-root:hover': {
+                                                // border: '1px solid #FF0676',
+                                                background: '#FFFFFF11  !important'
+                                            }
                                         }}
                                     >
-                                        <CardContent
+                                        <Card
                                             sx={{
-                                                borderRadius: '20px',
-                                                position: 'relative',
-                                                objectFit: 'cover',
-                                                transition: '0.3s',
-                                                display: 'inline-block',
-                                                width: '100%'
+                                                background: '#FFFFFF00',
+                                                cursor: 'pointer',
+                                                borderRadius: '20px'
                                             }}
                                         >
-                                            <Typography
+                                            <CardContent
                                                 sx={{
-                                                    fontFamily: 'Inter',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: '500',
-                                                    fontSize: '13px',
-                                                    color: '#FFFFFF',
-                                                    background: `${item.id == 2 ? '#371244' : '#FFFFFF00'}`,
-                                                    display: 'inherit'
-                                                    // borderBottom: '1px dashed #FFF',
-                                                    // textAlign: 'center'
+                                                    borderRadius: '20px',
+                                                    position: 'relative',
+                                                    objectFit: 'cover',
+                                                    transition: '0.3s',
+                                                    display: 'inline-block',
+                                                    width: '100%'
                                                 }}
                                             >
-                                                &nbsp;&nbsp;{item.id == 2 && 'Most popular'}&nbsp;&nbsp;
-                                            </Typography>
-                                            <Typography
-                                                sx={{
-                                                    fontFamily: 'Inter',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: '500',
-                                                    fontSize: '20px',
-                                                    lineHeight: '30px',
-                                                    color: '#FFFFFF'
-                                                    // borderBottom: '1px dashed #FFF',
-                                                    // textAlign: 'center'
-                                                }}
-                                            >
-                                                {item.name}
-                                            </Typography>
-                                            <Typography
-                                                sx={{
-                                                    fontFamily: 'Inter',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: '100',
-                                                    fontSize: '15px',
-                                                    lineHeight: '20px',
-                                                    color: '#FFFFFF',
-                                                    marginBottom: '20px'
-                                                    // textAlign: 'center'
-                                                }}
-                                            >
-                                                {item.id == 1 ? 'Best for local weeknight crowds' : ''}
-                                                {item.id == 2 ? 'Best for primetime evening crowds' : ''}
-                                                {item.id == 3 ? 'Best for college stadiums and events' : ''}
-                                                {item.id == 4 ? 'Best for semi-pro and pro sports' : ''}
-                                            </Typography>
-                                            <Typography
-                                                sx={{
-                                                    fontFamily: 'Inter',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: '1000',
-                                                    fontSize: '40px',
-                                                    lineHeight: '105px',
-                                                    color: '#FFFFFF'
-                                                    // borderBottom: '1px dashed #FFF'
-                                                    // textAlign: 'center'
-                                                }}
-                                            >
-                                                ${item.price}
-                                            </Typography>
-                                            <Button
-                                                variant="contained"
-                                                sx={{
-                                                    borderRadius: '8.8',
-                                                    backgroundColor: '#FF0676',
-                                                    height: '40px',
-                                                    width: '100%',
-                                                    fontSize: '16px',
-                                                    fontWeight: '700'
-                                                }}
-                                                onClick={(e) => handleOpenSubscribeModal(item.id, item.name)}
-                                            >
-                                                Select
-                                            </Button>
-                                            <Typography
-                                                sx={{
-                                                    fontFamily: 'Inter',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: '100',
-                                                    fontSize: '20px',
-                                                    lineHeight: '40px',
-                                                    color: '#FFFFFF'
-                                                    // textAlign: 'center'
-                                                }}
-                                            >
-                                                This includes:
-                                                <br />
-                                                <CheckCircleIcon fontSize="small" />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                                {item.coins} coins
-                                                <br />
-                                                <CheckCircleIcon fontSize="small" />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                                {item.user_limit > 5000 ? 'Unlimited Players' : `Up to ${item.user_limit} Players`}
-                                                <br />
-                                                <CheckCircleIcon fontSize="small" />
-                                                &nbsp;&nbsp;&nbsp;&nbsp; Use Data Analytics
-                                            </Typography>
-                                        </CardContent>
-                                        {/* <CardActions sx={{ justifyContent: 'center' }}> */}
-                                        {/* </CardActions> */}
-                                    </Card>
-                                </Grid>
-                            );
-                        })}
+                                                <Typography
+                                                    sx={{
+                                                        fontFamily: 'Inter',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: '500',
+                                                        fontSize: '13px',
+                                                        color: '#FFFFFF',
+                                                        background: `${item.id == 2 ? '#371244' : '#FFFFFF00'}`,
+                                                        display: 'inherit'
+                                                        // borderBottom: '1px dashed #FFF',
+                                                        // textAlign: 'center'
+                                                    }}
+                                                >
+                                                    &nbsp;&nbsp;{item.id == 2 && 'Most popular'}&nbsp;&nbsp;
+                                                </Typography>
+                                                <Typography
+                                                    sx={{
+                                                        fontFamily: 'Inter',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: '500',
+                                                        fontSize: '20px',
+                                                        lineHeight: '30px',
+                                                        color: '#FFFFFF'
+                                                        // borderBottom: '1px dashed #FFF',
+                                                        // textAlign: 'center'
+                                                    }}
+                                                >
+                                                    {item.name}
+                                                </Typography>
+                                                <Typography
+                                                    sx={{
+                                                        fontFamily: 'Inter',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: '100',
+                                                        fontSize: '15px',
+                                                        lineHeight: '20px',
+                                                        color: '#FFFFFF',
+                                                        marginBottom: '20px'
+                                                        // textAlign: 'center'
+                                                    }}
+                                                >
+                                                    {item.id == 1 ? 'Best for local weeknight crowds' : ''}
+                                                    {item.id == 2 ? 'Best for primetime evening crowds' : ''}
+                                                    {item.id == 3 ? 'Best for college stadiums and events' : ''}
+                                                    {item.id == 4 ? 'Best for semi-pro and pro sports' : ''}
+                                                </Typography>
+                                                <Typography
+                                                    sx={{
+                                                        fontFamily: 'Inter',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: '1000',
+                                                        fontSize: '40px',
+                                                        lineHeight: '105px',
+                                                        color: '#FFFFFF'
+                                                        // borderBottom: '1px dashed #FFF'
+                                                        // textAlign: 'center'
+                                                    }}
+                                                >
+                                                    ${item.price}
+                                                </Typography>
+                                                <Button
+                                                    variant="contained"
+                                                    sx={{
+                                                        borderRadius: '8.8',
+                                                        backgroundColor: '#FF0676',
+                                                        height: '40px',
+                                                        width: '100%',
+                                                        fontSize: '16px',
+                                                        fontWeight: '700'
+                                                    }}
+                                                    onClick={(e) => handleOpenSubscribeModal(item.id, item.name)}
+                                                >
+                                                    Select
+                                                </Button>
+                                                <Typography
+                                                    sx={{
+                                                        fontFamily: 'Inter',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: '100',
+                                                        fontSize: '20px',
+                                                        lineHeight: '40px',
+                                                        color: '#FFFFFF'
+                                                        // textAlign: 'center'
+                                                    }}
+                                                >
+                                                    This includes:
+                                                    <br />
+                                                    <CheckCircleIcon fontSize="small" />
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {item.coins} coins
+                                                    <br />
+                                                    <CheckCircleIcon fontSize="small" />
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {item.user_limit > 5000 ? 'Unlimited Players' : `Up to ${item.user_limit} Players`}
+                                                    <br />
+                                                    <CheckCircleIcon fontSize="small" />
+                                                    &nbsp;&nbsp;&nbsp;&nbsp; Use Data Analytics
+                                                </Typography>
+                                            </CardContent>
+                                            {/* <CardActions sx={{ justifyContent: 'center' }}> */}
+                                            {/* </CardActions> */}
+                                        </Card>
+                                    </Grid>
+                                );
+                            })}
                     {/* <Grid
                         item
                         xs={4}
